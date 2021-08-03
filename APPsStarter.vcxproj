@@ -224,9 +224,7 @@
     <Image Include="res\1c.ico" />
     <Image Include="res\app.ico" />
     <Image Include="res\APPsStarter.png" />
-    <Image Include="res\bar_main.bmp" />
     <Image Include="res\bmp00001.bmp" />
-    <Image Include="res\bmp00002.bmp" />
     <Image Include="res\cmd.ico" />
     <Image Include="res\folder.ico" />
     <Image Include="res\mail.ico" />
@@ -235,9 +233,6 @@
     <Image Include="res\rdp.ico" />
     <Image Include="res\script.ico" />
     <Image Include="res\share.ico" />
-    <Image Include="res\toolbar.bmp" />
-    <Image Include="res\toolbar1.bmp" />
-    <Image Include="res\toolbar2.bmp" />
     <Image Include="res\vcam.ico" />
     <Image Include="res\APPsStarter.ico" />
     <Image Include="res\web.ico" />
@@ -245,4 +240,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_BuildVersioningStyle="" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

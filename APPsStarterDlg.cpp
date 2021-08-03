@@ -100,6 +100,8 @@ void CAPPsStarterDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_ICON, m_cbIcon);
 }
 
+
+
 BEGIN_MESSAGE_MAP(CAPPsStarterDlg, CDialog)
 	
 	ON_WM_SYSCOMMAND()
@@ -138,7 +140,7 @@ END_MESSAGE_MAP()
 BOOL CAPPsStarterDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	//indexSelItem = -1;
+
 	// Add "About..." menu item to system menu.
 
 	// IDM_ABOUTBOX must be in the system command range.
