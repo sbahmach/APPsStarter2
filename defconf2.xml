@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Items>
+	<Item Name="Приложения" Type="container" Expand="true"  Id="11111111-e1e2-41d5-8fa5-4e4649897f77">
+		<Item Name="Почта ВиЯр" Type="application" Path="https://webmail.viyar.com.ua/owa" Title="Корпоративная почта" Icon="mail" Id="0372be3e-54d0-4eb8-a4f8-17cf8c99667b"/>
+		
+		<Item Name="IT Department" Type="container" Expand="true" Id="6798615b-b7a4-4bae-9f4d-521f34bb3c30">
+			<Item Name="osTicket" Type="application" Path="http://help.viyar.com.ua/scp" Title="СРМ Заявки" Icon="web" Id="5cfe8aee-3a80-45d8-a103-b76fe7394312"/>
+			<Item Name="VMware vCenter" Type="application" Path="https://vc.viyar.com.ua/ui/" Title="Администрирование VMware vCenter" Icon="web" Id="b291165c-ba93-4396-aed8-f7328245e61a"/>
+			<Item Name="Zabbix Appliance" Type="application" Path="http://zabbix.viyar.com.ua/" Title="Система мониторинга Zabbix" Icon="web" Id="b28ad4a2-bfb8-4738-a6ec-1c749b2dda7f"/>
+			<Item Name="Zimbra Admin" Type="application" Path="https://mail.viyar.com.ua:7071/zimbraAdmin/" Title="Администрирование Zimbra" Icon="mail" Id="3ad1a6f9-efe2-42b7-9b17-b644034f055f"/>
+			<Item Name="Exchange Admin" Type="application" Path="https://webmail.viyar.com.ua/ecp/" Title="Администрирование Exchange" Icon="mail" Id="0b150aaf-336b-4251-96b6-11f44132973e"/>
+			<Item Name="Duty" Type="application" Path="http://duty.viyar.com.ua/" Title="Дежурства" Icon="mail" Id="b2cc3964-79c2-4cee-9975-9a08b5777940"/>
+			<Item Name="График дежурст" Type="application" Path="V:\IT_DEPARTMENT\IT_ADM\ГРАФИК РАБОТЫ IT\2020-График дежурств ИТ.xlsx" Title="График дежурств ИТ" Icon="app" Id="8a3839e2-f5a1-4faa-8d33-ee5fa57c7060"/>
+			<Item Name="Телефонный справочник" Type="application" Path="http://portal.viyar.ua/info/" Title="Телефонный справочник компании" Icon="web" Id="09edc229-362a-4836-b1eb-4ae395ad1f66"/>
+			<Item Name="MSTSC" Type="application" Path="mstsc.exe" Title="RDP" Icon="rdp" Id="86a5d8fa-d5d6-4c28-96c0-074133d79e65"/>
+			<Item Name="CMD" Type="application" Path="cmd.exe" Title="Command" Icon="cmd" Id="d09fa324-4b55-4248-8130-90605961e259"/>
+			<Item Name="PowerShell" Type="application" Path="PowerShell.exe" Title="PowerShell" Icon="pshell" Id="56rra324-4b55-4248-8130-90605961e259"/>
+			<Item Name="DWRCC" Type="application" Path="C:\Program Files (x86)\SolarWinds\DameWare Remote Support\DWRCC.exe" Title="DameWare Remote Support" Icon="app" Id="0b4a6210-b586-4f1d-b307-26e1eb7b67a2"/>
+			<Item Name="mRemoteNG" Type="application" Path="C:\Program Files (x86)\mRemoteNG\mRemoteNG.exe" Title="mRemoteNG" Icon="app" Id="868c13c7-f016-488b-b0cd-35edee2ee2d6"/>
+			<Item Name="Viyar.msc" Type="application" Path="C:\Users\sb\Desktop\Viyar.msc" Title="Viyar.msc" Icon="app" Id="d94b2130-2778-42db-b3c1-f443c0d8e8f7"/>
+			<Item Name="VMware Workstation" Type="application" Path="C:\Program Files (x86)\VMware\VMware Workstation\vmware.exe" Title="VMware Workstation" Icon="app" Id="2b7f93e2-ac18-4f62-9545-dcfcb4961039"/>
+			<Item Name="KeePass" Type="application" Path="C:\Program Files (x86)\KeePass Password Safe 2\KeePass.exe" Title="KeePass Password Safe 2" Icon="app" Id="89c05439-359c-4585-9f71-23fb47ce78c3"/>	
+		</Item>
+		<Item Name="Отделы ВиЯр (V:)" Type="application" Path="\\viyar.com.ua\DEPARTMENTS_DATA" Title="Сетевой диск" Icon="share" Id="12abb976-11c7-473f-b182-2b4585fe062c"/>
+        <Item Name="1С Базы" Type="container" Expand="true" Id="6f6267cc-3e63-49b5-ab91-ff4d8e448260">
+			<Item Name="КИЕВ" Type="container" Expand="true" Id="6c1c031f-a3da-46fe-935f-fd87259d4c60">
+				<Item Name="Управленческая КИЕВ" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_kv_up.rdp" Title="Киевская база УП" Icon="1c" Id="bb3191ef-e06c-4cde-8d7a-1d994fa50caf"/>	
+				<Item Name="АРХИВНЫЕ БАЗЫ КИЕВ" Type="container" Expand="false" Id="e99aa2bc-6769-4d69-9704-5dd317cd1adb">
+					<Item Name="2019 КИЕВ" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_kv_up_2019.rdp" Title="Архивная база Киев 2019" Icon="1c" Id="bebbff1f-1b06-480d-9493-cf061359b4d3"/>
+					<Item Name="2018 КИЕВ" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_kv_up_2018.rdp" Title="Архивная база Киев 2018" Icon="1c" Id="937fcea5-00da-417d-96a5-9ddfa57f2604"/>
+					<Item Name="2017 КИЕВ" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_kv_up_2017.rdp" Title="Архивная база Киев 2017" Icon="1c" Id="caf7d9d0-ddd4-472a-bf15-6ec3116b2631"/>
+					<Item Name="2016 КИЕВ" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_kv_up_2016.rdp" Title="Архивная база Киев 2016" Icon="1c" Id="d5e7e337-b775-49c9-b670-337b6647c5a6"/>
+				</Item>
+			</Item>
+			<Item Name="TEST_EMPTY" Type="container" Expand="true" Id="6bc6f16d-f5f6-47bb-9120-b23a66c518c0">
+			</Item>
+			<Item Name="ДНЕПР" Type="container" Expand="false" Id="71bd0ece-292f-49b7-a1cf-e439bcaf6756">
+				<Item Name="Управленческая ДНЕПР" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_dp_up.rdp" Title="Днепровская база УП" Icon="1c" Id="cbd2a95c-470f-4fe1-9fa1-6baf442997bc"/>
+			</Item>
+			<Item Name="ХАРЬКОВ" Type="container" Expand="false" Id="ae0e7d56-8aef-48fa-94b8-2995a6286e41">
+				<Item Name="Управленческая ХАРЬКОВ" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_kh_up.rdp" Title="Харьковская база УП" Icon="1c" Id="aa7625be-7771-48a9-ad4b-6c8c62d86110"/>
+				<Item Name="АРХИВНЫЕ БАЗЫ ХАРЬКОВ" Type="container" Expand="false" Id="5fef8261-4120-4723-bc26-82e70bd3cd94">
+					<Item Name="2019 ХАРЬКОВ" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_kh_up_2019.rdp" Title="Архивная база Харьков 2019" Icon="1c" Id="3dbd0c7b-bc36-490f-a34d-ecca67e67e3c"/>
+				</Item>
+			</Item>
+			<Item Name="ЛЬВОВ" Type="container" Expand="false" Id="0fa5183f-ed5b-4371-86ad-741689180dd7">
+				<Item Name="Управленческая ЛЬВОВ" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_lv_up.rdp" Title="Львовская база УП" Icon="1c" Id="d4b9fbc1-eb2f-4176-b142-051df8c23b19"/>
+			</Item>
+			<Item Name="МИНСК" Type="container" Expand="false" Id="d779fe9b-895d-4d9f-b3b0-acfa409ca358">
+			<Item Name="Управленческая МИНСК" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_by_up.rdp" Title="Минская база УП" Icon="1c" Id="4d4c27d9-a87d-49e5-851c-4e166e192d48"/>	
+			<Item Name="АРХИВНЫЕ БАЗЫ МИНСК" Type="container" Expand="false" Id="0f603970-4214-44b2-bd7b-19a3b25ca477">
+				<Item Name="2019 МИНСК" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_by_up_2019.rdp" Title="Архивная база Минск 2019" Icon="1c" Id="6b694a5d-9b8c-401a-aa45-e6a9e5a7aa7e"/>
+				<Item Name="2018 МИНСК" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_by_up_2018.rdp" Title="Архивная база Минск 2018" Icon="1c" Id="0f603970-4214-44b2-bd7b-19a3b25ca477"/>
+				<Item Name="2016 МИНСК" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_by_up_2016.rdp" Title="Архивная база Минск 2016" Icon="1c" Id="6b694a5d-9b8c-401a-aa45-e6a9e5a7aa7e"/>
+			</Item>
+			<Item Name="КДМ" Type="container" Expand="false" Id="2fe2db3c-fed8-45b3-868c-7fa66c339d01">
+				<Item Name="КДМ МИНСК" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_by_kdm.rdp" Title="Миская база КДМ" Icon="1c" Id="6ffac26c-f249-4579-88d3-6203cee6de8a"/>
+				<Item Name="КДМ МИНСК V2" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_by_kdm_v_2.rdp" Title="Минская база КДМ 2" Icon="1c" Id="a4d6a80e-e2df-472b-90f0-ef4229a7fc13"/>
+				<Item Name="КДМ ЗУП МИНСК" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_by_kdm_zp.rdp" Title="Миская база ЗУП" Icon="1c" Id="2e481b92-053d-4ee8-900f-1069b7ebdf56"/>
+			</Item>
+			<Item Name="MK GROUP" Type="container" Expand="false" Id="a7718862-ed7f-47fe-a61e-24ce178f2f35">
+				<Item Name="MK GROUP МИНСК" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_by_mk_group.rdp" Title="Минская база MK GROUP" Icon="1c" Id="f49bab5c-b775-460c-bbf8-5183f8493d95"/>
+				<Item Name="MK GROUP ARCHIV МИНСК" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_by_mk_group_archiv.rdp" Title="Минская база MK GROUP ARCHIV" Icon="1c" Id="9041d28c-25b2-4335-9c88-da93351d0b54"/>
+			</Item>
+        </Item>
+		<Item Name="ЗУП" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_zup.rdp" Title="база ЗУП" Icon="1c" Id="ac9db470-ee76-49ec-befd-c549a7bf2c04"/>	
+		<Item Name="BASERP" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_baserp.rdp" Title="база BAS ERP" Icon="1c" Id="0211b65c-c2a9-48a6-9216-830bacd28508"/>	
+		<Item Name="Аналитическая" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_analitics.rdp" Title="База Аналитическая" Icon="1c" Id="12abb976-11c7-473f-b182-2b4585fe062c"/>	
+		<Item Name="Консолидированная" Type="application" Path="\\viyar.com.ua\NETLOGON\1CBaseList\1CRDP\1c_main.rdp" Title="База Консолидированная" Icon="1c" Id="0372be3e-54d0-4eb8-a4f8-17cf8c99667b"/>	
+        </Item>
+		<Item Name="WEB Ресурсы компании" Type="container" Expand="false" Id="d2e5eb48-d762-4b91-8faa-d58c1d350031">
+			<Item Name="Сайт ВиЯр Киев (viyar.ua)" Type="application" Path="https://viyar.ua" Title="Киевский Сайт" Icon="web" Id="13e82f3d-b697-44c6-b70c-291bfddf685c"/>
+			<Item Name="Сайт ВиЯр Харьков (kh.viyar.ua)" Type="application" Path="https://kh.viyar.ua" Title="Харьковский Сайт" Icon="web" Id="2972f99d-1331-497c-a400-bb1f8b7f38c8"/>
+			<Item Name="Сайт ВиЯр Днепр (dp.viyar.ua)" Type="application" Path="https://dp.viyar.ua" Title="Днепровский Сайт" Icon="web" Id="8d7082db-3b90-4789-bc7c-128cf211761c"/>
+			<Item Name="Сайт ВиЯр Львов (lviv.viyar.ua)" Type="application" Path="https://lviv.viyar.ua" Title="Львовский Сайт" Icon="web" Id="bfb0cea4-abb2-48c9-88e0-4ee11b879385"/>
+			<Item Name="Сайт ВиЯр Минск (viyar.by)" Type="application" Path="https://viyar.by" Title="Минский Сайт" Icon="web" Id="69bc83a7-56ea-4cad-bd80-8c177264c0ea"/>
+			<Item Name="Телефонный справочник" Type="application" Path="http://portal.viyar.ua/info/" Title="Телефоны сотрудников " Icon="web" Id="e31f3dd1-eb90-4635-b8f0-241590b16bcc"/>
+			<Item Name="ViyarBazar" Type="application" Path="https://viyarbazar.com" Title="Сайт ВиЯрБазар" Icon="web" Id="c6f392f0-62d5-4044-9290-8346bd1b55ff"/>
+			<Item Name="Portal.viyar.ua" Type="application" Path="http://portal.viyar.ua/" Title="Портал Битрикс" Icon="web" Id="a4a25f66-4073-4df7-800f-676352bc0ea0"/>
+			<Item Name="ВиЯрум" Type="application" Path="https://viyar.davintoo.com/" Title="Сайт ВиЯрум" Icon="web" Id="2df4600a-b83e-43c5-987a-5eac1307f2bf"/>
+			<Item Name="VideoCam Help" Type="application" Path="http://portal.viyar.ua/stream/support/index.php/" Title="Видеонаблючение помощь" Icon="vcam" Id="ba6e4b2b-5a33-4e79-8821-a1b33c7968be"/>
+			<Item Name="Franke-shop" Type="application" Path="https://franke-shop.kiev.ua/" Title="Сайт Franke-shop" Icon="web" Id="6998c575-8973-40f5-95e6-25c57259dbf1"/>
+		</Item>
+		<Item Name="ТЕРМИНАЛЫ для удаленной работы" Type="container" Expand="false" Id="a7ea8ccf-954c-4e9a-8643-79d2f9492583">
+			<Item Name="TS7" Type="application" Path="\\viyar.com.ua\NETLOGON\TS7.rdp" Title="Бухгалтерский терминал" Icon="rdp" Id="b3b29bf1-eb4f-4977-abbd-e2439c973d50"/>
+			<Item Name="TS-Developer" Type="application" Path="\\viyar.com.ua\NETLOGON\TS-DEV.rdp" Title="Терминал для разработок" Icon="rdp" Id="b49009f4-e947-4bef-9e5b-7b0f90c89d4d"/>
+			<Item Name="OptiPlanning" Type="application" Path="\\viyar.com.ua\NETLOGON\OptiPlanning.rdp" Title="Терминал Biesse OptiPlanning" Icon="rdp" Id="7159a651-e88c-4657-b838-d24a56d3b300"/>
+		</Item>
+		<Item Name="Другое" Type="container" Expand="false" Id="cb7bce1f-75ae-4d3f-b3d9-6124511a7875">
+			<Item Name="B_Info" Type="application" Path="\\by-con\B_Info\Gbinfo\B_info.exe" Title="B_Info" Icon="app" Id="8c2d256f-7548-4a35-b897-c9b71153da3d"/>
+		</Item>
+		<Item Name="M.E.Doc" Type="container" Expand="false" Id="27ea72a9-6da0-4685-9773-6f2ab2c62821">
+			<Item Name="АО ПКАО" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_FKLG.rdp" Title="M.E.Doc АО ПКАО" Icon="medoc" Id="53e65db7-b539-4ee7-96f8-a4a2f2ba3725"/>
+			<Item Name="Вег Трейд" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_VEG-TRADE.rdp" Title="M.E.Doc Вег Трейд" Icon="medoc" Id="cf3c415e-edec-4d0a-9d2d-7ab87f37a07f"/>
+			<Item Name="ВИП Профиль" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_VIP_PROFILE.rdp" Title="M.E.Doc ВИП Профиль" Icon="medoc" Id="581f9aa8-545a-4936-8d63-0fd390e35a53"/>
+			<Item Name="ВКМЗ Фасад" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_VKMZ_FASAD.rdp" Title="M.E.Doc ВКМЗ Фасад" Icon="medoc" Id="f7cd79c0-159e-4fee-ae26-bd64eb3086ad"/>
+			<Item Name="ВСМК Трейд" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_VSMK_TRADE.rdp" Title="M.E.Doc ВСМК Трейд" Icon="medoc" Id="3430fb6a-cb15-468f-b5f4-eac5b29771e6"/>
+			<Item Name="Днепр Рент Сервис" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_DNEPR_RENT_SERVICE.rdp" Title="M.E.Doc Днепр Рент Сервис" Icon="medoc" Id="47fc560f-0df5-4bfa-8fc1-438c50c91bd7"/>
+			<Item Name="ДНМ Риелти" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_DNM_RIELTY.rdp" Title="M.E.Doc ДНМ Риелти" Icon="medoc" Id="9d8b9b22-7679-4afb-8ce8-44814f1c6592"/>
+			<Item Name="Импекс Артис" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_IMPEX_ARTIS.rdp" Title="M.E.Doc Импекс Артис" Icon="medoc" Id="d2539739-4de5-4ee7-b6fa-1bfef0df96a3"/>
+			<Item Name="Импорт Трейд Маркет" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_IMPORT_TRADE_MARKET.rdp" Title="M.E.Doc Импорт Трейд Маркет" Icon="medoc" Id="ac837521-7d67-46f2-ab6c-f5305a4cc305"/>
+			<Item Name="КДМ-Днепр" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_KDM_DNEPR.rdp" Title="M.E.Doc КДМ-Днепр" Icon="medoc" Id="106ee2f0-df6e-4261-8576-e61d786d6d10"/>
+			<Item Name="Киев Рент Сервис" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_KIEV_RENT-SERVICE.rdp" Title="M.E.Doc Киев Рент Сервис" Icon="medoc" Id="3212c701-1660-4356-85c1-20a0a377b561"/>
+			<Item Name="Клиф Трейд" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_CLEAF_TRADE.rdp" Title="M.E.Doc Клиф Трейд" Icon="medoc" Id="7c2a0d9a-4b44-4e95-8479-97b508b31aed"/>
+			<Item Name="Лэндинг Рент Сервис" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_LENDING_RENT_SERVICE.rdp" Title="M.E.Doc Лэндинг Рент Сервис" Icon="medoc" Id="e7e400c9-f272-477e-ab83-edf5d4f018de"/>
+			<Item Name="Эквип ЛТД" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_EKVIP.rdp" Title="M.E.Doc Эквип ЛТД" Icon="medoc" Id="c597ab44-6e38-48ea-80cf-bbd6773fe259"/>
+			<Item Name="МДМ Комплект" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_MDM_COMPLECT.rdp" Title="M.E.Doc МДМ Комплект" Icon="medoc" Id="6191b9ba-7a9a-4c16-975a-dc72bb42b4c1"/>
+			<Item Name="МКФ Трейд" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_MKF_TRADE.rdp" Title="M.E.Doc МКФ Трейд" Icon="medoc" Id="db68f6b7-db10-44bf-8b2a-2b6c372fa490"/>
+			<Item Name="Пром Техно Ресурс" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_PROMTECHRES.rdp" Title="M.E.Doc Пром Техно Ресурс" Icon="medoc" Id="dca20d7e-e687-427a-8820-9582786f9c96"/>
+			<Item Name="ПСК Рент Сервис" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_PSK_RENT-SERVICE.rdp" Title="M.E.Doc ПСК Рент Сервис" Icon="medoc" Id="448d6997-ac92-4b44-9093-b376c4f02a74"/>
+			<Item Name="Фалкон" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_FALCON.rdp" Title="M.E.Doc Фалкон" Icon="medoc" Id="900b97d0-9270-49f0-ab25-70184438b5c2"/>
+			<Item Name="ШЕБ" Type="application" Path="\\viyar.com.ua\NETLOGON\MEDOC_SHEB.rdp" Title="M.E.Doc ШЕБ" Icon="medoc" Id="c11f66cb-bbb3-4296-8139-575971a6ec1c"/>
+		</Item>
+	</Item>
+</Items>
