@@ -776,12 +776,12 @@ void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)
 			if (pMu == 0)	return;
 
 			strName = node->name;
-			BOOL bExpanded = TVIS_EXPANDED & m_tree.GetItemState(hSelectedItem, TVIS_EXPANDED);
+			BOOL bExpanded = (TVIS_EXPANDED & m_tree.GetItemState(hSelectedItem, TVIS_EXPANDED));
 			if (bExpanded)
 				pMu->ModifyMenu(ID_MENU_EXPAND, MF_BYCOMMAND, ID_MENU_EXPAND, "Свернуть \tRight Left");
 
 			//try delete
-			if (node->type == "container") {
+			if (m_tree.ItemHasChildren(hSelectedItem)) {
 				pMu->DeleteMenu(ID_MENU_RUN, MF_BYCOMMAND);
 				pMu->DeleteMenu(ID_MENU_RUNAS, MF_BYCOMMAND);
 				pMu->DeleteMenu(ID_MENU_OPENWITH, MF_BYCOMMAND );
@@ -795,7 +795,7 @@ void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)
 				pMu->DeleteMenu(ID_MENU_OPENFOLDER, MF_BYCOMMAND);
 			}
 
-			if (node->type == "application") {
+			if (!m_tree.ItemHasChildren(hSelectedItem)) {
 
 				pMu->DeleteMenu(ID_MENU_EXPAND, MF_BYCOMMAND);
 				pMu->DeleteMenu(0, MF_SEPARATOR);
