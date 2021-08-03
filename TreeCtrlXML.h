@@ -63,7 +63,6 @@ protected:
 		LOGFONT  logfont;
 	};
 	void Load(tinyxml2::XMLNode* a_pNode);
-	void Save(tinyxml2::XMLNode* a_pNode);
 
 	CImageList* m_pDragImage;
 	BOOL		m_bLDragging;
