@@ -51,10 +51,10 @@
     <ClInclude Include="tinyxml2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="version.h">
+    <ClInclude Include="ver_build.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="revision.h">
+    <ClInclude Include="ver_revision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

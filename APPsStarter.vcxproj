@@ -159,9 +159,13 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PreBuildEvent>
-      <Command>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File update_version.ps1 "./version.h"
+      <Command>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File update_version.ps1 "./ver_build.h"
 update_revision.cmd</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -197,13 +201,13 @@ update_revision.cmd</Command>
     <ClInclude Include="IconComboBox.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="revision.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="TreeCtrlXML.h" />
     <ClInclude Include="APPsStarter.h" />
     <ClInclude Include="APPsStarterDlg.h" />
-    <ClInclude Include="version.h" />
+    <ClInclude Include="ver_build.h" />
+    <ClInclude Include="ver_revision.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AutoMessageBox.cpp" />

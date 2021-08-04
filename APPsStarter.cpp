@@ -27,13 +27,14 @@ CAPPsStarterApp::CAPPsStarterApp()
 }
 
 
+
 // The one and only CAPPsStarterApp object
 CAPPsStarterApp theApp;
 
 // CAPPsStarterApp initialization
 BOOL CAPPsStarterApp::InitInstance()
 {
-	HANDLE hM = CreateMutex(NULL, FALSE, _T("{APPA-STARTER-007}"));
+	HANDLE hM = CreateMutex(NULL, FALSE, _T("{APPs-STARTER2-012}"));
 
 	if (GetLastError() == ERROR_ALREADY_EXISTS)
 	{
