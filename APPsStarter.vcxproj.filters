@@ -51,6 +51,9 @@
     <ClInclude Include="tinyxml2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="APPsStarter.cpp">
@@ -134,22 +137,7 @@
     <Image Include="res\script.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\bar_main.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\toolbar1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\bmp00001.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\toolbar2.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\toolbar.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00002.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\APPsStarter.png">
