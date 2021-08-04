@@ -53,14 +53,12 @@ protected:
 		CString path = "some path";
 		CString type = "application";
 		CString title = "";
-		//CString id = "";
-		//CString parent = "";
 		CString icon = "";
 		CString expand = "false";
-
 	};
 
 	node_data* node = 0;
+
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
@@ -93,29 +91,14 @@ protected:
 	HICON m_hIcon;
 	HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	CTreeCtrlXML m_tree;
-	CStatic m_Title;
-	CStatic m_statName;
-	CStatic m_statTitle;
-	CStatic m_statPath;
-	CStatic m_statIcon;
-	CStatic m_statParent;
-	CStatic m_statID;
-	
-	CColorButton	m_btStart;
-	CColorButton	m_btLoad;
-	CColorButton	m_btReload;
-	CColorButton	m_btEdit;
-	CColorButton	m_btSave;
-	CColorButton	m_btCancel;
-	CStatic m_stat;
+	CStatic m_Title, m_statName, m_statTitle, m_statPath, m_statIcon, m_stat;
+	CColorButton	m_btStart, m_btLoad, m_btReload, m_btEdit, m_btSave, m_btCancel;
 	CButton m_check;
-	CEdit m_editName;
-	CEdit m_editTitle;
-	CEdit m_editPath;
+	CEdit m_editName, m_editTitle, m_editPath;
 	CMFCButton m_btPath;
-	//CEdit m_editID;
-	//CEdit m_editParent;
 	CSmallIconComboBox m_cbIcon;
+	CMenuModifier md_Popup;
+	CToolBar    m_wndToolBar;
 
 	void ReadReg();
 	void WhriteReg();
@@ -123,13 +106,8 @@ protected:
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 	//afx_msg void OnPaint();
-	CMenuModifier md_Popup;
-	CToolBar    m_wndToolBar;
-	//void P_ShowPopupMenu(UINT uMenuID, CPoint pt);
+	
 public:
-	//int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
-	//static int CALLBACK TreeCmpFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
-	//BOOL   SortChildrenCB(LPTVSORTCB   pSort);
 	
 	//void TTokenizer(const CString& strFields, LPCWSTR strDelimiters, std::vector<CString>& arFields);
 	void OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult);
@@ -137,12 +115,10 @@ public:
 	afx_msg void OnNMDblclkTree1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnBnClickedCancel();
-
 	afx_msg void OnBnClickedCheck1();
 	afx_msg void OnEnKillfocusEditName();
 	afx_msg void OnEnKillfocusEditTitle();
 	afx_msg void OnEnKillfocusEditPath();
-	//afx_msg void OnTvnItemexpandedTree1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnCbnSelchangeComboIcon();
 	afx_msg void OnTvnEndlabeleditTree1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnTvnBeginlabeleditTree1(NMHDR* pNMHDR, LRESULT* pResult);
