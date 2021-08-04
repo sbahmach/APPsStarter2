@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "version.h"
+#include "revision.h"
 //#include <afxwin.h>
 
 #ifdef _DEBUG
@@ -77,7 +78,7 @@ BOOL CAboutDlg::OnInitDialog()
 			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
 		}
 	}
-	m_statVersion.SetWindowText("APPsStarter Version: " stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_PATCH) "." stringify(VERSION_BUILD));
+	m_statVersion.SetWindowText("APPsStarter Version: " stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(REV_NUM) "." stringify(VERSION_BUILD));
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
 	//SetIcon(m_hIcon, TRUE);			// Set big icon
