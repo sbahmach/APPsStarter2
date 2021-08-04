@@ -100,6 +100,7 @@ protected:
 	CStatic m_statIcon;
 	CStatic m_statParent;
 	CStatic m_statID;
+	
 	CColorButton	m_btStart;
 	CColorButton	m_btLoad;
 	CColorButton	m_btReload;

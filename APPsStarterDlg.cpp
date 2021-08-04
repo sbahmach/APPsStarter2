@@ -11,6 +11,7 @@
 #include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "version.h"
 //#include <afxwin.h>
 
 #ifdef _DEBUG
@@ -32,26 +33,60 @@ public:
 #endif
 
 	protected:
+		CStatic m_statVersion;
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 // Implementation
 protected:
+	virtual BOOL OnInitDialog();
 	DECLARE_MESSAGE_MAP()
 };
 
 CAboutDlg::CAboutDlg() : CDialog(IDD_ABOUTBOX)
 {
+	
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_STATIC_VERSION, m_statVersion);
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
+BOOL CAboutDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
 
+	// Add "About..." menu item to system menu.
+
+	// IDM_ABOUTBOX must be in the system command range.
+	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+	ASSERT(IDM_ABOUTBOX < 0xF000);
+
+	CMenu* pSysMenu = GetSystemMenu(FALSE);
+	if (pSysMenu != NULL)
+	{
+		CString strAboutMenu;
+		strAboutMenu.LoadString(IDS_ABOUTBOX);
+		if (!strAboutMenu.IsEmpty())
+		{
+			pSysMenu->AppendMenu(MF_SEPARATOR);
+			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
+		}
+	}
+	m_statVersion.SetWindowText("APPsStarter Version: " stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_PATCH) "." stringify(VERSION_BUILD));
+	// Set the icon for this dialog.  The framework does this automatically
+	//  when the application's main window is not a dialog
+	//SetIcon(m_hIcon, TRUE);			// Set big icon
+	//SetIcon(m_hIcon, FALSE);		// Set small icon
+
+	// TODO: Add extra initialization here
+
+	return TRUE;  // return TRUE  unless you set the focus to a control
+}
 // CAPPsStarterDlg dialog
 
 
@@ -146,7 +181,7 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	// IDM_ABOUTBOX must be in the system command range.
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
-
+	
 	CMenu* pSysMenu = GetSystemMenu(FALSE);
 	if (pSysMenu != nullptr)
 	{

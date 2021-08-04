@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Включаемый файл, созданный в Microsoft Visual C++.
-// Используется APPsStarter.rc
+// Microsoft Visual C++ generated include file.
+// Used by APPsStarter.rc
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
@@ -55,6 +55,7 @@
 #define IDC_STATIC_PATH3                1023
 #define IDC_STATIC_PARENT               1023
 #define IDC_MFCBUTTON_PATH              1026
+#define IDC_STATIC_VERSION              1030
 #define ID_EDIT_FILE                    32783
 #define ID_EDIT_EDIT                    32784
 #define ID_EDIT_32785                   32785
@@ -103,7 +104,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        177
 #define _APS_NEXT_COMMAND_VALUE         32827
-#define _APS_NEXT_CONTROL_VALUE         1030
+#define _APS_NEXT_CONTROL_VALUE         1031
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
