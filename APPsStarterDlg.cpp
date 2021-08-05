@@ -1145,6 +1145,16 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 		return TRUE;
 	}
 
+	if (GetAsyncKeyState(VK_CONTROL) < 0 && (pMsg->wParam == 0x55)) //ctrl + U
+	{
+		CWnd* pWnd = GetFocus();
+		UINT i = pWnd->GetDlgCtrlID();
+		if (i == IDC_TREE1) {
+			OnSortZA();
+		}
+		return TRUE;
+	}
+
 	if (GetAsyncKeyState(VK_CONTROL) < 0 && (pMsg->wParam == 0x52)) //ctrl + R
 	{
 		CWnd* pWnd = GetFocus();
@@ -1614,7 +1624,7 @@ void CAPPsStarterDlg::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureIte
 void CAPPsStarterDlg::OnBnClickedMfcbuttonPath()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	const TCHAR szFilter[] = _T("All Files (*.*)|*.*|EXE Files (*.exe;*.bat;*cmd;*vbs;*rdp;*mmc)|*.exe;*.bat;*cmd;*vbs;*rdp;*mmc||");
+	const TCHAR szFilter[] = _T("EXE Files (*.exe;*.bat;*cmd;*vbs;*rdp;*mmc)|*.exe;*.bat;*cmd;*vbs;*rdp;*mmc|All Files (*.*)|*.*||");
 	CFileDialog dlg(TRUE, _T("*.exe;*.bat;*cmd;*vbs;*rdp;*mmc"), NULL, OFN_DONTADDTORECENT | OFN_NOCHANGEDIR | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
 	if (dlg.DoModal() == IDOK)
 	{
