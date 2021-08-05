@@ -769,7 +769,7 @@ void CAPPsStarterDlg::OnSortZA()
 	if (m_tree.ItemHasChildren(hti))
 		htiParent = hti;
 
-	
+	bool bSel = false;
 
 	std::vector<CString> items;
 
@@ -799,17 +799,20 @@ void CAPPsStarterDlg::OnSortZA()
 			htiMove = FindItem(str, htiParent);
 			
 			if (htiMove == hti)
-				htiSel = htiMove;
+				bSel = true;
 			if (htiMove == NULL)
 				return;;
-			m_tree.CopyBranch(htiMove, htiParent, TVI_FIRST);
+			HTREEITEM htiNewItem = m_tree.CopyBranch(htiMove, htiParent, TVI_FIRST);
+			if (bSel) htiSel = htiNewItem;
+			bSel = false;
 			m_tree.DeleteItem(htiMove);
 		}
 		// Insert, delete, sort (or whatever you like) your items...
 		m_tree.SetRedraw(TRUE);
 		m_tree.Invalidate();
 	}
-	//m_tree.SelectItem(htiSel);
+	if (htiSel != NULL)
+		m_tree.SelectItem(htiSel);
 	nnode = NULL;
 }
 
