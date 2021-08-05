@@ -797,7 +797,12 @@ HTREEITEM CTreeCtrlXML::CopyBranch(HTREEITEM htiBranch, HTREEITEM htiNewParent,
 {
 	HTREEITEM hChild;
 
+	UINT state;
+	state = GetItemState(htiBranch, TVIS_EXPANDED)& TVIS_EXPANDED;
+
 	HTREEITEM hNewItem = CopyItem(htiBranch, htiNewParent, htiAfter);
+	SetItemState(hNewItem, state, state);
+
 	hChild = GetChildItem(htiBranch);
 	while (hChild != NULL)
 	{

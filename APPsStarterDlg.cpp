@@ -11,6 +11,9 @@
 #include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
+#include <vector>
+#include <algorithm>
 #include "ver_revision.h"
 #include "ver_build.h"
 //#include <afxwin.h>
@@ -408,7 +411,7 @@ void CAPPsStarterDlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 	//m_statID.SetWindowText(node->id);
 	//m_statParent.SetWindowText(node->parent);
 
-	if (node->type == "container") {
+	if (node->type.MakeLower() == "container") {
 		m_editPath.EnableWindow(false);
 		m_statPath.EnableWindow(false);
 		m_statIcon.EnableWindow(false);
@@ -758,7 +761,89 @@ void CAPPsStarterDlg::OnSortAZ()
 	m_tree.SortChildren(htiSelSort);
 }
 
+void CAPPsStarterDlg::OnSortZA()
+{
+	HTREEITEM hti, htiParent, htiChild, htiSel;
+	hti = m_tree.GetSelectedItem();
+	htiParent = m_tree.GetParentItem(hti);
+	if (m_tree.ItemHasChildren(hti))
+		htiParent = hti;
 
+	
+
+	std::vector<CString> items;
+
+
+	htiChild = m_tree.GetChildItem(htiParent);
+	htiSel = NULL;
+	node_data* nnode = new node_data();
+	while (htiChild)
+	{
+		nnode = (node_data*)m_tree.GetItemData(htiChild);
+		items.emplace_back(nnode->name);
+		htiChild = m_tree.GetNextSiblingItem(htiChild);
+	}
+	
+	if (!items.empty()) {
+		std::sort(items.begin(), items.end());
+
+		//std::sort(items.end(), items.begin());
+		HTREEITEM htiMove = NULL;
+		int iV = items.size()-1;
+		m_tree.SetRedraw(FALSE);
+		
+		for (size_t i = 0; i <=iV; i++) {
+
+			CString str = items[i];
+			
+			htiMove = FindItem(str, htiParent);
+			
+			if (htiMove == hti)
+				htiSel = htiMove;
+			if (htiMove == NULL)
+				return;;
+			m_tree.CopyBranch(htiMove, htiParent, TVI_FIRST);
+			m_tree.DeleteItem(htiMove);
+		}
+		// Insert, delete, sort (or whatever you like) your items...
+		m_tree.SetRedraw(TRUE);
+		m_tree.Invalidate();
+	}
+	//m_tree.SelectItem(htiSel);
+	nnode = NULL;
+}
+
+// name - the name of the item that is searched for
+// tree - a reference to the tree control
+// hRoot - the handle to the item where the search begins
+HTREEITEM CAPPsStarterDlg::FindItem(const CString name, HTREEITEM hRoot)
+{
+	// check whether the current item is the searched one
+	
+
+	// get a handle to the first child item
+	HTREEITEM hSub = m_tree.GetChildItem(hRoot);
+	
+	// iterate as long a new item is found
+	while (hSub != NULL)
+	{
+		CString text = m_tree.GetItemText(hSub);
+		if (text.Compare(name) == 0) {
+			//MessageBox(name + " - " + text);
+			return hSub;
+		}
+		// check the children of the current item
+		//HTREEITEM hFound = FindItem(name, hSub);
+		//if (hFound)
+		//	return hFound;
+
+		// get the next sibling of the current item
+		hSub = m_tree.GetNextSiblingItem(hSub);
+	}
+
+	// return NULL if nothing was found
+	return NULL;
+}
 
 void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)
 {
@@ -861,8 +946,11 @@ void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)
 			case ID_MENU_ADDFOLDER:
 				OnInsertFolder();
 				break;
-			case ID_MENU_SORT:
+			case ID_MENU_SORT_AZ:
 				OnSortAZ();
+				break;
+			case ID_MENU_SORT_ZA:
+				OnSortZA();
 				break;
 			case ID_MENU_MOVEUP:
 				OnMoveUp();

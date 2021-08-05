@@ -59,6 +59,8 @@ protected:
 
 	node_data* node = 0;
 
+	HTREEITEM FindItem(const CString name, HTREEITEM hti);
+
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
@@ -82,6 +84,7 @@ protected:
 	afx_msg void OnMoveUp();
 	afx_msg void OnMoveDown();
 	void OnSortAZ();
+	void OnSortZA();
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
 
 	DECLARE_MESSAGE_MAP()
