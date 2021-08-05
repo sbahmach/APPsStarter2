@@ -758,7 +758,8 @@ void CAPPsStarterDlg::OnSortAZ()
 	if (m_tree.ItemHasChildren(hti)) 
 		htiSelSort = hti;
 
-	m_tree.SortChildren(htiSelSort);
+	//m_tree.SortChildren(htiSelSort);
+	SortTree(htiSelSort, false);
 }
 
 void CAPPsStarterDlg::OnSortZA()
@@ -771,54 +772,16 @@ void CAPPsStarterDlg::OnSortZA()
 
 	bool bSel = false;
 
-	std::vector<CString> items;
-
-
-	htiChild = m_tree.GetChildItem(htiParent);
-	htiSel = NULL;
-	node_data* nnode = new node_data();
-	while (htiChild)
-	{
-		nnode = (node_data*)m_tree.GetItemData(htiChild);
-		items.emplace_back(nnode->name);
-		htiChild = m_tree.GetNextSiblingItem(htiChild);
-	}
 	
-	if (!items.empty()) {
-		std::sort(items.begin(), items.end());
 
-		//std::sort(items.end(), items.begin());
-		HTREEITEM htiMove = NULL;
-		int iV = items.size()-1;
-		m_tree.SetRedraw(FALSE);
-		
-		for (size_t i = 0; i <=iV; i++) {
+	SortTree(htiParent, true);
 
-			CString str = items[i];
-			
-			htiMove = FindItem(str, htiParent);
-			
-			if (htiMove == hti)
-				bSel = true;
-			if (htiMove == NULL)
-				return;;
-			HTREEITEM htiNewItem = m_tree.CopyBranch(htiMove, htiParent, TVI_FIRST);
-			if (bSel) htiSel = htiNewItem;
-			bSel = false;
-			m_tree.DeleteItem(htiMove);
-		}
-		// Insert, delete, sort (or whatever you like) your items...
-		m_tree.SetRedraw(TRUE);
-		m_tree.Invalidate();
-	}
-	if (htiSel != NULL)
-		m_tree.SelectItem(htiSel);
-	nnode = NULL;
+
+
+	//if (htiSel != NULL)
+	//	m_tree.SelectItem(htiSel);
 }
 
-// name - the name of the item that is searched for
-// tree - a reference to the tree control
-// hRoot - the handle to the item where the search begins
 HTREEITEM CAPPsStarterDlg::FindItem(const CString name, HTREEITEM hRoot)
 {
 	// check whether the current item is the searched one
@@ -846,6 +809,60 @@ HTREEITEM CAPPsStarterDlg::FindItem(const CString name, HTREEITEM hRoot)
 
 	// return NULL if nothing was found
 	return NULL;
+}
+
+void CAPPsStarterDlg::SortTree(HTREEITEM htiParent, bool sortType /*= true*/)
+{
+	HTREEITEM htiChild, htiChild2;
+	//htiSel = NULL;
+	std::vector<CString> items;
+
+	m_tree.SetRedraw(FALSE);
+
+	htiChild = m_tree.GetChildItem(htiParent);
+	while (htiChild != NULL)
+	{
+		items.emplace_back(m_tree.GetItemText(htiChild));
+		htiChild = m_tree.GetNextSiblingItem(htiChild);
+
+	}
+	if (!items.empty()) {
+		std::sort(items.begin(), items.end());
+		HTREEITEM htiMove = NULL;
+		int iV = items.size() - 1;
+
+
+		for (size_t i = 0; i <= iV; i++) {
+
+			CString str = items[i];
+
+			htiMove = FindItem(str, htiParent);
+
+			//if (htiMove == hti)
+			//	bSel = true;
+			if (htiMove == NULL)
+				return;
+
+			HTREEITEM htiSort;
+			sortType ? htiSort = TVI_FIRST : htiSort = TVI_LAST;
+			HTREEITEM htiNewItem = m_tree.CopyBranch(htiMove, htiParent, htiSort); //TVI_FIRST = sort desc; TVI_LAST = sort asc
+			//if (bSel) htiSel = htiNewItem;
+			//bSel = false;
+			m_tree.DeleteItem(htiMove);
+		}
+	}
+	//items.clear();
+
+
+
+	htiChild2 = m_tree.GetChildItem(htiParent);
+	while (htiChild2 != NULL)
+	{
+		SortTree(htiChild2, sortType);
+		htiChild2 = m_tree.GetNextSiblingItem(htiChild2);
+	}
+	m_tree.SetRedraw(TRUE);
+	m_tree.Invalidate();
 }
 
 void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)

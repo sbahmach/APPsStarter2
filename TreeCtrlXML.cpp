@@ -792,8 +792,7 @@ void CTreeCtrlXML::OnItemCopied(HTREEITEM /*hItem*/, HTREEITEM /*hNewItem*/)
 // htiBranch            - The node that starts the branch
 // htiNewParent - Handle of the parent for new branch
 // htiAfter             - Item after which the new branch should be created
-HTREEITEM CTreeCtrlXML::CopyBranch(HTREEITEM htiBranch, HTREEITEM htiNewParent,
-	HTREEITEM htiAfter /*= TVI_LAST*/)
+HTREEITEM CTreeCtrlXML::CopyBranch(HTREEITEM htiBranch, HTREEITEM htiNewParent,	HTREEITEM htiAfter /*= TVI_LAST*/)
 {
 	HTREEITEM hChild;
 

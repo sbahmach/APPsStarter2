@@ -85,6 +85,7 @@ protected:
 	afx_msg void OnMoveDown();
 	void OnSortAZ();
 	void OnSortZA();
+	void SortTree(HTREEITEM htiParent, bool sortType = true);
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
 
 	DECLARE_MESSAGE_MAP()
