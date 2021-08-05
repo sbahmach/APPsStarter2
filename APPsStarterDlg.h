@@ -27,7 +27,7 @@ public:
 	const CString strDefXMLFile = "defconf.xml";
 
 	bool m_bNoSaveSettings = 0;
-
+	HTREEITEM hSelItem = NULL;
 	CFont m_font_Title;
 	CFont m_font_StaticCtrls;
 	CFont m_font_Tooltips;

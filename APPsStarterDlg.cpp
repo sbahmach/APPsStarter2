@@ -758,8 +758,13 @@ void CAPPsStarterDlg::OnSortAZ()
 	if (m_tree.ItemHasChildren(hti)) 
 		htiSelSort = hti;
 
-	//m_tree.SortChildren(htiSelSort);
+	hSelItem = hti;
 	SortTree(htiSelSort, false);
+
+	if (hSelItem != NULL)
+		m_tree.SelectItem(hSelItem);
+
+	hSelItem = NULL;
 }
 
 void CAPPsStarterDlg::OnSortZA()
@@ -770,16 +775,13 @@ void CAPPsStarterDlg::OnSortZA()
 	if (m_tree.ItemHasChildren(hti))
 		htiParent = hti;
 
-	bool bSel = false;
-
-	
-
+	hSelItem = hti;
 	SortTree(htiParent, true);
 
+	if (hSelItem != NULL)
+		m_tree.SelectItem(hSelItem);
 
-
-	//if (htiSel != NULL)
-	//	m_tree.SelectItem(htiSel);
+	hSelItem = NULL;
 }
 
 HTREEITEM CAPPsStarterDlg::FindItem(const CString name, HTREEITEM hRoot)
@@ -816,7 +818,7 @@ void CAPPsStarterDlg::SortTree(HTREEITEM htiParent, bool sortType /*= true*/)
 	HTREEITEM htiChild, htiChild2;
 	//htiSel = NULL;
 	std::vector<CString> items;
-
+	bool bSel = false;
 	m_tree.SetRedraw(FALSE);
 
 	htiChild = m_tree.GetChildItem(htiParent);
@@ -838,16 +840,16 @@ void CAPPsStarterDlg::SortTree(HTREEITEM htiParent, bool sortType /*= true*/)
 
 			htiMove = FindItem(str, htiParent);
 
-			//if (htiMove == hti)
-			//	bSel = true;
+			if (htiMove == hSelItem)
+				bSel = true;
 			if (htiMove == NULL)
 				return;
 
 			HTREEITEM htiSort;
 			sortType ? htiSort = TVI_FIRST : htiSort = TVI_LAST;
 			HTREEITEM htiNewItem = m_tree.CopyBranch(htiMove, htiParent, htiSort); //TVI_FIRST = sort desc; TVI_LAST = sort asc
-			//if (bSel) htiSel = htiNewItem;
-			//bSel = false;
+			if (bSel) hSelItem = htiNewItem;
+			bSel = false;
 			m_tree.DeleteItem(htiMove);
 		}
 	}
