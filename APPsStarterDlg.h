@@ -25,7 +25,7 @@ public:
 	CString strCmdXmlFile;
 	CString strCurrentXML;
 	const CString strDefXMLFile = "defconf.xml";
-
+	//CString GetVersionInfo(char* pstrFilePath, char* pstrType = TEXT("\\StringFileInfo\\041204b0\\FileVersion"));
 	bool m_bNoSaveSettings = 0;
 	HTREEITEM hSelItem = NULL;
 	CFont m_font_Title;

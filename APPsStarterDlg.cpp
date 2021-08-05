@@ -16,6 +16,7 @@
 #include <algorithm>
 #include "ver_revision.h"
 #include "ver_build.h"
+#include "FileVersion.h"
 //#include <afxwin.h>
 
 #ifdef _DEBUG
@@ -752,24 +753,26 @@ void CAPPsStarterDlg::OnInsertFolder()
 
 void CAPPsStarterDlg::OnSortAZ()
 {
-	HTREEITEM hti, htiSelSort;
+	HTREEITEM hti, htiParent;
 	hti = m_tree.GetSelectedItem();
-	htiSelSort = m_tree.GetParentItem(hti);
+	htiParent = m_tree.GetParentItem(hti);
 	if (m_tree.ItemHasChildren(hti)) 
-		htiSelSort = hti;
+		htiParent = hti;
 
 	hSelItem = hti;
-	SortTree(htiSelSort, false);
+	SortTree(htiParent, false);
 
 	if (hSelItem != NULL)
 		m_tree.SelectItem(hSelItem);
+
+	m_tree.EnsureVisible(hSelItem);
 
 	hSelItem = NULL;
 }
 
 void CAPPsStarterDlg::OnSortZA()
 {
-	HTREEITEM hti, htiParent, htiChild, htiSel;
+	HTREEITEM hti, htiParent;
 	hti = m_tree.GetSelectedItem();
 	htiParent = m_tree.GetParentItem(hti);
 	if (m_tree.ItemHasChildren(hti))
@@ -781,69 +784,52 @@ void CAPPsStarterDlg::OnSortZA()
 	if (hSelItem != NULL)
 		m_tree.SelectItem(hSelItem);
 
+	m_tree.EnsureVisible(hSelItem);
+
 	hSelItem = NULL;
 }
 
 HTREEITEM CAPPsStarterDlg::FindItem(const CString name, HTREEITEM hRoot)
 {
-	// check whether the current item is the searched one
-	
-
-	// get a handle to the first child item
-	HTREEITEM hSub = m_tree.GetChildItem(hRoot);
-	
-	// iterate as long a new item is found
-	while (hSub != NULL)
+	HTREEITEM htiChild = m_tree.GetChildItem(hRoot);
+	while (htiChild != NULL)
 	{
-		CString text = m_tree.GetItemText(hSub);
+		CString text = m_tree.GetItemText(htiChild);
 		if (text.Compare(name) == 0) {
-			//MessageBox(name + " - " + text);
-			return hSub;
+			return htiChild;
 		}
-		// check the children of the current item
-		//HTREEITEM hFound = FindItem(name, hSub);
-		//if (hFound)
-		//	return hFound;
-
-		// get the next sibling of the current item
-		hSub = m_tree.GetNextSiblingItem(hSub);
+		htiChild = m_tree.GetNextSiblingItem(htiChild);
 	}
 
-	// return NULL if nothing was found
 	return NULL;
 }
 
 void CAPPsStarterDlg::SortTree(HTREEITEM htiParent, bool sortType /*= true*/)
 {
-	HTREEITEM htiChild, htiChild2;
-	//htiSel = NULL;
+	HTREEITEM htiChild, htiChildChild;
 	std::vector<CString> items;
 	bool bSel = false;
+
 	m_tree.SetRedraw(FALSE);
 
 	htiChild = m_tree.GetChildItem(htiParent);
 	while (htiChild != NULL)
 	{
-		items.emplace_back(m_tree.GetItemText(htiChild));
+		CString text = m_tree.GetItemText(htiChild);
+		items.emplace_back(text);
 		htiChild = m_tree.GetNextSiblingItem(htiChild);
-
 	}
+
 	if (!items.empty()) {
 		std::sort(items.begin(), items.end());
+
 		HTREEITEM htiMove = NULL;
-		int iV = items.size() - 1;
 
-
-		for (size_t i = 0; i <= iV; i++) {
-
+		for (size_t i = 0; i <= items.size() - 1; i++) {
 			CString str = items[i];
-
 			htiMove = FindItem(str, htiParent);
-
-			if (htiMove == hSelItem)
-				bSel = true;
-			if (htiMove == NULL)
-				return;
+			if (htiMove == hSelItem) bSel = true;
+			if (htiMove == NULL) return;
 
 			HTREEITEM htiSort;
 			sortType ? htiSort = TVI_FIRST : htiSort = TVI_LAST;
@@ -853,16 +839,14 @@ void CAPPsStarterDlg::SortTree(HTREEITEM htiParent, bool sortType /*= true*/)
 			m_tree.DeleteItem(htiMove);
 		}
 	}
-	//items.clear();
 
-
-
-	htiChild2 = m_tree.GetChildItem(htiParent);
-	while (htiChild2 != NULL)
+	htiChildChild = m_tree.GetChildItem(htiParent);
+	while (htiChildChild != NULL)
 	{
-		SortTree(htiChild2, sortType);
-		htiChild2 = m_tree.GetNextSiblingItem(htiChild2);
+		SortTree(htiChildChild, sortType);
+		htiChildChild = m_tree.GetNextSiblingItem(htiChildChild);
 	}
+
 	m_tree.SetRedraw(TRUE);
 	m_tree.Invalidate();
 }
@@ -1631,12 +1615,29 @@ void CAPPsStarterDlg::OnBnClickedMfcbuttonPath()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	const TCHAR szFilter[] = _T("All Files (*.*)|*.*|EXE Files (*.exe;*.bat;*cmd;*vbs;*rdp;*mmc)|*.exe;*.bat;*cmd;*vbs;*rdp;*mmc||");
-	CFileDialog dlg(TRUE, _T("xml"), NULL, OFN_DONTADDTORECENT | OFN_NOCHANGEDIR | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
+	CFileDialog dlg(TRUE, _T("*.exe;*.bat;*cmd;*vbs;*rdp;*mmc"), NULL, OFN_DONTADDTORECENT | OFN_NOCHANGEDIR | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
 	if (dlg.DoModal() == IDOK)
 	{
-		CString sFilePath = dlg.GetPathName();
+		//CString s = dlg.GetPathName();
+		//char* buffer;
+		//buffer = s.GetBuffer();
+		
+		CFileVersionInfo vers;
+		vers.Open(dlg.GetPathName());
+		
 
-		m_editPath.SetWindowText(sFilePath);
-		m_editPath.SetFocus();
+		//CString str = GetVersionInfo(buffer, TEXT("\\StringFileInfo\\041204b0\\FileVersion"));
+		
+
+		m_editPath.SetWindowText(dlg.GetPathName());
+		OnEnKillfocusEditPath();
+		m_editName.SetWindowText(vers.GetFileDescription());
+		OnEnKillfocusEditName();
+		m_editTitle.SetWindowText(vers.GetInternalName());
+		OnEnKillfocusEditTitle();
+		m_tree.SetFocus();
+
 	}
 }
+
+
