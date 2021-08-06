@@ -21,7 +21,7 @@ class CAPPsStarterDlg : public CDialog
 // Construction
 public:
 	CAPPsStarterDlg(CWnd* pParent = nullptr);	// standard constructor
-
+	HICON hIcon = NULL;
 	CString strCmdXmlFile;
 	CString strCurrentXML;
 	const CString strDefXMLFile = "defconf.xml";
@@ -91,7 +91,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	
 	//CToolTipCtrlExt m_ctrl_tooltip_ext;
-	CImageList m_imageList;
+	//CImageList m_imageList;
 	HICON m_hIcon;
 	HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	CTreeCtrlXML m_tree;

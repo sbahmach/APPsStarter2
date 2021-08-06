@@ -207,11 +207,12 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	m_cbIcon.InsertIcon(9, IDI_CMD, "cmd");
 	m_cbIcon.InsertIcon(10, IDI_SCRIPT, "script");
 	m_cbIcon.InsertIcon(11, IDI_PSHELL, "pshell");
+	m_cbIcon.InsertIcon(12, IDI_APP, "appsicon");
 
 	m_tree.SetFocus();
 	m_tree.SelectItem(hItem);
 
-	HICON icon[12];
+	HICON icon[13];
 	icon[0] = AfxGetApp()->LoadIcon(IDI_FOLDER);
 	icon[1] = AfxGetApp()->LoadIcon(IDI_1C);
 	icon[2] = AfxGetApp()->LoadIcon(IDI_MEDOC);
@@ -224,15 +225,16 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	icon[9] = AfxGetApp()->LoadIcon(IDI_CMD);
 	icon[10] = AfxGetApp()->LoadIcon(IDI_SCRIPT);
 	icon[11] = AfxGetApp()->LoadIcon(IDI_PSHELL);
+	icon[12] = AfxGetApp()->LoadIcon(IDI_APP);
 
-	m_imageList.Create(16, 16, ILC_MASK | ILC_COLOR32, 0, 0);
-	m_imageList.SetBkColor(0xffffff);
-	for (int i = 0; i < 12; i++)
+	m_tree.m_imageList.Create(16, 16, ILC_MASK | ILC_COLOR32, 0, 0);
+	m_tree.m_imageList.SetBkColor(0xffffff);
+	for (int i = 0; i < 13; i++)
 	{
-		m_imageList.Add(icon[i]);
+		m_tree.m_imageList.Add(icon[i]);
 	}
 
-	m_tree.SetImageList(&m_imageList, TVSIL_NORMAL);
+	m_tree.SetImageList(&m_tree.m_imageList, TVSIL_NORMAL);
 
 	m_Title.SetFont(&m_font_Title);
 
@@ -369,7 +371,7 @@ void CAPPsStarterDlg::OnPaint()
 
 			CRect rc;
 			GetClientRect(&rc);
-			rc.DeflateRect(40, 80, 0, 0);
+			
 
 			//==================================================
 			/*CString cs = "Right click and double click to show 2 popup menus.\n"
@@ -377,6 +379,9 @@ void CAPPsStarterDlg::OnPaint()
 				"Don't forget:\n"
 				"First pixel of tool bar stands for transparent color.\n\n";
 			dc.DrawText(cs, &rc, 0);*/
+			int cxIcon = GetSystemMetrics(SM_CXICON);
+			int cyIcon = GetSystemMetrics(SM_CYICON);
+			DrawIconEx(dc, rc.left, rc.top, hIcon, 16, 16, 0, nullptr, DI_NORMAL);
 
 			//==================================================
 			dc.SetBkMode(iBkMode);
@@ -1398,6 +1403,9 @@ void CAPPsStarterDlg::OnCbnSelchangeComboIcon()
 	case 11:
 		node->icon = "pshell";
 		break;
+	case 12:
+		node->icon = "appsicon";
+		break;
 	default:
 		break;
 	}
@@ -1624,29 +1632,31 @@ void CAPPsStarterDlg::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureIte
 void CAPPsStarterDlg::OnBnClickedMfcbuttonPath()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	const TCHAR szFilter[] = _T("EXE Files (*.exe;*.bat;*cmd;*vbs;*rdp;*mmc)|*.exe;*.bat;*cmd;*vbs;*rdp;*mmc|All Files (*.*)|*.*||");
-	CFileDialog dlg(TRUE, _T("*.exe;*.bat;*cmd;*vbs;*rdp;*mmc"), NULL, OFN_DONTADDTORECENT | OFN_NOCHANGEDIR | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
+	const TCHAR szFilter[] = _T("All Files (*.*)|*.*|EXE Files (*.exe;*.bat;*cmd;*vbs;*rdp;*mmc)|*.exe;*.bat;*cmd;*vbs;*rdp;*mmc||");
+	CFileDialog dlg(TRUE, _T("*.*"), NULL, OFN_DONTADDTORECENT | OFN_NOCHANGEDIR | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
 	if (dlg.DoModal() == IDOK)
 	{
-		//CString s = dlg.GetPathName();
-		//char* buffer;
-		//buffer = s.GetBuffer();
-		
 		CFileVersionInfo vers;
 		vers.Open(dlg.GetPathName());
 		
+		SHFILEINFOA shFileInfoA = {};
+		UINT uFlags = SHGFI_ICON | SHGFI_SMALLICON;
+		CString str = dlg.GetPathName();
+		SHGetFileInfoA(str, FILE_ATTRIBUTE_NORMAL, &shFileInfoA, sizeof(SHFILEINFOA), uFlags);
+		hIcon = shFileInfoA.hIcon;
 
-		//CString str = GetVersionInfo(buffer, TEXT("\\StringFileInfo\\041204b0\\FileVersion"));
-		
+		CString strDesc = "";
+		ASSERT(strDesc = vers.GetFileDescription());
 
 		m_editPath.SetWindowText(dlg.GetPathName());
 		OnEnKillfocusEditPath();
-		m_editName.SetWindowText(vers.GetFileDescription());
+		m_editName.SetWindowText(dlg.GetFileTitle());
 		OnEnKillfocusEditName();
-		m_editTitle.SetWindowText(vers.GetInternalName());
+		m_editTitle.SetWindowText(strDesc);
 		OnEnKillfocusEditTitle();
 		m_tree.SetFocus();
 
+		Invalidate();
 	}
 }
 

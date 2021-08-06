@@ -22,7 +22,7 @@ public:
 	BOOL			GetItemBold(HTREEITEM);
 	COLORREF		GetItemColor(HTREEITEM);
 public:
-
+	CImageList m_imageList;
 	bool LoadFromXML( const CString& a_strFile );
 	bool LoadDef();
 

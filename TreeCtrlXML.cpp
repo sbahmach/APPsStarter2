@@ -1,5 +1,6 @@
 
 #include "resource.h"
+#include "FileVersion.h"
 #include "TreeCtrlXML.h"
  //using namespace tinyxml2;
 CTreeCtrlXML::CTreeCtrlXML(void)
@@ -303,6 +304,9 @@ void CTreeCtrlXML::LoadItem(tinyxml2::XMLNode* a_pNode, HTREEITEM a_hTreeParent)
 	nnode->expand = pEl->Attribute("Expand");
 
 	//strParent = "";
+	
+
+
 
 	if (nnode->icon == "1c")
 		SetItemImage(hItem, 1, 1);
@@ -326,6 +330,23 @@ void CTreeCtrlXML::LoadItem(tinyxml2::XMLNode* a_pNode, HTREEITEM a_hTreeParent)
 		SetItemImage(hItem, 10, 10);
 	else if (nnode->icon == "pshell")
 		SetItemImage(hItem, 11, 11);
+	else if (nnode->icon == "appsicon") {
+		CFileVersionInfo vers;
+		vers.Open(nnode->path);
+
+		SHFILEINFOA shFileInfoA = {};
+		UINT uFlags = SHGFI_ICON | SHGFI_SMALLICON;
+		CString str = nnode->path;
+		SHGetFileInfoA(str, FILE_ATTRIBUTE_NORMAL, &shFileInfoA, sizeof(SHFILEINFOA), uFlags);
+		HICON hIcon = shFileInfoA.hIcon;
+
+		//CString strDesc = "";
+		//ASSERT(strDesc = vers.GetFileDescription());
+		int iItems = GetCount()-2;
+		m_imageList.Add(hIcon);
+		SetItemImage(hItem, iItems, iItems);
+	}
+		
 	else
 		SetItemImage(hItem, 0, 0);
 
