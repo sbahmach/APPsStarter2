@@ -57,9 +57,6 @@
     <ClInclude Include="ver_revision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileVersion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="APPsStarter.cpp">
@@ -84,9 +81,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FileVersion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

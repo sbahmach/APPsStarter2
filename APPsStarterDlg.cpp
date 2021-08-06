@@ -16,7 +16,8 @@
 #include <algorithm>
 #include "ver_revision.h"
 #include "ver_build.h"
-#include "FileVersion.h"
+//#include "FileVersion.h"
+#include <Propkey.h>
 //#include <afxwin.h>
 
 #ifdef _DEBUG
@@ -379,9 +380,9 @@ void CAPPsStarterDlg::OnPaint()
 				"Don't forget:\n"
 				"First pixel of tool bar stands for transparent color.\n\n";
 			dc.DrawText(cs, &rc, 0);*/
-			int cxIcon = GetSystemMetrics(SM_CXICON);
+			/*int cxIcon = GetSystemMetrics(SM_CXICON);
 			int cyIcon = GetSystemMetrics(SM_CYICON);
-			DrawIconEx(dc, rc.left, rc.top, hIcon, 16, 16, 0, nullptr, DI_NORMAL);
+			DrawIconEx(dc, rc.left, rc.top, hIcon, 16, 16, 0, nullptr, DI_NORMAL);*/
 
 			//==================================================
 			dc.SetBkMode(iBkMode);
@@ -1636,24 +1637,45 @@ void CAPPsStarterDlg::OnBnClickedMfcbuttonPath()
 	CFileDialog dlg(TRUE, _T("*.*"), NULL, OFN_DONTADDTORECENT | OFN_NOCHANGEDIR | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
 	if (dlg.DoModal() == IDOK)
 	{
-		CFileVersionInfo vers;
-		vers.Open(dlg.GetPathName());
+		CString strP = dlg.GetPathName();
+		//CFileVersionInfo vers;
+		//vers.Open(strP);
 		
-		SHFILEINFOA shFileInfoA = {};
+		SHFILEINFOW shFileInfoW = {};
 		UINT uFlags = SHGFI_ICON | SHGFI_SMALLICON;
 		CString str = dlg.GetPathName();
-		SHGetFileInfoA(str, FILE_ATTRIBUTE_NORMAL, &shFileInfoA, sizeof(SHFILEINFOA), uFlags);
-		hIcon = shFileInfoA.hIcon;
+		SHGetFileInfoW((CT2CW)str, FILE_ATTRIBUTE_NORMAL, &shFileInfoW, sizeof(SHFILEINFOW), uFlags);
+		hIcon = shFileInfoW.hIcon;
 
-		CString strDesc = "";
-		ASSERT(strDesc = vers.GetFileDescription());
+		HTREEITEM hItem = m_tree.GetSelectedItem();
+		int nImage, nSelectedImage;
+
+		m_tree.GetItemImage(hItem, nImage, nSelectedImage);
+		
+		m_tree.m_imageList.Add(hIcon);
+		int iItems = m_tree.m_imageList.GetImageCount() - 1;
+		m_tree.SetItemImage(hItem, iItems, iItems);
+
+		node->icon = "appsicon";
+		
+		m_tree.SetItemData(hItem, (DWORD_PTR)node);
+
+
+		LPCWSTR path = (CT2W)dlg.GetPathName();
+		CString strDesc2 = GetShellPropStringFromPath(path, PKEY_FileDescription);
+
+		
 
 		m_editPath.SetWindowText(dlg.GetPathName());
 		OnEnKillfocusEditPath();
 		m_editName.SetWindowText(dlg.GetFileTitle());
 		OnEnKillfocusEditName();
-		m_editTitle.SetWindowText(strDesc);
+		m_editTitle.SetWindowText(strDesc2);
 		OnEnKillfocusEditTitle();
+		if (strDesc2 == "")
+			m_Title.SetWindowText(dlg.GetFileTitle());
+		m_cbIcon.SetCurSelIcon("appsicon");
+
 		m_tree.SetFocus();
 
 		Invalidate();
@@ -1661,3 +1683,15 @@ void CAPPsStarterDlg::OnBnClickedMfcbuttonPath()
 }
 
 
+CString CAPPsStarterDlg::GetShellPropStringFromPath(LPCWSTR pPath, PROPERTYKEY const& key)
+{
+	CComPtr<IShellItem2> pItem;
+	HRESULT hr = SHCreateItemFromParsingName(pPath, nullptr, IID_PPV_ARGS(&pItem));
+	if (FAILED(hr))
+		;
+	CComHeapPtr<WCHAR> pValue;
+	hr = pItem->GetString(key, &pValue);
+	if (FAILED(hr))
+		;
+	return (CString)(pValue);
+}

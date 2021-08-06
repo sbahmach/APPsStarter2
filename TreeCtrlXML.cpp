@@ -1,6 +1,6 @@
 
 #include "resource.h"
-#include "FileVersion.h"
+//#include "FileVersion.h"
 #include "TreeCtrlXML.h"
  //using namespace tinyxml2;
 CTreeCtrlXML::CTreeCtrlXML(void)
@@ -227,11 +227,13 @@ bool CTreeCtrlXML::LoadFromXML(const CString& a_strFile)
 	xmlRoot = xmlDoc.FirstChildElement();
 	if (NULL == xmlRoot)
 		return false;
-
+	SetRedraw(FALSE);
 	// Load our tree control
 	Load(xmlRoot);
 	xmlRoot = NULL;
 	xmlDoc.Clear();// = NULL;
+	SetRedraw(TRUE);
+	Invalidate();
 }
 
 
@@ -331,8 +333,8 @@ void CTreeCtrlXML::LoadItem(tinyxml2::XMLNode* a_pNode, HTREEITEM a_hTreeParent)
 	else if (nnode->icon == "pshell")
 		SetItemImage(hItem, 11, 11);
 	else if (nnode->icon == "appsicon") {
-		CFileVersionInfo vers;
-		vers.Open(nnode->path);
+		//CFileVersionInfo vers;
+		//vers.Open(nnode->path);
 
 		SHFILEINFOA shFileInfoA = {};
 		UINT uFlags = SHGFI_ICON | SHGFI_SMALLICON;
@@ -342,8 +344,9 @@ void CTreeCtrlXML::LoadItem(tinyxml2::XMLNode* a_pNode, HTREEITEM a_hTreeParent)
 
 		//CString strDesc = "";
 		//ASSERT(strDesc = vers.GetFileDescription());
-		int iItems = GetCount()-2;
 		m_imageList.Add(hIcon);
+		int iItems = m_imageList.GetImageCount()-1;
+		
 		SetItemImage(hItem, iItems, iItems);
 	}
 		

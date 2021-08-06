@@ -89,7 +89,8 @@ protected:
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
 
 	DECLARE_MESSAGE_MAP()
-	
+	CString GetShellPropStringFromPath(LPCWSTR pPath, PROPERTYKEY const& key);
+	//BOOL GetCurrentFileVersion(LPTSTR tszFileVer);
 	//CToolTipCtrlExt m_ctrl_tooltip_ext;
 	//CImageList m_imageList;
 	HICON m_hIcon;
