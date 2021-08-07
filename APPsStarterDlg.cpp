@@ -830,19 +830,9 @@ void CAPPsStarterDlg::SortTree(HTREEITEM htiParent, bool sortType /*= true*/)
 	items.reserve(i);
 
 	if (!items.empty()) {
-		//sort(items.begin(), items.end());
-		//std::vector<plsort_str_t> a;
-		//a.reserve(m_tree.GetCount());
-
 		sort(items.begin(), items.end(), [](const CString& a, const CString& b) {
 			return (StrCmpLogicalW((CT2CW)a, (CT2CW)b) < 0);
 			});
-		
-		/*, [](const CString& a, const CString& b) {
-			return (StrCmpLogicalW((CT2CW)a, (CT2CW)b) < 0);
-			});*/
-
-		//std::sort(items.begin(), items.end());
 
 		HTREEITEM htiMove = NULL;
 
