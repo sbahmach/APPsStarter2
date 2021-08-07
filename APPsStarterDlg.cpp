@@ -795,7 +795,7 @@ void CAPPsStarterDlg::OnSortZA()
 	hSelItem = NULL;
 }
 
-HTREEITEM CAPPsStarterDlg::FindItem(const CString name, HTREEITEM hRoot)
+HTREEITEM CAPPsStarterDlg::FindItem(CString name, HTREEITEM hRoot)
 {
 	HTREEITEM htiChild = m_tree.GetChildItem(hRoot);
 	while (htiChild != NULL)
@@ -819,15 +819,30 @@ void CAPPsStarterDlg::SortTree(HTREEITEM htiParent, bool sortType /*= true*/)
 	m_tree.SetRedraw(FALSE);
 
 	htiChild = m_tree.GetChildItem(htiParent);
+	int i = 0;
 	while (htiChild != NULL)
 	{
+		i++;
 		CString text = m_tree.GetItemText(htiChild);
 		items.emplace_back(text);
 		htiChild = m_tree.GetNextSiblingItem(htiChild);
 	}
+	items.reserve(i);
 
 	if (!items.empty()) {
-		std::sort(items.begin(), items.end());
+		//sort(items.begin(), items.end());
+		//std::vector<plsort_str_t> a;
+		//a.reserve(m_tree.GetCount());
+
+		sort(items.begin(), items.end(), [](const CString& a, const CString& b) {
+			return (StrCmpLogicalW((CT2CW)a, (CT2CW)b) < 0);
+			});
+		
+		/*, [](const CString& a, const CString& b) {
+			return (StrCmpLogicalW((CT2CW)a, (CT2CW)b) < 0);
+			});*/
+
+		//std::sort(items.begin(), items.end());
 
 		HTREEITEM htiMove = NULL;
 

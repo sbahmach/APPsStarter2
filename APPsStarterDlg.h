@@ -59,7 +59,7 @@ protected:
 
 	node_data* node = 0;
 
-	HTREEITEM FindItem(const CString name, HTREEITEM hti);
+	HTREEITEM FindItem(CString name, HTREEITEM hti);
 
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
