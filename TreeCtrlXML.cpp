@@ -191,7 +191,7 @@ bool CTreeCtrlXML::LoadDef()
 {
 	
 	HTREEITEM hItem;
-	hItem = InsertItem("Приложения", TVI_ROOT);
+	hItem = InsertItem(L"Приложения", TVI_ROOT);
 
 	//<Item Name = "Приложения" Type = "container" Expand = "true"  Id = "11111111-e1e2-41d5-8fa5-4e4649897f77">
 
@@ -199,11 +199,11 @@ bool CTreeCtrlXML::LoadDef()
 	//node = (node_data*)0;
 	//nnode->id = "11111111-e1e2-41d5-8fa5-4e4649897f77";
 	//nnode->parent = "00000001-e45f-403a-a1a3-c3f4f5c98056";
-	nnode->name = "Приложения";
-	nnode->type = "container";
-	nnode->title = "ROOT";
-	nnode->expand = "true";
-	nnode->icon = "folder";
+	nnode->name = L"Приложения";
+	nnode->type = L"container";
+	nnode->title = L"ROOT";
+	nnode->expand = L"true";
+	nnode->icon = L"folder";
 	
 	SetItemData(hItem, (DWORD_PTR)nnode);
 	nnode = 0;
@@ -220,8 +220,9 @@ bool CTreeCtrlXML::LoadFromXML(const CString& a_strFile)
 
 	XMLNode* xmlRoot = NULL;
 	tinyxml2::XMLDocument xmlDoc;
-
-	if (XML_SUCCESS != xmlDoc.LoadFile(a_strFile))
+	//USES_CONVERSION;
+	//const char* cstr = (CT2A)a_strFile;
+	if (XML_SUCCESS != xmlDoc.LoadFile((CT2A)a_strFile))
 		return false;
 	
 	xmlRoot = xmlDoc.FirstChildElement();
@@ -336,11 +337,11 @@ void CTreeCtrlXML::LoadItem(tinyxml2::XMLNode* a_pNode, HTREEITEM a_hTreeParent)
 		//CFileVersionInfo vers;
 		//vers.Open(nnode->path);
 
-		SHFILEINFOA shFileInfoA = {};
+		SHFILEINFOW shFileInfoW = {};
 		UINT uFlags = SHGFI_ICON | SHGFI_SMALLICON;
 		CString str = nnode->path;
-		SHGetFileInfoA(str, FILE_ATTRIBUTE_NORMAL, &shFileInfoA, sizeof(SHFILEINFOA), uFlags);
-		HICON hIcon = shFileInfoA.hIcon;
+		SHGetFileInfoW(str, FILE_ATTRIBUTE_NORMAL, &shFileInfoW, sizeof(SHFILEINFOW), uFlags);
+		HICON hIcon = shFileInfoW.hIcon;
 
 		//CString strDesc = "";
 		//ASSERT(strDesc = vers.GetFileDescription());
@@ -459,7 +460,7 @@ bool CTreeCtrlXML::SaveToXML(const CString& a_strFile)
 
 	CString strFile = a_strFile;
 
-	return xmlDoc.SaveFile(strFile.GetBuffer(1));
+	return xmlDoc.SaveFile((CT2A)strFile);
 
 	// Save XML
 	

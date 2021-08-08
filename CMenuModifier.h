@@ -777,7 +777,7 @@ void CMenuModifier::P_AddUserItem(CMenu*pMenu,int iPos,BOOL bTop)
 	UINT uNew=MF_BYPOSITION|MF_OWNERDRAW;
 	uNew|=(uState&uUse);
 
-	pMenu->ModifyMenu(iPos,uNew,pUser->iCmd,(LPCSTR)pUser);
+	pMenu->ModifyMenu(iPos,uNew,pUser->iCmd,(LPCWSTR)pUser);
 }
 
 inline

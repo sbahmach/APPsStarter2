@@ -56,7 +56,7 @@ BOOL CAPPsStarterApp::InitInstance()
 
 		int nRet = AfxMessageBox(strMsg, nType, nHelpID);
 
-		HWND hWnd = FindWindow(NULL, "APPs STARTER"); // хэндл самого мессаджбокса
+		HWND hWnd = FindWindow(NULL, L"APPs STARTER"); // хэндл самого мессаджбокса
 
 		::SetForegroundWindow(hWnd);
 		::ShowWindow(hWnd, SW_SHOWNORMAL);
@@ -101,7 +101,7 @@ BOOL CAPPsStarterApp::InitInstance()
 			/*if (0 == strcmp(str, "/a")) {
 				dlg.m_bAdminMode = 1;
 			}
-			else */if (0 == strcmp(str, "/n")) {
+			else */if (0 == wcscmp(str, L"/n")) {
 				dlg.m_bNoSaveSettings = 1;
 			}
 			else {

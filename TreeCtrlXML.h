@@ -30,14 +30,14 @@ public:
 
 	struct node_data
 	{
-		CString name = "new item";
-		CString path = "path";
-		CString type = "application";
-		CString title = "";
+		CString name = L"new item";
+		CString path = L"path";
+		CString type = L"application";
+		CString title = L"";
 		//CString id = "";
 		//CString parent = "";
-		CString icon = "app";
-		CString expand = "false";
+		CString icon = L"app";
+		CString expand = L"false";
 		
 	};
 
