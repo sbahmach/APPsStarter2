@@ -1693,10 +1693,10 @@ CString CAPPsStarterDlg::GetShellPropStringFromPath(LPCWSTR pPath, PROPERTYKEY c
 	CComPtr<IShellItem2> pItem;
 	HRESULT hr = SHCreateItemFromParsingName(pPath, nullptr, IID_PPV_ARGS(&pItem));
 	if (FAILED(hr))
-		;
+		return L"";
 	CComHeapPtr<WCHAR> pValue;
 	hr = pItem->GetString(key, &pValue);
 	if (FAILED(hr))
-		;
-	return (CString)(pValue);
+		return L"";
+	return (CT2CW)pValue;
 }

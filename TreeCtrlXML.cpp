@@ -22,6 +22,7 @@ BEGIN_MESSAGE_MAP(CTreeCtrlXML, CTreeCtrl)
 
 	ON_WM_PAINT()
 	ON_WM_MOUSEMOVE()
+	ON_WM_TIMER()
 	ON_WM_LBUTTONUP()
 	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, &CTreeCtrlXML::OnTvnBegindragTreeDrag)
 	//ON_NOTIFY_REFLECT(TVN_BEGINLABELEDIT, &CTreeCtrlXML::OnTvnBeginlabeledit)
@@ -222,7 +223,7 @@ bool CTreeCtrlXML::LoadFromXML(const CString& a_strFile)
 	tinyxml2::XMLDocument xmlDoc;
 	//USES_CONVERSION;
 	//const char* cstr = (CT2A)a_strFile;
-	if (XML_SUCCESS != xmlDoc.LoadFile((CT2A)a_strFile))
+	if (XML_SUCCESS != xmlDoc.LoadFile((CW2A)a_strFile))
 		return false;
 	
 	xmlRoot = xmlDoc.FirstChildElement();
@@ -890,6 +891,7 @@ void CTreeCtrlXML::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		POINT pt = point;
 		ClientToScreen(&pt);
+
 		//CImageList::DragMove(pt);
 		if ((hitem = HitTest(point, &flags)) != NULL && (TVHT_ONITEM & flags))
 		{
@@ -916,7 +918,9 @@ void CTreeCtrlXML::OnMouseMove(UINT nFlags, CPoint point)
 				else {
 
 					SetInsertMarkColor(RGB(47, 145, 207));
-					Expand(m_hitemDrop, TVE_EXPAND);
+					//timer = true;
+					SetTimer(1, 2000, NULL);
+					
 				}
 
 
@@ -947,7 +951,7 @@ void CTreeCtrlXML::OnLButtonUp(UINT nFlags, CPoint point)
 		ReleaseCapture();
 
 		//delete m_pDragImage;
-		SetInsertMark(NULL);
+		SetInsertMark(NULL,1);
 		// Remove drop target highlighting
 		SelectDropTarget(NULL);
 
@@ -991,3 +995,9 @@ void CTreeCtrlXML::OnLButtonUp(UINT nFlags, CPoint point)
 
 }
 
+void CTreeCtrlXML::OnTimer(UINT uTime)
+{
+	Expand(m_hitemDrop, TVE_EXPAND);
+	//timer = false;
+	KillTimer(1);
+}

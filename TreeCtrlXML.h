@@ -49,7 +49,7 @@ public:
 	
 	//CString CreateID();
 	
-	
+	//bool timer = false;
 
 	HTREEITEM CopyItem(HTREEITEM hItem, HTREEITEM htiNewParent,	HTREEITEM htiAfter = TVI_LAST);
 
@@ -89,5 +89,5 @@ public:
 	afx_msg void OnTvnBegindragTreeDrag(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-
+	afx_msg void OnTimer(UINT uTime);
 };
