@@ -98,10 +98,10 @@ protected:
 	HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	CTreeCtrlXML m_tree;
 	CStatic m_Title, m_statName, m_statTitle, m_statPath, m_statIcon, m_stat;
-	CColorButton	m_btStart, m_btCancel, m_btMenu;
+	CColorButton	m_btStart, m_btCancel, m_btMenu, m_btPath;
 	CButton m_check;
 	CEdit m_editName, m_editTitle, m_editPath;
-	CMFCButton m_btPath;
+//	CMFCButton m_btPath;
 	CSmallIconComboBox m_cbIcon;
 	CMenuModifier md_Popup;
 	CMenuModifier md_Main;
@@ -131,7 +131,7 @@ public:
 	afx_msg void OnTvnBeginlabeleditTree1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnEnSetfocusEditName();
 	//void LoadCSVFile();
-	afx_msg void OnBnClickedMfcbuttonPath();
+	afx_msg void OnBnClickedButtonPath();
     afx_msg void OnBnClickedButtonMenu();
 
 };

@@ -42,6 +42,7 @@
 #define IDC_EDIT_TITLE                  1011
 #define IDC_EDIT_PATH                   1012
 #define IDC_EDIT_ID                     1013
+#define IDC_BUTTON_PATH                 1013
 #define IDC_COMBO_ICON                  1014
 #define IDC_CHECK_EXPAND                1015
 #define IDC_STATIC_NAME                 1016
@@ -103,7 +104,7 @@
 #define ID_BUTTON32823                  33005
 #define ID_BUTTON32824                  33006
 #define ID_BUTTON32826                  33007
-#define ID_BUTTON32840                  33008 
+#define ID_BUTTON32840                  33008
 #define ID_BUTTON32841                  33009
 #define ID_BUTTON32842                  33010
 #define ID_BUTTON32843                  33011

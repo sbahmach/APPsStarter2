@@ -94,7 +94,7 @@ void CAPPsStarterDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TREE1, m_tree);
 	DDX_Control(pDX, IDC_BUTTON_MENU, m_btMenu);
 	DDX_Control(pDX, IDC_BUTTON_START, m_btStart);
-	DDX_Control(pDX, IDC_MFCBUTTON_PATH, m_btPath);
+	DDX_Control(pDX, IDC_BUTTON_PATH, m_btPath);
 	DDX_Control(pDX, IDCANCEL, m_btCancel);
 	DDX_Control(pDX, IDC_STATIC_1, m_Title);
 	DDX_Control(pDX, IDC_STATIC_2, m_stat);
@@ -141,7 +141,7 @@ BEGIN_MESSAGE_MAP(CAPPsStarterDlg, CDialog)
 
 	ON_NOTIFY(TVN_ENDLABELEDIT, IDC_TREE1, &CAPPsStarterDlg::OnTvnEndlabeleditTree1)
 	ON_NOTIFY(TVN_BEGINLABELEDIT, IDC_TREE1, &CAPPsStarterDlg::OnTvnBeginlabeleditTree1)
-	ON_BN_CLICKED(IDC_MFCBUTTON_PATH, &CAPPsStarterDlg::OnBnClickedMfcbuttonPath)
+	ON_BN_CLICKED(IDC_BUTTON_PATH, &CAPPsStarterDlg::OnBnClickedButtonPath)
     ON_BN_CLICKED(IDC_BUTTON_MENU, &CAPPsStarterDlg::OnBnClickedButtonMenu)
 END_MESSAGE_MAP()
 
@@ -239,11 +239,11 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 
 	col_BtnText_Disabled = RGB(200, 200, 200);
 	col_BtnText = RGB(47, 145, 207);
-	col_BtnText_IsHover = RGB(47, 145, 207);
+	col_BtnText_IsHover = RGB(7, 105, 167);
 	col_BtnText_Selected = RGB(255, 255, 255);
 	col_BtnFace_Disabled = RGB(255, 255, 255);
 	col_BtnFace = RGB(255, 255, 255);
-	col_BtnFace_IsHover = RGB(193, 239, 255);
+	col_BtnFace_IsHover = RGB(150, 188, 255);
 	col_BtnFace_Selected = RGB(47, 145, 207);
 	col_BtnFrame_Disabled = RGB(200, 200, 200);
 	col_BtnFrame = RGB(97, 195, 255);
@@ -257,6 +257,11 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 
 	m_btMenu.SetWindowText(L"МЕНЮ");
 	m_btMenu.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
+		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
+		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
+
+	m_btPath.SetWindowText(L"...");
+	m_btPath.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
 		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
 
@@ -453,6 +458,10 @@ void CAPPsStarterDlg::OnOpen()
 		
 		strCurrentXML = strDefXMLFile;
 	}
+	else if (m_tree.LoadFromXML(L"..\\def.xml"))
+	{
+		strCurrentXML = strDefXMLFile;
+	}
 	else {
 		m_tree.LoadDef();
 	}
@@ -516,7 +525,7 @@ void CAPPsStarterDlg::OnReload()
 void CAPPsStarterDlg::OnSave()
 {
 	//LoadCSVFile();
-	m_tree.SaveToXML(L"save.xml");
+	m_tree.SaveToXML(L"defconf.xml");
 }
 
 void CAPPsStarterDlg::OnSaveAs()
@@ -918,7 +927,7 @@ void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)
 			COLORREF clrMenuBar = COLOR_MYDLG;
 			//COLORREF clrVertBar = RGB(47, 145, 207);
 			//COLORREF clrVertBar = RGB(200, 227, 244);
-			COLORREF clrVertBar = RGB(255, 255, 255);
+			COLORREF clrVertBar = RGB(150, 188, 255);
 
 			md_Popup.SetOwnerDraw(pMu, 0, &m_wndToolBar, 0, &clrMenuBar, &clrVertBar);
 
@@ -1649,7 +1658,7 @@ void CAPPsStarterDlg::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureIte
 
 
 
-void CAPPsStarterDlg::OnBnClickedMfcbuttonPath()
+void CAPPsStarterDlg::OnBnClickedButtonPath()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	const TCHAR szFilter[] = _T("All Files (*.*)|*.*|EXE Files (*.exe;*.bat;*cmd;*vbs;*rdp;*mmc)|*.exe;*.bat;*cmd;*vbs;*rdp;*mmc||");
@@ -1729,7 +1738,7 @@ void CAPPsStarterDlg::OnBnClickedButtonMenu()
 	COLORREF clrMenuBar = COLOR_MYDLG;
 	//COLORREF clrVertBar = RGB(47, 145, 207);
 	//COLORREF clrVertBar = RGB(200, 227, 244);
-	COLORREF clrVertBar = RGB(255, 255, 255);
+	COLORREF clrVertBar = RGB(150, 188, 255);
 
 	md_Main.SetOwnerDraw(pMu, 0, &m_wndToolBar, 0, &clrMenuBar, &clrVertBar);
 

@@ -343,13 +343,17 @@ void CTreeCtrlXML::LoadItem(tinyxml2::XMLNode* a_pNode, HTREEITEM a_hTreeParent)
 		CString str = nnode->path;
 		SHGetFileInfoW(str, FILE_ATTRIBUTE_NORMAL, &shFileInfoW, sizeof(SHFILEINFOW), uFlags);
 		HICON hIcon = shFileInfoW.hIcon;
-
+		if (hIcon != NULL) {
+			m_imageList.Add(hIcon);
+			int iItems = m_imageList.GetImageCount() - 1;
+			SetItemImage(hItem, iItems, iItems);
+		}
+		else {
+			SetItemImage(hItem, 4, 4);
+		}
 		//CString strDesc = "";
 		//ASSERT(strDesc = vers.GetFileDescription());
-		m_imageList.Add(hIcon);
-		int iItems = m_imageList.GetImageCount()-1;
 		
-		SetItemImage(hItem, iItems, iItems);
 	}
 		
 	else
