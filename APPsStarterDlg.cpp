@@ -94,10 +94,6 @@ void CAPPsStarterDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TREE1, m_tree);
 	DDX_Control(pDX, IDC_BUTTON_MENU, m_btMenu);
 	DDX_Control(pDX, IDC_BUTTON_START, m_btStart);
-	DDX_Control(pDX, IDC_BUTTON_LOAD, m_btLoad);
-	DDX_Control(pDX, IDC_BUTTON_RELOAD, m_btReload);
-	DDX_Control(pDX, IDC_BUTTON_SAVE, m_btSave);
-	DDX_Control(pDX, IDC_BUTTON_EDIT, m_btEdit);
 	DDX_Control(pDX, IDC_MFCBUTTON_PATH, m_btPath);
 	DDX_Control(pDX, IDCANCEL, m_btCancel);
 	DDX_Control(pDX, IDC_STATIC_1, m_Title);
@@ -126,13 +122,9 @@ BEGIN_MESSAGE_MAP(CAPPsStarterDlg, CDialog)
 	ON_WM_QUERYDRAGICON()
 	ON_MESSAGE(WM_DROPFILES, OnDropFiles)
 	ON_WM_LBUTTONDOWN()
-	ON_BN_CLICKED(IDC_BUTTON_LOAD, OnLoad)
-	ON_BN_CLICKED(IDC_BUTTON_RELOAD, OnReload)
-	ON_BN_CLICKED(IDC_BUTTON_SAVE, OnSave)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, OnTvnSelchangedTree1)
 	ON_NOTIFY(NM_DBLCLK, IDC_TREE1, OnNMDblclkTree1)
 	ON_BN_CLICKED(IDC_BUTTON_START, OnStart)
-	ON_BN_CLICKED(IDC_BUTTON_EDIT, OnEdit)
 	ON_WM_CONTEXTMENU()
 	ON_WM_GETMINMAXINFO()
 	ON_WM_CTLCOLOR()
@@ -265,26 +257,6 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 
 	m_btMenu.SetWindowText(L"лемч");
 	m_btMenu.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
-		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
-		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
-
-	m_btLoad.SetWindowText(L"OPEN XML...");
-	m_btLoad.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
-		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
-		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
-
-	m_btReload.SetWindowText(L"RELOAD");
-	m_btReload.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
-		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
-		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
-
-	m_btSave.SetWindowText(L"SAVE");
-	m_btSave.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
-		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
-		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
-
-	m_btEdit.SetWindowText(L"EDIT XML");
-	m_btEdit.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
 		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
 
@@ -544,7 +516,7 @@ void CAPPsStarterDlg::OnReload()
 void CAPPsStarterDlg::OnSave()
 {
 	//LoadCSVFile();
-	m_tree.SaveToXML(L"defconf.xml");
+	m_tree.SaveToXML(L"save.xml");
 }
 
 void CAPPsStarterDlg::OnSaveAs()

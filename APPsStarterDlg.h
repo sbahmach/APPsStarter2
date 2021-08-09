@@ -98,7 +98,7 @@ protected:
 	HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	CTreeCtrlXML m_tree;
 	CStatic m_Title, m_statName, m_statTitle, m_statPath, m_statIcon, m_stat;
-	CColorButton	m_btStart, m_btLoad, m_btReload, m_btEdit, m_btSave, m_btCancel, m_btMenu;
+	CColorButton	m_btStart, m_btCancel, m_btMenu;
 	CButton m_check;
 	CEdit m_editName, m_editTitle, m_editPath;
 	CMFCButton m_btPath;
