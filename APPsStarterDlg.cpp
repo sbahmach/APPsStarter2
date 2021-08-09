@@ -544,7 +544,7 @@ void CAPPsStarterDlg::OnReload()
 void CAPPsStarterDlg::OnSave()
 {
 	//LoadCSVFile();
-	m_tree.SaveToXML(L"save.xml");
+	m_tree.SaveToXML(L"defconf.xml");
 }
 
 void CAPPsStarterDlg::OnSaveAs()
