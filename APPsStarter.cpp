@@ -17,7 +17,6 @@
 // CAPPsStarterApp
 
 BEGIN_MESSAGE_MAP(CAPPsStarterApp, CWinApp)
-	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
@@ -152,4 +151,15 @@ int CAPPsStarterApp::DoMessageBox(LPCTSTR lpszPrompt, UINT nType, UINT nIDPrompt
 		nIDPrompt = 0;
 	}
 	return CWinApp::DoMessageBox(lpszPrompt, nType, nIDPrompt);
+}
+
+void CAPPsStarterApp::OnMainEditFile()
+{
+    // TODO: добавьте свой код обработчика команд
+}
+
+
+void CAPPsStarterApp::OnMainSaveFile()
+{
+	// TODO: добавьте свой код обработчика команд
 }

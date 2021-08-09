@@ -92,6 +92,7 @@ void CAPPsStarterDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_TREE1, m_tree);
+	DDX_Control(pDX, IDC_BUTTON_MENU, m_btMenu);
 	DDX_Control(pDX, IDC_BUTTON_START, m_btStart);
 	DDX_Control(pDX, IDC_BUTTON_LOAD, m_btLoad);
 	DDX_Control(pDX, IDC_BUTTON_RELOAD, m_btReload);
@@ -149,6 +150,7 @@ BEGIN_MESSAGE_MAP(CAPPsStarterDlg, CDialog)
 	ON_NOTIFY(TVN_ENDLABELEDIT, IDC_TREE1, &CAPPsStarterDlg::OnTvnEndlabeleditTree1)
 	ON_NOTIFY(TVN_BEGINLABELEDIT, IDC_TREE1, &CAPPsStarterDlg::OnTvnBeginlabeleditTree1)
 	ON_BN_CLICKED(IDC_MFCBUTTON_PATH, &CAPPsStarterDlg::OnBnClickedMfcbuttonPath)
+    ON_BN_CLICKED(IDC_BUTTON_MENU, &CAPPsStarterDlg::OnBnClickedButtonMenu)
 END_MESSAGE_MAP()
 
 
@@ -258,6 +260,11 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 
 	m_btStart.SetWindowText(L"ЗАПУСТИТЬ");
 	m_btStart.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
+		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
+		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
+
+	m_btMenu.SetWindowText(L"МЕНЮ");
+	m_btMenu.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
 		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
 
@@ -538,6 +545,25 @@ void CAPPsStarterDlg::OnSave()
 {
 	//LoadCSVFile();
 	m_tree.SaveToXML(L"save.xml");
+}
+
+void CAPPsStarterDlg::OnSaveAs()
+{
+	char strFilter[] = { "Text Files (*.xml)|*.xml|" };
+
+	CFileDialog FileDlg(FALSE, CString(".xml"), NULL, OFN_DONTADDTORECENT | OFN_NOCHANGEDIR | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, CString(strFilter));
+	CString strFileName = _T("");
+	CString strFilePath = _T("");
+	CString strFullPath = _T("");
+
+	if (FileDlg.DoModal() == IDOK) // this is the line which gives the errors
+	{
+		strFileName = FileDlg.GetFileName(); //filename
+		strFilePath = FileDlg.GetFolderPath(); //filepath (folders)
+		strFullPath = strFilePath + _T("\\") + strFileName;
+		m_tree.SaveToXML(strFullPath);
+	}
+	
 }
 
 void CAPPsStarterDlg::OnEdit()
@@ -1514,6 +1540,7 @@ void CAPPsStarterDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	//must put class member menu at last
 	md_Popup.OnDrawItem(nIDCtl, lpDrawItemStruct);
+	md_Main.OnDrawItem(nIDCtl, lpDrawItemStruct);
 
 	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
 }
@@ -1522,7 +1549,7 @@ void CAPPsStarterDlg::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureIte
 {
 	//must put class member menu at last
 	md_Popup.OnMeasureItem(nIDCtl, lpMeasureItemStruct);
-
+	md_Main.OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 	CDialog::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 }
 
@@ -1715,3 +1742,55 @@ CString CAPPsStarterDlg::GetShellPropStringFromPath(LPCWSTR pPath, PROPERTYKEY c
 		return L"";
 	return (CT2CW)pValue;
 }
+
+void CAPPsStarterDlg::OnBnClickedButtonMenu()
+{
+    // TODO: добавьте свой код обработчика уведомлений
+	CMenu mu;
+	//if (mu != NULL) return;
+	if (mu.LoadMenu(MU_MAIN) == 0)	return;
+
+	CMenu* pMu = mu.GetSubMenu(0);
+	if (pMu == 0)	return;
+
+	
+	COLORREF clrMenuBar = COLOR_MYDLG;
+	//COLORREF clrVertBar = RGB(47, 145, 207);
+	//COLORREF clrVertBar = RGB(200, 227, 244);
+	COLORREF clrVertBar = RGB(255, 255, 255);
+
+	md_Main.SetOwnerDraw(pMu, 0, &m_wndToolBar, 0, &clrMenuBar, &clrVertBar);
+
+	CRect r;
+	m_btMenu.GetClientRect(&r);
+	m_btMenu.ClientToScreen(r);
+	/*CPoint ptScreen, ptMenu;
+	ptMenu.x = r.left;
+	ptMenu.y = r.bottom;
+
+	r.top = r.bottom;*/
+
+	UINT nID = pMu->TrackPopupMenu(TPM_RETURNCMD, r.left, r.bottom, this);
+
+	switch (nID) {
+	case ID_MENU_IMPORT:
+		OnLoad();
+		break;
+	case ID_MENU_IMPORT_DEF:
+		OnReload();
+		break;
+	case ID_MENU_EDIT:
+		OnEdit();
+		break;
+	case ID_MENU_SAVE:
+		OnSave();
+		break;
+	case ID_MENU_SAVE_AS:
+		OnSaveAs();
+		break;
+	default:
+		//MessageBox("Ахтунг!!!", "Yup!", MB_ICONINFORMATION);
+		break;
+	}
+}
+

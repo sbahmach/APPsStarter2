@@ -79,6 +79,7 @@ protected:
 	afx_msg void OnOpenWith();
 	afx_msg void OnEdit();
 	afx_msg void OnSave();
+	afx_msg void OnSaveAs();
 	afx_msg void OnOpenDirectory();
 	afx_msg void OnDeleteItem();
 	afx_msg void OnMoveUp();
@@ -97,12 +98,13 @@ protected:
 	HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	CTreeCtrlXML m_tree;
 	CStatic m_Title, m_statName, m_statTitle, m_statPath, m_statIcon, m_stat;
-	CColorButton	m_btStart, m_btLoad, m_btReload, m_btEdit, m_btSave, m_btCancel;
+	CColorButton	m_btStart, m_btLoad, m_btReload, m_btEdit, m_btSave, m_btCancel, m_btMenu;
 	CButton m_check;
 	CEdit m_editName, m_editTitle, m_editPath;
 	CMFCButton m_btPath;
 	CSmallIconComboBox m_cbIcon;
 	CMenuModifier md_Popup;
+	CMenuModifier md_Main;
 	CToolBar    m_wndToolBar;
 
 	void ReadReg();
@@ -130,5 +132,7 @@ public:
 	afx_msg void OnEnSetfocusEditName();
 	//void LoadCSVFile();
 	afx_msg void OnBnClickedMfcbuttonPath();
+    afx_msg void OnBnClickedButtonMenu();
+
 };
 

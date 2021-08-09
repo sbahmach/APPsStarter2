@@ -445,12 +445,12 @@ bool CTreeCtrlXML::SaveToXML(const CString& a_strFile)
 			node->expand = "true";
 
 		pEl->SetValue("Item");
-		pEl->SetAttribute("Name", node->name);
-		pEl->SetAttribute("Type", node->type);
-		if (node->type == "application") pEl->SetAttribute("Path", node->path);
-		if (node->type == "container") pEl->SetAttribute("Expand", node->expand);
-		pEl->SetAttribute("Title", node->title);
-		if (node->type == "application") pEl->SetAttribute("Icon", node->icon);
+		pEl->SetAttribute("Name", (CW2A)node->name);
+		pEl->SetAttribute("Type", (CW2A)node->type);
+		if (node->type == "application") pEl->SetAttribute("Path", (CW2A)node->path);
+		if (node->type == "container") pEl->SetAttribute("Expand", (CW2A)node->expand);
+		pEl->SetAttribute("Title", (CW2A)node->title);
+		if (node->type == "application") pEl->SetAttribute("Icon", (CW2A)node->icon);
 		//pEl->SetAttribute("Id", node->id);
 		
 		//delete node;
@@ -461,7 +461,7 @@ bool CTreeCtrlXML::SaveToXML(const CString& a_strFile)
 
 	CString strFile = a_strFile;
 
-	return xmlDoc.SaveFile((CT2A)strFile);
+	return xmlDoc.SaveFile((CW2A)a_strFile);
 
 	// Save XML
 	

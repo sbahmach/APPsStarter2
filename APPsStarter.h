@@ -28,6 +28,8 @@ public:
 // Implementation
 	DECLARE_MESSAGE_MAP()
 	virtual int DoMessageBox(LPCTSTR lpszPrompt, UINT nType, UINT nIDPrompt);
+    afx_msg void OnMainEditFile();
+    afx_msg void OnMainSaveFile();
 };
 
 extern CAPPsStarterApp theApp;
