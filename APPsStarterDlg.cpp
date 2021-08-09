@@ -1225,8 +1225,23 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 			m_tree.SetFocus();
 			return TRUE;
 		}
+	}
 
-
+	if ((pMsg->message == WM_KEYDOWN) && pMsg->wParam == VK_ESCAPE) {
+		CWnd* pWnd = GetFocus();
+		UINT i = pWnd->GetDlgCtrlID();
+		if (i == IDC_EDIT_NAME) {
+			m_editName.Undo();
+			return TRUE;
+		}
+		if (i == IDC_EDIT_TITLE) {
+			m_editTitle.Undo();
+			return TRUE;
+		}
+		if (i == IDC_EDIT_PATH) {
+			m_editPath.Undo();
+			return TRUE;
+		}
 	}
 
 	if ((pMsg->message == WM_KEYDOWN) && pMsg->wParam == VK_DELETE) {

@@ -135,7 +135,7 @@ END_MESSAGE_MAP()
 
 LRESULT CAutoMessageBox::OnInitDialog(WPARAM wParam, LPARAM lParam)
 {
-	SetWindowText(L"STARTER");
+	SetWindowText(_T("STARTER"));
    if(m_nTimeOut > 0)
    {
       SetTimer(0, m_nTimerStep, NULL);

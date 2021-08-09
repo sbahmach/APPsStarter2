@@ -190,9 +190,9 @@ BOOL CTreeCtrlXML::PreTranslateMessage(MSG* pMsg)
 }
 bool CTreeCtrlXML::LoadDef()
 {
-	
+
 	HTREEITEM hItem;
-	hItem = InsertItem(L"Приложения", TVI_ROOT);
+	hItem = InsertItem(_T("Приложения"), TVI_ROOT);
 
 	//<Item Name = "Приложения" Type = "container" Expand = "true"  Id = "11111111-e1e2-41d5-8fa5-4e4649897f77">
 
@@ -200,11 +200,11 @@ bool CTreeCtrlXML::LoadDef()
 	//node = (node_data*)0;
 	//nnode->id = "11111111-e1e2-41d5-8fa5-4e4649897f77";
 	//nnode->parent = "00000001-e45f-403a-a1a3-c3f4f5c98056";
-	nnode->name = L"Приложения";
-	nnode->type = L"container";
-	nnode->title = L"ROOT";
-	nnode->expand = L"true";
-	nnode->icon = L"folder";
+	nnode->name = _T("Приложения");
+	nnode->type = _T("container");
+	nnode->title = _T("ROOT");
+	nnode->expand = _T("true");
+	nnode->icon = _T("folder");
 	
 	SetItemData(hItem, (DWORD_PTR)nnode);
 	nnode = 0;
@@ -997,7 +997,8 @@ void CTreeCtrlXML::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CTreeCtrlXML::OnTimer(UINT uTime)
 {
+	KillTimer(1);
 	Expand(m_hitemDrop, TVE_EXPAND);
 	//timer = false;
-	KillTimer(1);
+	
 }
