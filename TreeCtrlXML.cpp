@@ -893,6 +893,7 @@ void CTreeCtrlXML::OnMouseMove(UINT nFlags, CPoint point)
 
 	if (m_bLDragging)
 	{
+		
 		POINT pt = point;
 		ClientToScreen(&pt);
 
@@ -902,7 +903,7 @@ void CTreeCtrlXML::OnMouseMove(UINT nFlags, CPoint point)
 			//CImageList::DragShowNolock(FALSE);
 			//SelectDropTarget(hitem);
 			if (htiDrop != hitem) {
-
+				
 
 				m_hitemDrop = hitem;
 				HTREEITEM hti = GetParentItem(m_hitemDrop);
@@ -917,12 +918,14 @@ void CTreeCtrlXML::OnMouseMove(UINT nFlags, CPoint point)
 				}
 				SetInsertMark(hitem, TRUE);
 				if (m_hitemDrag == m_hitemDrop || bIsChildren) {
+					
 					SetInsertMarkColor(RGB(255, 0, 0));
 				}
 				else {
 
 					SetInsertMarkColor(RGB(47, 145, 207));
 					//timer = true;
+					KillTimer(1);
 					SetTimer(1, 2000, NULL);
 					
 				}

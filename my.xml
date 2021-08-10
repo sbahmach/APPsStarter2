@@ -1,0 +1,18 @@
+<?xml version = "1.0" encoding = "windows-1251" standalone = "yes"?>
+<Items>
+    <Item Name="Приложения" Type="container" Expand="true" Title="">
+        <Item Name="Почта" Type="application" Path="https://webmail.viyar.com.ua/owa" Title="Exchange" Icon="mail"/>
+        <Item Name="Сайты" Type="container" Expand="true" Title="">
+            <Item Name="Вияр" Type="application" Path="https://viyar.ua" Title="Сайт ВиЯр" Icon="web"/>
+        </Item>
+        <Item Name="Программы" Type="container" Expand="true" Title="">
+            <Item Name="notepad++" Type="application" Path="C:\Program Files\Notepad++\notepad++.exe" Title="Notepad++ : a free (GPL) source code editor" Icon="appsicon"/>
+            <Item Name="7zFM" Type="application" Path="C:\Program Files\7-Zip\7zFM.exe" Title="7-Zip File Manager" Icon="appsicon"/>
+            <Item Name="msra" Type="application" Path="C:\Windows\System32\msra.exe" Title="Удаленный помощник Windows" Icon="appsicon"/>
+            <Item Name="mstsc" Type="application" Path="C:\Windows\System32\mstsc.exe" Title="Подключение к удаленному рабочему столу" Icon="appsicon"/>
+            <Item Name="mmc" Type="application" Path="C:\Windows\System32\mmc.exe" Title="Консоль управления (MMC)" Icon="appsicon"/>
+            <Item Name="cmd" Type="application" Path="C:\Windows\System32\cmd.exe" Title="Обработчик команд Windows" Icon="appsicon"/>
+            <Item Name="regedit" Type="application" Path="C:\Windows\regedit.exe" Title="Редактор реестра" Icon="appsicon"/>
+        </Item>
+    </Item>
+</Items>

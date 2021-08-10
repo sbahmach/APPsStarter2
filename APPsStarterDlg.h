@@ -76,6 +76,7 @@ protected:
 	afx_msg void OnDublicate();
 	afx_msg void OnItemEdit();
 	afx_msg void OnInsertFolder();
+	afx_msg void OnImportApp();
 	afx_msg void OnOpenWith();
 	afx_msg void OnEdit();
 	afx_msg void OnSave();

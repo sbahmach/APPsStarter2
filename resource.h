@@ -97,11 +97,15 @@
 #define ID_MENU_EDIT                    32847
 #define ID_MENU_SAVE                    32848
 #define ID_MENU_SAVE_AS                 32849
+#define ID_EDIT_32850                   32850
+#define ID_MENU_IMPORT_APP              32851
+#define ID_BUTTON32852                  32852
 #define ID_BUTTON32819                  33001
 #define ID_BUTTON32820                  33002
 #define ID_BUTTON32821                  33003
 #define ID_BUTTON32822                  33004
 #define ID_BUTTON32823                  33005
+#define ID_MEN                          33005
 #define ID_BUTTON32824                  33006
 #define ID_BUTTON32826                  33007
 #define ID_BUTTON32840                  33008
@@ -115,7 +119,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        178
-#define _APS_NEXT_COMMAND_VALUE         32850
+#define _APS_NEXT_COMMAND_VALUE         32853
 #define _APS_NEXT_CONTROL_VALUE         1035
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

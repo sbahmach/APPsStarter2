@@ -1,0 +1,51 @@
+<?xml version = "1.0" encoding = "windows-1251" standalone = "yes"?>
+<Items>
+    <Item Name="Приложения" Type="container" Expand="true" Title="">
+        <Item Name="Почта" Type="application" Path="https://webmail.viyar.com.ua/owa" Title="Exchange" Icon="mail"/>
+        <Item Name="Мои приложения" Type="container" Expand="true" Title="">
+            <Item Name="mpc-be64" Type="application" Path="C:\Program Files\MPC-BE x64\mpc-be64.exe" Title="MPC-BE x64" Icon="appsicon"/>
+            <Item Name="PotPlayerMini64" Type="application" Path="C:\Program Files\PotPlayer\PotPlayerMini64.exe" Title="PotPlayer" Icon="appsicon"/>
+            <Item Name="notepad++" Type="application" Path="C:\Program Files\Notepad++\notepad++.exe" Title="Notepad++ : a free (GPL) source code editor" Icon="appsicon"/>
+            <Item Name="TOTALCMD" Type="application" Path="C:\Program Files (x86)\totalcmd\TOTALCMD.EXE" Title="Total Commander 32 bit" Icon="appsicon"/>
+            <Item Name="CommitMonitor" Type="application" Path="C:\Program Files (x86)\CommitMonitor\CommitMonitor.exe" Title="CommitMonitor" Icon="appsicon"/>
+            <Item Name="AIMP" Type="application" Path="C:\Program Files (x86)\AIMP\AIMP.exe" Title="AIMP" Icon="appsicon"/>
+        </Item>
+        <Item Name="Сайты" Type="container" Expand="true" Title="">
+            <Item Name="Вияр" Type="application" Path="https://viyar.ua" Title="Сайт ВиЯр" Icon="web"/>
+        </Item>
+        <Item Name="Программы" Type="container" Expand="false" Title="">
+            <Item Name="dfrgui" Type="application" Path="C:\Windows\System32\dfrgui.exe" Title="Оптимизация диска (Майкрософт)" Icon="appsicon"/>
+            <Item Name="cmd" Type="application" Path="C:\Windows\System32\cmd.exe" Title="Обработчик команд Windows" Icon="appsicon"/>
+            <Item Name="DevicePairingWizard" Type="application" Path="C:\Windows\System32\DevicePairingWizard.exe" Title="Device Pairing Application" Icon="appsicon"/>
+            <Item Name="cttune" Type="application" Path="C:\Windows\System32\cttune.exe" Title="Настройка ClearType" Icon="appsicon"/>
+            <Item Name="cscript" Type="application" Path="C:\Windows\System32\cscript.exe" Title="Microsoft ® Console Based Script Host" Icon="appsicon"/>
+            <Item Name="hh" Type="application" Path="C:\Windows\hh.exe" Title="Исполняемый файл HTML-справки (Майкрософт)" Icon="appsicon"/>
+            <Item Name="notepad++" Type="application" Path="C:\Program Files\Notepad++\notepad++.exe" Title="Notepad++ : a free (GPL) source code editor" Icon="appsicon"/>
+            <Item Name="7zFM" Type="application" Path="C:\Program Files\7-Zip\7zFM.exe" Title="7-Zip File Manager" Icon="appsicon"/>
+            <Item Name="msra" Type="application" Path="C:\Windows\System32\msra.exe" Title="Удаленный помощник Windows" Icon="appsicon"/>
+            <Item Name="mstsc" Type="application" Path="C:\Windows\System32\mstsc.exe" Title="Подключение к удаленному рабочему столу" Icon="appsicon"/>
+            <Item Name="mmc" Type="application" Path="C:\Windows\System32\mmc.exe" Title="Консоль управления (MMC)" Icon="appsicon"/>
+            <Item Name="cmd" Type="application" Path="C:\Windows\System32\cmd.exe" Title="Обработчик команд Windows" Icon="appsicon"/>
+            <Item Name="regedit" Type="application" Path="C:\Windows\regedit.exe" Title="Редактор реестра" Icon="appsicon"/>
+            <Item Name="TEST" Type="container" Expand="false" Title="">
+                <Item Name="regedit" Type="application" Path="C:\Windows\System32\regedit.exe" Title="Редактор реестра" Icon="appsicon"/>
+                <Item Name="regedt32" Type="application" Path="C:\Windows\System32\regedt32.exe" Title="Registry Editor Utility" Icon="appsicon"/>
+                <Item Name="rekeywiz" Type="application" Path="C:\Windows\System32\rekeywiz.exe" Title="Мастер EFS REKEY" Icon="appsicon"/>
+                <Item Name="resmon" Type="application" Path="C:\Windows\System32\resmon.exe" Title="Resource Monitor" Icon="appsicon"/>
+                <Item Name="runonce" Type="application" Path="C:\Windows\System32\runonce.exe" Title="Программа завершающей стадии установки" Icon="appsicon"/>
+                <Item Name="SecEdit" Type="application" Path="C:\Windows\System32\SecEdit.exe" Title="Команды редактора конфигураций безопасности Windows" Icon="appsicon"/>
+                <Item Name="shrpubw" Type="application" Path="C:\Windows\System32\shrpubw.exe" Title="Мастер создания общих ресурсов" Icon="appsicon"/>
+                <Item Name="slmgr" Type="application" Path="C:\Windows\System32\slmgr.vbs" Title="" Icon="appsicon"/>
+                <Item Name="Taskmgr" Type="application" Path="C:\Windows\System32\Taskmgr.exe" Title="Диспетчер задач" Icon="appsicon"/>
+                <Item Name="TpmInit" Type="application" Path="C:\Windows\System32\TpmInit.exe" Title="Мастер инициализации TPM" Icon="appsicon"/>
+                <Item Name="UserAccountControlSettings" Type="application" Path="C:\Windows\System32\UserAccountControlSettings.exe" Title="UserAccountControlSettings" Icon="appsicon"/>
+                <Item Name="vsjitdebugger" Type="application" Path="C:\Windows\System32\vsjitdebugger.exe" Title="Visual Studio Just-In-Time Debugger" Icon="appsicon"/>
+                <Item Name="wermgr" Type="application" Path="C:\Windows\System32\wermgr.exe" Title="Windows Problem Reporting" Icon="appsicon"/>
+                <Item Name="wextract" Type="application" Path="C:\Windows\System32\wextract.exe" Title="Самоизвлечение CAB-файлов Win32" Icon="appsicon"/>
+                <Item Name="wiaacmgr" Type="application" Path="C:\Windows\System32\wiaacmgr.exe" Title="Мастер загрузки изображений Windows" Icon="appsicon"/>
+                <Item Name="winrm" Type="application" Path="C:\Windows\System32\winrm.vbs" Title="" Icon="appsicon"/>
+                <Item Name="wscript" Type="application" Path="C:\Windows\System32\wscript.exe" Title="Microsoft ® Windows Based Script Host" Icon="appsicon"/>
+            </Item>
+        </Item>
+    </Item>
+</Items>

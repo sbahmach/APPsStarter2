@@ -507,10 +507,17 @@ void CAPPsStarterDlg::OnReload()
 	{
 		strCurrentXML = strCmdXmlFile;
 	}
-	else
+	else if (m_tree.LoadFromXML(strDefXMLFile))
 	{
-		m_tree.LoadFromXML(strDefXMLFile);
+
 		strCurrentXML = strDefXMLFile;
+	}
+	else if (m_tree.LoadFromXML(L"..\\def.xml"))
+	{
+		strCurrentXML = strDefXMLFile;
+	}
+	else {
+		m_tree.LoadDef();
 	}
 	m_tree.SetFocus();
 	m_tree.PostMessage(WM_VSCROLL, SB_PAGEUP, 0);
@@ -536,7 +543,9 @@ void CAPPsStarterDlg::OnSaveAs()
 	CString strFileName = _T("");
 	CString strFilePath = _T("");
 	CString strFullPath = _T("");
-
+	TCHAR szDirectory[MAX_PATH] = L"";
+	::GetCurrentDirectory(sizeof(szDirectory) - 1, szDirectory);
+	FileDlg.m_ofn.lpstrInitialDir = szDirectory;
 	if (FileDlg.DoModal() == IDOK) // this is the line which gives the errors
 	{
 		strFileName = FileDlg.GetFileName(); //filename
@@ -764,6 +773,111 @@ void CAPPsStarterDlg::OnInsertFolder()
 	m_tree.Select(htiChild, TVGN_CARET);
 }
 
+void CAPPsStarterDlg::OnImportApp()
+{
+	m_tree.SetRedraw(FALSE);
+	CString csRootPath(L"С:\\Windows\\System32\\");
+	CString csFileDlgTitle = L"Выберите файлы для импорта";
+	//csFileDlgTitle.LoadString("File Open");
+
+
+	//"All files (*.*)|*.*|"
+	const TCHAR szFilter[] = _T("EXE Files (*.exe;*.bat;*cmd;*vbs;*rdp;*mmc)|*.exe;*.bat;*cmd;*vbs;*rdp;*mmc|All Files (*.*)|*.*||");
+	CFileDialog dlg(TRUE, _T("EXE Files (*.exe;*.bat;*cmd;*vbs;*rdp;*mmc)"), NULL, OFN_DONTADDTORECENT | OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
+	dlg.m_ofn.lpstrTitle = csFileDlgTitle;
+	dlg.m_ofn.lpstrInitialDir = csRootPath;
+	if (dlg.DoModal() == IDOK)
+	{
+		POSITION pos(dlg.GetStartPosition());
+		while (pos)
+		{
+			CString csFileName(dlg.GetNextPathName(pos));
+			CString csFileTitle = PathFindFileName(csFileName);
+			PathRemoveExtensionW(csFileTitle.GetBuffer(1024));
+			csFileTitle.ReleaseBuffer();
+			//implement ur fn to open the file accordingly
+
+
+			HTREEITEM hti, htiChild, htiParent;
+			hti = m_tree.GetSelectedItem();
+			htiParent = m_tree.GetParentItem(hti);
+
+			node = (node_data*)m_tree.GetItemData(hti);
+
+			if (node->type == L"container") {
+				htiParent = m_tree.GetSelectedItem();
+				hti = TVI_FIRST;
+			}
+
+			htiChild = m_tree.InsertItem(L"New App", htiParent, hti);
+			m_tree.SetItemImage(htiChild, 4, 4);
+			node_data* nnode = new node_data();
+			//CString str = m_tree.CreateID();
+			nnode->name = "New App";
+			nnode->path = "path";
+			nnode->title = "";
+			nnode->icon = "app";
+			nnode->expand = "";
+			nnode->type = "application";
+			//nnode->id = str;// m_tree.CreateID();
+			//nnode->parent = node->id;
+			m_tree.SetItemData(htiChild, (DWORD_PTR)nnode);
+			nnode = 0;
+			m_tree.EnsureVisible(htiChild);
+			m_tree.EditLabel(htiChild);
+			m_tree.Select(htiChild, TVGN_CARET);
+
+
+			//CString strP = dlg.GetPathName();
+			//CFileVersionInfo vers;
+			//vers.Open(strP);
+
+			SHFILEINFOW shFileInfoW = {};
+			UINT uFlags = SHGFI_ICON | SHGFI_SMALLICON;
+			CString str = csFileName;
+			SHGetFileInfoW((CT2CW)str, FILE_ATTRIBUTE_NORMAL, &shFileInfoW, sizeof(SHFILEINFOW), uFlags);
+			hIcon = shFileInfoW.hIcon;
+
+			HTREEITEM hItem = m_tree.GetSelectedItem();
+			int nImage, nSelectedImage;
+
+			m_tree.GetItemImage(hItem, nImage, nSelectedImage);
+
+			m_tree.m_imageList.Add(hIcon);
+			int iItems = m_tree.m_imageList.GetImageCount() - 1;
+			m_tree.SetItemImage(hItem, iItems, iItems);
+
+			node->icon = "appsicon";
+
+			m_tree.SetItemData(hItem, (DWORD_PTR)node);
+
+
+			LPCWSTR path = csFileName;
+			CString strDesc2 = GetShellPropStringFromPath(path, PKEY_FileDescription);
+
+
+
+			m_editPath.SetWindowText(csFileName);
+			OnEnKillfocusEditPath();
+			m_editName.SetWindowText(csFileTitle);
+			OnEnKillfocusEditName();
+			m_editTitle.SetWindowText(strDesc2);
+			OnEnKillfocusEditTitle();
+			if (strDesc2 == "")
+				m_Title.SetWindowText(dlg.GetFileTitle());
+			m_cbIcon.SetCurSelIcon(L"appsicon");
+
+			m_tree.SetFocus();
+
+		}
+	}
+
+	//OnInsertItem();
+	//OnBnClickedButtonPath();
+	m_tree.SetRedraw(TRUE);
+	m_tree.Invalidate();
+}
+
 void CAPPsStarterDlg::OnSortAZ()
 {
 	HTREEITEM hti, htiParent;
@@ -969,6 +1083,9 @@ void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)
 				break;
 			case ID_MENU_ADDFOLDER:
 				OnInsertFolder();
+				break;
+			case ID_MENU_IMPORT_APP:
+				OnImportApp();
 				break;
 			case ID_MENU_SORT_AZ:
 				OnSortAZ();
