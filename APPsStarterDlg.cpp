@@ -66,7 +66,7 @@ BOOL CAboutDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_statVersion.SetWindowText(L"APPsStarter Version: " stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_REVISION) "." stringify(VERSION_BUILD) " - (" stringify(VERSION_DATE) ")");
+	m_statVersion.SetWindowText(L"Version: " stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_REVISION) "." stringify(VERSION_BUILD) " - (" stringify(VERSION_DATE) ")");
 	return TRUE;
 }
 
@@ -479,9 +479,9 @@ void CAPPsStarterDlg::OnLoad()
 	const TCHAR szFilter[] = _T("XML Files (*.xml)|*.xml|All Files (*.*)|*.*||");
 	CFileDialog dlg(TRUE, _T("xml"), NULL, OFN_DONTADDTORECENT | OFN_NOCHANGEDIR | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
 	CString sFilePath;
-	TCHAR szDirectory[MAX_PATH] = L"";
-	::GetCurrentDirectory(sizeof(szDirectory) - 1, szDirectory);
-	//dlg.m_ofn.lpstrInitialDir = szDirectory;
+	TCHAR szDirectory[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, szDirectory);
+	dlg.m_ofn.lpstrInitialDir = szDirectory;
 	if (dlg.DoModal() == IDOK)
 	{
 		sFilePath = dlg.GetPathName();
@@ -543,8 +543,8 @@ void CAPPsStarterDlg::OnSaveAs()
 	CString strFileName = _T("");
 	CString strFilePath = _T("");
 	CString strFullPath = _T("");
-	TCHAR szDirectory[MAX_PATH] = L"";
-	GetCurrentDirectory(sizeof(szDirectory) - 1, szDirectory);
+	TCHAR szDirectory[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, szDirectory);
 	FileDlg.m_ofn.lpstrInitialDir = szDirectory;
 	if (FileDlg.DoModal() == IDOK) // this is the line which gives the errors
 	{
@@ -563,8 +563,8 @@ void CAPPsStarterDlg::OnEdit()
 		strPath = strCurrentXML;
 	}
 	else {
-		TCHAR szDirectory[MAX_PATH] = L"";
-		::GetCurrentDirectory(sizeof(szDirectory) - 1, szDirectory);
+		TCHAR szDirectory[MAX_PATH];
+		GetCurrentDirectory(MAX_PATH, szDirectory);
 		strCurrentXML = L"\\" + strCurrentXML;
 		strPath = szDirectory + strCurrentXML;
 	}
