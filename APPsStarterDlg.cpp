@@ -66,7 +66,7 @@ BOOL CAboutDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_statVersion.SetWindowText(L"Version: " stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_REVISION) "." stringify(VERSION_BUILD) " - (" stringify(VERSION_DATE) ")");
+	m_statVersion.SetWindowText(_T("Version: " stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_REVISION) "." stringify(VERSION_BUILD) " - (" stringify(VERSION_DATE) ")"));
 	return TRUE;
 }
 
@@ -171,7 +171,7 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 		}
 	}
 
-	SetWindowText(L"APPs STARTER");
+	SetWindowText(_T("APPs STARTER"));
 	SetWindowLong(this->m_hWnd,
 		GWL_STYLE,
 		GetWindowLong(this->m_hWnd, GWL_STYLE) | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
@@ -190,19 +190,19 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 
 	HTREEITEM hItem = m_tree.GetSelectedItem();
 
-	m_cbIcon.InsertIcon(0, IDI_FOLDER, L"folder");
-	m_cbIcon.InsertIcon(1, IDI_1C, L"1c");
-	m_cbIcon.InsertIcon(2, IDI_MEDOC, L"medoc");
-	m_cbIcon.InsertIcon(3, IDI_RDP, L"rdp");
-	m_cbIcon.InsertIcon(4, IDI_APP, L"app");
-	m_cbIcon.InsertIcon(5, IDI_MAIL, L"mail");
-	m_cbIcon.InsertIcon(6, IDI_WEB, L"web");
-	m_cbIcon.InsertIcon(7, IDI_SHARE, L"share");
-	m_cbIcon.InsertIcon(8, IDI_VCAM, L"vcam");
-	m_cbIcon.InsertIcon(9, IDI_CMD, L"cmd");
-	m_cbIcon.InsertIcon(10, IDI_SCRIPT, L"script");
-	m_cbIcon.InsertIcon(11, IDI_PSHELL, L"pshell");
-	m_cbIcon.InsertIcon(12, IDI_APP, L"appsicon");
+	m_cbIcon.InsertIcon(0, IDI_FOLDER, _T("folder"));
+	m_cbIcon.InsertIcon(1, IDI_1C, _T("1c"));
+	m_cbIcon.InsertIcon(2, IDI_MEDOC, _T("medoc"));
+	m_cbIcon.InsertIcon(3, IDI_RDP, _T("rdp"));
+	m_cbIcon.InsertIcon(4, IDI_APP, _T("app"));
+	m_cbIcon.InsertIcon(5, IDI_MAIL, _T("mail"));
+	m_cbIcon.InsertIcon(6, IDI_WEB, _T("web"));
+	m_cbIcon.InsertIcon(7, IDI_SHARE, _T("share"));
+	m_cbIcon.InsertIcon(8, IDI_VCAM, _T("vcam"));
+	m_cbIcon.InsertIcon(9, IDI_CMD, _T("cmd"));
+	m_cbIcon.InsertIcon(10, IDI_SCRIPT, _T("script"));
+	m_cbIcon.InsertIcon(11, IDI_PSHELL, _T("pshell"));
+	m_cbIcon.InsertIcon(12, IDI_APP, _T("appsicon"));
 
 	m_tree.SetFocus();
 	m_tree.SelectItem(hItem);
@@ -250,22 +250,22 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	col_BtnFrame_IsHover = RGB(2, 100, 162);
 	col_BtnFrame_Selected = RGB(255, 255, 255);
 
-	m_btStart.SetWindowText(L"ЗАПУСТИТЬ");
+	m_btStart.SetWindowText(_T("ЗАПУСТИТЬ"));
 	m_btStart.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
 		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
 
-	m_btMenu.SetWindowText(L"МЕНЮ");
+	m_btMenu.SetWindowText(_T("МЕНЮ"));
 	m_btMenu.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
 		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
 
-	m_btPath.SetWindowText(L"...");
+	m_btPath.SetWindowText(_T("..."));
 	m_btPath.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
 		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
 
-	m_btCancel.SetWindowText(L"ЗАКРЫТЬ");
+	m_btCancel.SetWindowText(_T("ЗАКРЫТЬ"));
 	m_btCancel.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
 		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
@@ -406,7 +406,7 @@ void CAPPsStarterDlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 		m_editPath.EnableWindow(false);
 		m_statPath.EnableWindow(false);
 		m_statIcon.EnableWindow(false);
-		m_editPath.SetWindowText(L"");
+		m_editPath.SetWindowText(_T(""));
 		m_btPath.EnableWindow(false);
 		m_cbIcon.EnableWindow(false);
 	}
@@ -419,7 +419,7 @@ void CAPPsStarterDlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 		m_btPath.EnableWindow(true);
 	}
 	
-	m_cbIcon.SetCurSelIcon(node->icon == L"" ? L"folder" : node->icon);
+	m_cbIcon.SetCurSelIcon(node->icon == _T("") ? _T("folder") : node->icon);
 	m_btStart.EnableWindow(m_btStart && node->path == "" ? FALSE : TRUE);
 
 	*pResult = 0;
@@ -445,8 +445,8 @@ void CAPPsStarterDlg::OnNMDblclkTree1(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CAPPsStarterDlg::OnOpen()
 {
-	if (strCmdXmlFile.Right(4) != L".xml") {
-		strCmdXmlFile = strCmdXmlFile + L".xml";
+	if (strCmdXmlFile.Right(4) != _T(".xml")) {
+		strCmdXmlFile = strCmdXmlFile + _T(".xml");
 	}
 
 	if (m_tree.LoadFromXML(strCmdXmlFile))
@@ -458,7 +458,7 @@ void CAPPsStarterDlg::OnOpen()
 		
 		strCurrentXML = strDefXMLFile;
 	}
-	else if (m_tree.LoadFromXML(L"..\\def.xml"))
+	else if (m_tree.LoadFromXML(_T("..\\def.xml")))
 	{
 		strCurrentXML = strDefXMLFile;
 	}
@@ -512,7 +512,7 @@ void CAPPsStarterDlg::OnReload()
 
 		strCurrentXML = strDefXMLFile;
 	}
-	else if (m_tree.LoadFromXML(L"..\\def.xml"))
+	else if (m_tree.LoadFromXML(_T("..\\def.xml")))
 	{
 		strCurrentXML = strDefXMLFile;
 	}
@@ -532,7 +532,7 @@ void CAPPsStarterDlg::OnReload()
 void CAPPsStarterDlg::OnSave()
 {
 	//LoadCSVFile();
-	m_tree.SaveToXML(L"defconf.xml");
+	m_tree.SaveToXML(_T("defconf.xml"));
 }
 
 void CAPPsStarterDlg::OnSaveAs()
@@ -558,25 +558,25 @@ void CAPPsStarterDlg::OnSaveAs()
 
 void CAPPsStarterDlg::OnEdit()
 {
-	CString strPath = L"";
+	CString strPath = _T("");
 	if (strCurrentXML.Find('\\') != -1) {
 		strPath = strCurrentXML;
 	}
 	else {
 		TCHAR szDirectory[MAX_PATH];
 		GetCurrentDirectory(MAX_PATH, szDirectory);
-		strCurrentXML = L"\\" + strCurrentXML;
+		strCurrentXML = _T("\\") + strCurrentXML;
 		strPath = szDirectory + strCurrentXML;
 	}
 	
 	if (strPath != "") {
-		if (FILE* file = _wfopen(strPath, L"r")) {
+		if (FILE* file = _tfopen(strPath, _T("r"))) {
 			fclose(file);
 
-			ShellExecute(GetSafeHwnd(), L"open", _T("rundll32.exe"), _T("shell32.dll,OpenAs_RunDLL ") + strPath, NULL, 1);
+			ShellExecute(GetSafeHwnd(), _T("open"), _T("rundll32.exe"), _T("shell32.dll,OpenAs_RunDLL ") + strPath, NULL, 1);
 		}
 		else {
-			MessageBox(L"Файл не найден! Неправильный путь!");
+			MessageBox(_T("Файл не найден! Неправильный путь!"));
 		}
 	}
 }
@@ -595,7 +595,7 @@ void CAPPsStarterDlg::OnStart()
 
 	CString strPath = node->path;
 	if (strPath != "")
-			ShellExecute(GetSafeHwnd(), L"open", strPath, NULL, NULL, 1);
+			ShellExecute(GetSafeHwnd(), _T("open"), strPath, NULL, NULL, 1);
 }
 
 void CAPPsStarterDlg::OnRunAs()
@@ -603,7 +603,7 @@ void CAPPsStarterDlg::OnRunAs()
 	HTREEITEM hItem = m_tree.GetSelectedItem();
 	CString strPath = node->path;
 	if (strPath != "")
-		ShellExecute(GetSafeHwnd(), L"runas", strPath, NULL, NULL, 1);
+		ShellExecute(GetSafeHwnd(), _T("runas"), strPath, NULL, NULL, 1);
 }
 
 void CAPPsStarterDlg::OnOpenWith()
@@ -611,12 +611,12 @@ void CAPPsStarterDlg::OnOpenWith()
 	HTREEITEM hItem = m_tree.GetSelectedItem();
 	CString strPath = node->path;
 	if (strPath != "") {
-		if (FILE* file = _wfopen(strPath, L"r")) {
+		if (FILE* file = _tfopen(strPath, _T("r"))) {
 			fclose(file);
-			ShellExecute(GetSafeHwnd(), L"open", _T("rundll32.exe"), _T("shell32.dll,OpenAs_RunDLL ") + strPath, NULL, 1);
+			ShellExecute(GetSafeHwnd(), _T("open"), _T("rundll32.exe"), _T("shell32.dll,OpenAs_RunDLL ") + strPath, NULL, 1);
 		}
 		else {
-			MessageBox(L"Файл не найден! Неправильный путь!");
+			MessageBox(_T("Файл не найден! Неправильный путь!"));
 		}
 	}
 }
@@ -627,13 +627,13 @@ void CAPPsStarterDlg::OnOpenDirectory()
 	CString strPath;
 	strPath = node->path;
 	if (strPath != "") {
-		if (FILE* file = _wfopen(strPath, L"r")) {
+		if (FILE* file = _tfopen(strPath, _T("r"))) {
 			fclose(file);
 			strPath.Truncate(strPath.ReverseFind('\\'));
-			ShellExecute(GetSafeHwnd(), L"open", strPath, NULL, NULL, 1);
+			ShellExecute(GetSafeHwnd(), _T("open"), strPath, NULL, NULL, 1);
 		}
 		else {
-			MessageBox(L"Файл не найден! Неправильный путь!");
+			MessageBox(_T("Файл не найден! Неправильный путь!"));
 		}
 	}
 }
@@ -721,7 +721,7 @@ void CAPPsStarterDlg::OnInsertItem()
 		hti = TVI_FIRST;
 	}
 
-	htiChild = m_tree.InsertItem(L"New App", htiParent, hti);
+	htiChild = m_tree.InsertItem(_T("New App"), htiParent, hti);
 	m_tree.SetItemImage(htiChild, 4, 4);
 	node_data* nnode = new node_data();
 	//CString str = m_tree.CreateID();
@@ -754,7 +754,7 @@ void CAPPsStarterDlg::OnInsertFolder()
 		hti = TVI_FIRST;
 	}
 
-	htiChild = m_tree.InsertItem(L"New Folder", htiParent, hti);
+	htiChild = m_tree.InsertItem(_T("New Folder"), htiParent, hti);
 	m_tree.SetItemImage(htiChild, 0,0);
 	node_data* nnode = new node_data();
 	//CString str = m_tree.CreateID();
@@ -777,7 +777,7 @@ void CAPPsStarterDlg::OnImportApp()
 {
 	m_tree.SetRedraw(FALSE);
 	CString csRootPath(L"С:\\Windows\\System32\\");
-	CString csFileDlgTitle = L"Выберите файлы для импорта";
+	CString csFileDlgTitle = _T("Выберите файлы для импорта");
 	//csFileDlgTitle.LoadString("File Open");
 
 
@@ -793,7 +793,7 @@ void CAPPsStarterDlg::OnImportApp()
 		{
 			CString csFileName(dlg.GetNextPathName(pos));
 			CString csFileTitle = PathFindFileName(csFileName);
-			PathRemoveExtensionW(csFileTitle.GetBuffer(1024));
+			PathRemoveExtensionW(csFileTitle.GetBuffer());
 			csFileTitle.ReleaseBuffer();
 			//implement ur fn to open the file accordingly
 
@@ -809,7 +809,7 @@ void CAPPsStarterDlg::OnImportApp()
 				hti = TVI_FIRST;
 			}
 
-			htiChild = m_tree.InsertItem(L"New App", htiParent, hti);
+			htiChild = m_tree.InsertItem(_T("New App"), htiParent, hti);
 			m_tree.SetItemImage(htiChild, 4, 4);
 			node_data* nnode = new node_data();
 			//CString str = m_tree.CreateID();
@@ -852,7 +852,7 @@ void CAPPsStarterDlg::OnImportApp()
 			m_tree.SetItemData(hItem, (DWORD_PTR)node);
 
 
-			LPCWSTR path = csFileName;
+			LPCWSTR path = (CT2W )csFileName;
 			CString strDesc2 = GetShellPropStringFromPath(path, PKEY_FileDescription);
 
 
@@ -865,7 +865,7 @@ void CAPPsStarterDlg::OnImportApp()
 			OnEnKillfocusEditTitle();
 			if (strDesc2 == "")
 				m_Title.SetWindowText(dlg.GetFileTitle());
-			m_cbIcon.SetCurSelIcon(L"appsicon");
+			m_cbIcon.SetCurSelIcon(_T("appsicon"));
 
 			m_tree.SetFocus();
 
@@ -1014,7 +1014,7 @@ void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)
 			strName = node->name;
 			BOOL bExpanded = (TVIS_EXPANDED & m_tree.GetItemState(hSelectedItem, TVIS_EXPANDED));
 			if (bExpanded)
-				pMu->ModifyMenu(ID_MENU_EXPAND, MF_BYCOMMAND, ID_MENU_EXPAND, L"Свернуть \tRight Left");
+				pMu->ModifyMenu(ID_MENU_EXPAND, MF_BYCOMMAND, ID_MENU_EXPAND, _T("Свернуть \tRight Left"));
 
 			//try delete
 			if (m_tree.ItemHasChildren(hSelectedItem)) {
@@ -1025,7 +1025,7 @@ void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)
 				pMu->DeleteMenu(0, MF_SEPARATOR);
 			}
 
-			if ((_waccess(node->path, 00) == -1)) {
+			if ((_taccess(node->path, 00) == -1)) {
 
 				pMu->DeleteMenu(ID_MENU_OPENWITH, MF_BYCOMMAND);
 				pMu->DeleteMenu(ID_MENU_OPENFOLDER, MF_BYCOMMAND);
@@ -1135,12 +1135,12 @@ void CAPPsStarterDlg::ReadReg()
 	}
 
 	CString strSection = NULL;
-	CString strAlwaysOnTop = L"AlwaysOnTop";
-	CString strWindowHight = L"WindowHight";
-	CString strWindowWidth = L"WindowWidth";
-	CString strOffsetX = L"OffsetX";
-	CString strOffsetY = L"OffsetY";
-	CString strShowCmd = L"ShowCmd";
+	CString strAlwaysOnTop = _T("AlwaysOnTop");
+	CString strWindowHight = _T("WindowHight");
+	CString strWindowWidth = _T("WindowWidth");
+	CString strOffsetX = _T("OffsetX");
+	CString strOffsetY = _T("OffsetY");
+	CString strShowCmd = _T("ShowCmd");
 	CWinApp* pApp = AfxGetApp();
 
 	int iAlwaysOnTop, iWindowHight, iWindowWidth, iOffsetX, iOffsetY, iShowCmd;
@@ -1190,12 +1190,12 @@ void CAPPsStarterDlg::WhriteReg()
 	}
 	
 	CString strSection = NULL;
-	CString strAlwaysOnTop = L"AlwaysOnTop";
-	CString strWindowHight = L"WindowHight";
-	CString strWindowWidth = L"WindowWidth";
-	CString strOffsetX = L"OffsetX";
-	CString strOffsetY = L"OffsetY";
-	CString strShowCmd = L"ShowCmd";
+	CString strAlwaysOnTop = _T("AlwaysOnTop");
+	CString strWindowHight = _T("WindowHight");
+	CString strWindowWidth = _T("WindowWidth");
+	CString strOffsetX = _T("OffsetX");
+	CString strOffsetY = _T("OffsetY");
+	CString strShowCmd = _T("ShowCmd");
 
 	CWinApp* pApp = AfxGetApp();
 
@@ -1416,7 +1416,7 @@ LRESULT CAPPsStarterDlg::OnDropFiles(WPARAM wParam, LPARAM lParam)
 
 	nFiles = DragQueryFileW(hDrop,		// Struture Identifier
 		0,			// -1 to Drop more than one file
-		szDroppedFile,// Droped File Name
+		(CT2W)szDroppedFile,// Droped File Name
 		MAX_PATH);
 
 	if (m_tree.LoadFromXML(szDroppedFile))
@@ -1819,7 +1819,7 @@ void CAPPsStarterDlg::OnBnClickedButtonPath()
 		OnEnKillfocusEditTitle();
 		if (strDesc2 == "")
 			m_Title.SetWindowText(dlg.GetFileTitle());
-		m_cbIcon.SetCurSelIcon(L"appsicon");
+		m_cbIcon.SetCurSelIcon(_T("appsicon"));
 
 		m_tree.SetFocus();
 
@@ -1833,12 +1833,13 @@ CString CAPPsStarterDlg::GetShellPropStringFromPath(LPCWSTR pPath, PROPERTYKEY c
 	CComPtr<IShellItem2> pItem;
 	HRESULT hr = SHCreateItemFromParsingName(pPath, nullptr, IID_PPV_ARGS(&pItem));
 	if (FAILED(hr))
-		return L"";
+		return  _T("");
 	CComHeapPtr<WCHAR> pValue;
 	hr = pItem->GetString(key, &pValue);
 	if (FAILED(hr))
-		return L"";
-	return (CT2CW)pValue;
+		return  _T("");
+	CString newCString(pValue);
+	return newCString;
 }
 
 void CAPPsStarterDlg::OnBnClickedButtonMenu()

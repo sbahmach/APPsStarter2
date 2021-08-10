@@ -24,7 +24,7 @@ public:
 	HICON hIcon = NULL;
 	CString strCmdXmlFile;
 	CString strCurrentXML;
-	const CString strDefXMLFile = L"defconf.xml";
+	CString strDefXMLFile = _T("defconf.xml");
 	//CString GetVersionInfo(char* pstrFilePath, char* pstrType = TEXT("\\StringFileInfo\\041204b0\\FileVersion"));
 	bool m_bNoSaveSettings = 0;
 	HTREEITEM hSelItem = NULL;
@@ -49,12 +49,12 @@ public:
 protected:
 	struct node_data
 	{
-		CString name = L"new item";
-		CString path = L"some path";
-		CString type = L"application";
-		CString title = L"";
-		CString icon = L"";
-		CString expand = L"false";
+		CString name = _T("new item");
+		CString path = _T("some path");
+		CString type = _T("application");
+		CString title = _T("");
+		CString icon = _T("");
+		CString expand = _T("false");
 	};
 
 	node_data* node = 0;

@@ -341,7 +341,7 @@ void CTreeCtrlXML::LoadItem(tinyxml2::XMLNode* a_pNode, HTREEITEM a_hTreeParent)
 		SHFILEINFOW shFileInfoW = {};
 		UINT uFlags = SHGFI_ICON | SHGFI_SMALLICON;
 		CString str = nnode->path;
-		SHGetFileInfoW(str, FILE_ATTRIBUTE_NORMAL, &shFileInfoW, sizeof(SHFILEINFOW), uFlags);
+		SHGetFileInfoW((CT2CW)str, FILE_ATTRIBUTE_NORMAL, &shFileInfoW, sizeof(SHFILEINFOW), uFlags);
 		HICON hIcon = shFileInfoW.hIcon;
 		if (hIcon != NULL) {
 			m_imageList.Add(hIcon);
@@ -426,12 +426,12 @@ bool CTreeCtrlXML::SaveToXML(const CString& a_strFile)
 			while (iDiff++ < 0)
 				xmlParent = xmlParent->Parent();
 
-			ASSERT(NULL != pParent);
+			//ASSERT(NULL != pParent);
 			xmlNew = xmlParent->InsertEndChild(xmlDoc.NewElement("Item"));
 		}
 		else
 		{
-			ASSERT(NULL != pParent);
+			//ASSERT(NULL != pParent);
 			xmlNew = xmlParent->InsertEndChild(xmlDoc.NewElement("Item"));
 		}
 
