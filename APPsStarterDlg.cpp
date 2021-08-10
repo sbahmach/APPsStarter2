@@ -243,7 +243,7 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	col_BtnText_Selected = RGB(255, 255, 255);
 	col_BtnFace_Disabled = RGB(255, 255, 255);
 	col_BtnFace = RGB(255, 255, 255);
-	col_BtnFace_IsHover = RGB(150, 188, 255);
+	col_BtnFace_IsHover = RGB(201, 225, 255);
 	col_BtnFace_Selected = RGB(47, 145, 207);
 	col_BtnFrame_Disabled = RGB(200, 200, 200);
 	col_BtnFrame = RGB(97, 195, 255);
@@ -927,7 +927,7 @@ void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)
 			COLORREF clrMenuBar = COLOR_MYDLG;
 			//COLORREF clrVertBar = RGB(47, 145, 207);
 			//COLORREF clrVertBar = RGB(200, 227, 244);
-			COLORREF clrVertBar = RGB(150, 188, 255);
+			COLORREF clrVertBar = RGB(201, 225, 255);
 
 			md_Popup.SetOwnerDraw(pMu, 0, &m_wndToolBar, 0, &clrMenuBar, &clrVertBar);
 
@@ -1738,7 +1738,7 @@ void CAPPsStarterDlg::OnBnClickedButtonMenu()
 	COLORREF clrMenuBar = COLOR_MYDLG;
 	//COLORREF clrVertBar = RGB(47, 145, 207);
 	//COLORREF clrVertBar = RGB(200, 227, 244);
-	COLORREF clrVertBar = RGB(150, 188, 255);
+	COLORREF clrVertBar = RGB(201, 225, 255);
 
 	md_Main.SetOwnerDraw(pMu, 0, &m_wndToolBar, 0, &clrMenuBar, &clrVertBar);
 
