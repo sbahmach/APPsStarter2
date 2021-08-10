@@ -66,7 +66,7 @@ BOOL CAboutDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_statVersion.SetWindowText(L"APPsStarter Version: " stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_REVISION) "." stringify(VERSION_BUILD));
+	m_statVersion.SetWindowText(L"APPsStarter Version: " stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_REVISION) "." stringify(VERSION_BUILD) " - (" stringify(VERSION_DATE) ")");
 	return TRUE;
 }
 

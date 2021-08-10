@@ -891,6 +891,12 @@ void CTreeCtrlXML::OnMouseMove(UINT nFlags, CPoint point)
 	HTREEITEM	hitem,hnitem;
 	UINT		flags = NULL;
 
+	if (m_nHoverTimerID)
+	{
+		KillTimer(m_nHoverTimerID);
+		m_nHoverTimerID = 0;
+	}
+
 	if (m_bLDragging)
 	{
 		
@@ -925,8 +931,8 @@ void CTreeCtrlXML::OnMouseMove(UINT nFlags, CPoint point)
 
 					SetInsertMarkColor(RGB(47, 145, 207));
 					//timer = true;
-					KillTimer(1);
-					SetTimer(1, 2000, NULL);
+					SetTimer(m_nHoverTimerID, 2000, NULL);
+					m_HoverPoint = point;
 					
 				}
 
@@ -1004,8 +1010,27 @@ void CTreeCtrlXML::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CTreeCtrlXML::OnTimer(UINT uTime)
 {
-	KillTimer(1);
-	Expand(m_hitemDrop, TVE_EXPAND);
+	if (uTime == m_nHoverTimerID)
+	{
+		KillTimer(m_nHoverTimerID);
+		m_nHoverTimerID = 0;
+
+		HTREEITEM	trItem = 0;
+		UINT		uFlag = 0;
+
+		trItem = HitTest(m_HoverPoint, &uFlag);
+
+		if (trItem)
+		{
+			//SelectItem(trItem);
+			Expand(trItem, TVE_EXPAND);
+		}
+	}
+	else
+	{
+		//CTreeCtrlXML::OnTimer(uTime);
+	}
+	//Expand(m_hitemDrop, TVE_EXPAND);
 	//timer = false;
 	
 }

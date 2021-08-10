@@ -10,7 +10,9 @@ using namespace tinyxml2;
 
 class CTreeCtrlXML : public CTreeCtrl
 {
-
+private:
+	UINT			m_nHoverTimerID;
+	POINT			m_HoverPoint;
 public:
 	
 	CTreeCtrlXML(void);
