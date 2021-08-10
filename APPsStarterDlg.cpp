@@ -544,7 +544,7 @@ void CAPPsStarterDlg::OnSaveAs()
 	CString strFilePath = _T("");
 	CString strFullPath = _T("");
 	TCHAR szDirectory[MAX_PATH] = L"";
-	::GetCurrentDirectory(sizeof(szDirectory) - 1, szDirectory);
+	GetCurrentDirectory(sizeof(szDirectory) - 1, szDirectory);
 	FileDlg.m_ofn.lpstrInitialDir = szDirectory;
 	if (FileDlg.DoModal() == IDOK) // this is the line which gives the errors
 	{
