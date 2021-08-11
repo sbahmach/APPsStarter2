@@ -192,7 +192,7 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 
 	//CMenu* pMenu = GetMenu();
 	m_tree.ModifyStyle(0, TVS_EDITLABELS);
-	m_tree.ModifyStyle(0, TVS_DISABLEDRAGDROP);
+	//m_tree.ModifyStyle(0, TVS_DISABLEDRAGDROP);
 
 
 	HTREEITEM hItem = m_tree.GetSelectedItem();
