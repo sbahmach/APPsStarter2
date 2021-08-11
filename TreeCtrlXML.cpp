@@ -5,8 +5,8 @@
  //using namespace tinyxml2;
 CTreeCtrlXML::CTreeCtrlXML(void)
 {
-	ModifyStyle(0, TVS_EDITLABELS);
-	ModifyStyle(0, TVS_DISABLEDRAGDROP);
+	//ModifyStyle(0, TVS_EDITLABELS);
+	//ModifyStyle(0, TVS_DISABLEDRAGDROP);
 	m_pDragImage = NULL;
 	m_hitemDrag = NULL;
 	m_hitemDrop = NULL;
@@ -236,6 +236,7 @@ bool CTreeCtrlXML::LoadFromXML(const CString& a_strFile)
 	xmlDoc.Clear();// = NULL;
 	SetRedraw(TRUE);
 	Invalidate();
+	return true;
 }
 
 

@@ -206,7 +206,7 @@ CMenuModifier::MenuUserArray::~MenuUserArray()
 inline
 void CMenuModifier::MenuUserArray::DeleteAll()
 {
-	int i,iNum=GetSize();
+	INT_PTR i,iNum=GetSize();
 	for(i=0;i<iNum;i++)	delete GetAt(i);
 	RemoveAll();
 }
@@ -223,7 +223,7 @@ inline
 int CMenuModifier::MenuUserArray::FindInSort(const MenuUser*pUser,BOOL&bFind)
 {
 	bFind=0;
-	return P_FindInSortLoop(0,GetSize()-1,pUser,bFind);
+	return P_FindInSortLoop(0,(int)GetSize()-1,pUser,bFind);
 }
 
 inline
@@ -431,7 +431,7 @@ void CMenuModifier::P_AddUserImage(CToolBar*pBar)
 	CSize siImg(inf.rcImage.right-inf.rcImage.left,inf.rcImage.bottom-inf.rcImage.top);
 
 	//large 64 x 75, small 16 x 15
-	int i,iNum=ary_Item.GetSize();
+	INT_PTR i,iNum=ary_Item.GetSize();
 	MenuUser*pUser;
 	for(i=0;i<iNum;i++)
 	{
@@ -746,7 +746,8 @@ BOOL CMenuModifier::P_NearWhiteColor(BYTE*pbClr,int iBitsPix)
 	{
 		unsigned short iv=*(unsigned short*)pbClr;
 
-		if((iv&0x7C00>=0x6000)&&(iv&0x03E0>=0x0300)&&(iv&0x001F>=0x0018))	return 1;
+		//if((iv&0x7C00>=0x6000)&&(iv&0x03E0>=0x0300)&&(iv&0x001F>=0x0018))	
+			return 1;
 	}
 	return 0;
 }

@@ -183,10 +183,13 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 		| CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
 	m_wndToolBar.LoadToolBar(BAR_MAIN);
 
-	COLORREF clrMenuBar = COLOR_MYDLG;
-	COLORREF clrVertBar = RGB(0, 192, 192);
+	//COLORREF clrMenuBar = COLOR_MYDLG;
+	//COLORREF clrVertBar = RGB(0, 192, 192);
 
-	CMenu* pMenu = GetMenu();
+	//CMenu* pMenu = GetMenu();
+	m_tree.ModifyStyle(0, TVS_EDITLABELS);
+	m_tree.ModifyStyle(0, TVS_DISABLEDRAGDROP);
+
 
 	HTREEITEM hItem = m_tree.GetSelectedItem();
 
