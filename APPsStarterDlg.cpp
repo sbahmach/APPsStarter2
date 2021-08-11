@@ -65,8 +65,12 @@ END_MESSAGE_MAP()
 BOOL CAboutDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
-	m_statVersion.SetWindowText(_T("Version: " stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_REVISION) "." stringify(VERSION_BUILD) " - (" stringify(VERSION_DATE) ")"));
+	CString strTarget = _T(" (x86):  ");
+#ifdef _WIN64
+	strTarget = _T(" (x64):  ");
+#endif
+	CString strVersion = _T("Version") + strTarget + stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_REVISION) "." stringify(VERSION_BUILD) " (" stringify(VERSION_DATE) " )";
+	m_statVersion.SetWindowText(strVersion);
 	return TRUE;
 }
 
