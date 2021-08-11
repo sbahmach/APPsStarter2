@@ -395,14 +395,14 @@ void CAPPsStarterDlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 //////////////////////////////////////////////////////////////////////////////////// 
 	// !!!!
 	node = (node_data*)m_tree.GetItemData(hItem);
-
-	m_Title.SetWindowText(node->title == "" ? node->name : node->title);
+	CString strPath(node->path);
+	m_Title.SetWindowText(node->title == _T("") ? node->name : node->title);
 	m_editName.SetWindowText(node->name);
 	m_editTitle.SetWindowText(node->title);
 	//m_statID.SetWindowText(node->id);
 	//m_statParent.SetWindowText(node->parent);
 
-	if (node->type.MakeLower() == L"container") {
+	if (node->type.MakeLower() == _T("container")) {
 		m_editPath.EnableWindow(false);
 		m_statPath.EnableWindow(false);
 		m_statIcon.EnableWindow(false);
@@ -418,9 +418,23 @@ void CAPPsStarterDlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 		m_cbIcon.EnableWindow(true);
 		m_btPath.EnableWindow(true);
 	}
+	if (node->icon == _T("")) {
+		m_cbIcon.SetCurSelIcon(_T("folder"));
+		//m_cbIcon.SetCurSel(0);
+	}
+	else {
+		m_cbIcon.SetCurSelIcon(node->icon);
+		//m_cbIcon.SetCurSel(1);
+	}
 	
-	m_cbIcon.SetCurSelIcon(node->icon == _T("") ? _T("folder") : node->icon);
-	m_btStart.EnableWindow(m_btStart && node->path == "" ? FALSE : TRUE);
+	if (node->path.Compare(_T("")) != 0) {
+		m_btStart.EnableWindow(FALSE);
+	}
+	else {
+		m_btStart.EnableWindow(TRUE);
+	}
+	//m_cbIcon.SetCurSelIcon(node->icon == _T("") ? _T("folder") : node->icon);
+	//m_btStart.EnableWindow(node->path == _T("") ? FALSE : TRUE);
 
 	*pResult = 0;
 }
@@ -716,7 +730,7 @@ void CAPPsStarterDlg::OnInsertItem()
 
 	node = (node_data*)m_tree.GetItemData(hti);
 
-	if (node->type == L"container") {
+	if (node->type == _T("container")) {
 		htiParent = m_tree.GetSelectedItem();
 		hti = TVI_FIRST;
 	}
@@ -725,12 +739,12 @@ void CAPPsStarterDlg::OnInsertItem()
 	m_tree.SetItemImage(htiChild, 4, 4);
 	node_data* nnode = new node_data();
 	//CString str = m_tree.CreateID();
-	nnode->name = "New App";
-	nnode->path = "path";
-	nnode->title = "";
-	nnode->icon = "app";
-	nnode->expand = "";
-	nnode->type = "application";
+	nnode->name = _T("New App");
+	nnode->path = _T("path");
+	nnode->title = _T("");
+	nnode->icon = _T("app");
+	nnode->expand = _T("");
+	nnode->type = _T("application");
 	//nnode->id = str;// m_tree.CreateID();
 	//nnode->parent = node->id;
 	m_tree.SetItemData(htiChild, (DWORD_PTR)nnode);
@@ -749,7 +763,7 @@ void CAPPsStarterDlg::OnInsertFolder()
 
 	node = (node_data*)m_tree.GetItemData(hti);
 
-	if (node->type == "container") {
+	if (node->type == _T("container")) {
 		htiParent = m_tree.GetSelectedItem();
 		hti = TVI_FIRST;
 	}
@@ -758,12 +772,12 @@ void CAPPsStarterDlg::OnInsertFolder()
 	m_tree.SetItemImage(htiChild, 0,0);
 	node_data* nnode = new node_data();
 	//CString str = m_tree.CreateID();
-	nnode->name = "New Folder";
-	nnode->path = "";
-	nnode->title = "";
-	nnode->icon = "folder";
-	nnode->expand = "false";
-	nnode->type = "container";
+	nnode->name = _T("New Folder");
+	nnode->path = _T("");
+	nnode->title = _T("");
+	nnode->icon = _T("folder");
+	nnode->expand = _T("false");
+	nnode->type = _T("container");
 	//nnode->id = str;// m_tree.CreateID();
 	//nnode->parent = node->id;
 	m_tree.SetItemData(htiChild, (DWORD_PTR)nnode);
@@ -776,7 +790,7 @@ void CAPPsStarterDlg::OnInsertFolder()
 void CAPPsStarterDlg::OnImportApp()
 {
 	m_tree.SetRedraw(FALSE);
-	CString csRootPath(L"С:\\Windows\\System32\\");
+	CString csRootPath(_T("С:\\Windows\\System32\\"));
 	CString csFileDlgTitle = _T("Выберите файлы для импорта");
 	//csFileDlgTitle.LoadString("File Open");
 
@@ -804,7 +818,7 @@ void CAPPsStarterDlg::OnImportApp()
 
 			node = (node_data*)m_tree.GetItemData(hti);
 
-			if (node->type == L"container") {
+			if (node->type == _T("container")) {
 				htiParent = m_tree.GetSelectedItem();
 				hti = TVI_FIRST;
 			}
@@ -813,12 +827,12 @@ void CAPPsStarterDlg::OnImportApp()
 			m_tree.SetItemImage(htiChild, 4, 4);
 			node_data* nnode = new node_data();
 			//CString str = m_tree.CreateID();
-			nnode->name = "New App";
-			nnode->path = "path";
-			nnode->title = "";
-			nnode->icon = "app";
-			nnode->expand = "";
-			nnode->type = "application";
+			nnode->name = _T("New App");
+			nnode->path = _T("path");
+			nnode->title = _T("");
+			nnode->icon = _T("app");
+			nnode->expand = _T("");
+			nnode->type = _T("application");
 			//nnode->id = str;// m_tree.CreateID();
 			//nnode->parent = node->id;
 			m_tree.SetItemData(htiChild, (DWORD_PTR)nnode);
@@ -1513,43 +1527,43 @@ void CAPPsStarterDlg::OnCbnSelchangeComboIcon()
 	node = (node_data*)m_tree.GetItemData(hti);
 	switch (i) {
 	case 0:
-		node->icon = "folder";
+		node->icon = _T("folder");
 		break;
 	case 1:
-		node->icon = "1c";
+		node->icon = _T("1c");
 		break;
 	case 2:
-		node->icon = "medoc";
+		node->icon = _T("medoc");
 		break;
 	case 3:
-		node->icon = "rdp";
+		node->icon = _T("rdp");
 		break;
 	case 4:
-		node->icon = "app";
+		node->icon = _T("app");
 		break;
 	case 5:
-		node->icon = "mail";
+		node->icon = _T("mail");
 		break;
 	case 6:
-		node->icon = "web";
+		node->icon = _T("web");
 		break;
 	case 7:
-		node->icon = "share";
+		node->icon = _T("share");
 		break;
 	case 8:
-		node->icon = "vcam";
+		node->icon = _T("vcam");
 		break;
 	case 9:
-		node->icon = "cmd";
+		node->icon = _T("cmd");
 		break;
 	case 10:
-		node->icon = "script";
+		node->icon = _T("script");
 		break;
 	case 11:
-		node->icon = "pshell";
+		node->icon = _T("pshell");
 		break;
 	case 12:
-		node->icon = "appsicon";
+		node->icon = _T("appsicon");
 		break;
 	default:
 		break;
@@ -1801,7 +1815,7 @@ void CAPPsStarterDlg::OnBnClickedButtonPath()
 		int iItems = m_tree.m_imageList.GetImageCount() - 1;
 		m_tree.SetItemImage(hItem, iItems, iItems);
 
-		node->icon = "appsicon";
+		node->icon = _T("appsicon");
 		
 		m_tree.SetItemData(hItem, (DWORD_PTR)node);
 

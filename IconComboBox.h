@@ -25,8 +25,8 @@ class CSmallIconComboBox : public CComboBox
 {
 public:
 //Methods
-  int  AddIcon(UINT nIconID, CString str);
-	int  InsertIcon(int nIndex, UINT nIconID, CString str);
+  int  AddIcon(UINT_PTR nIconID, CString str);
+	int  InsertIcon(int nIndex, UINT_PTR nIconID, CString str);
   int  DeleteIcon(int nIndex);
   //UINT GetCurSelIcon() const;
 	void  SetCurSelIcon(CString str);
@@ -34,7 +34,16 @@ public:
   int  InsertString(int nIndex, LPCTSTR lpszString);
   int  DeleteString(int nIndex);
 
+  ////////////////////////////// Locals /////////////////////////////////////////
 
+  struct _IconComboData
+  {
+	  HICON m_hIcon = NULL;
+	  UINT_PTR  m_nIconID = NULL;
+	  CString str = _T("");
+  };
+
+  _IconComboData *iconData;
 protected:
 	//{{AFX_VIRTUAL(CSmallIconComboBox)
 	virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);

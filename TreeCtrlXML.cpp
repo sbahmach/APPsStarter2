@@ -1008,7 +1008,7 @@ void CTreeCtrlXML::OnLButtonUp(UINT nFlags, CPoint point)
 
 }
 
-void CTreeCtrlXML::OnTimer(UINT uTime)
+void CTreeCtrlXML::OnTimer(UINT_PTR uTime)
 {
 	if (uTime == m_nHoverTimerID)
 	{

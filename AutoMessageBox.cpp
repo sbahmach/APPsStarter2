@@ -3,6 +3,7 @@
 
 //#include "stdafx.h"
 //#include "APPsStarter.h"
+#include "pch.h"
 #include "AutoMessageBox.h"
 #include "resource.h"
 
@@ -188,7 +189,7 @@ void CAutoMessageBox::OnPaint()
 }
 
 
-void CAutoMessageBox::OnTimer(UINT nIDEvent) 
+void CAutoMessageBox::OnTimer(UINT_PTR nIDEvent)
 {
 	m_nElapsed += m_nTimerStep;
 

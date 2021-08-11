@@ -27,14 +27,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-////////////////////////////// Locals /////////////////////////////////////////
 
-struct _IconComboData
-{
-  HICON m_hIcon = NULL;
-  UINT  m_nIconID = NULL;
-  CString str = _T("");
-};
 
 
 ////////////////////////////// Implementation /////////////////////////////////
@@ -79,13 +72,13 @@ void CSmallIconComboBox::PreSubclassWindow()
   ::SendMessage(m_hWnd, CB_SETITEMHEIGHT, (WPARAM)-1, 18L);
 }
 
-int CSmallIconComboBox::AddIcon(UINT nIconID, CString str)
+int CSmallIconComboBox::AddIcon(UINT_PTR nIconID, CString str)
 {
   //Load up the icon
   HICON hIcon = (HICON) LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(nIconID), IMAGE_ICON, 16, 16, 0);
   ASSERT(hIcon != NULL);
   if (hIcon == NULL)
-    return CB_ERR;
+    return -1;
 
   //Add it to the combo box
   int nOffset = CComboBox::AddString(_T(""));
@@ -95,13 +88,13 @@ int CSmallIconComboBox::AddIcon(UINT nIconID, CString str)
 	pData->m_hIcon = hIcon;
 	pData->m_nIconID = nIconID;
 	pData->str = str;
-  SetItemData(nOffset, (DWORD) pData);
+  SetItemData(nOffset, (DWORD_PTR) pData);
 
   //Return the offset at which it was added
 	return nOffset;
 }
 
-int CSmallIconComboBox::InsertIcon(int nIndex, UINT nIconID, CString str)
+int CSmallIconComboBox::InsertIcon(int nIndex, UINT_PTR nIconID, CString str)
 {
   //Load up the icon
   HICON hIcon = (HICON) LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(nIconID), IMAGE_ICON, 16, 16, 0);
@@ -117,7 +110,7 @@ int CSmallIconComboBox::InsertIcon(int nIndex, UINT nIconID, CString str)
 	pData->m_hIcon = hIcon;
 	pData->m_nIconID = nIconID;
 	pData->str = str;
-  SetItemData(nOffset, (DWORD) pData);
+  SetItemData(nOffset, (DWORD_PTR) pData);
 
   //Return the offset at which it was added
 	return nOffset;
@@ -145,8 +138,8 @@ void CSmallIconComboBox::SetCurSelIcon(CString str)
 	//has the corresponding item data
 	for (int i = 0; i < GetCount(); i++)
 	{
-		_IconComboData* pData = (_IconComboData*)GetItemData(i);
-		if (pData->str == str)
+		iconData = (_IconComboData*)GetItemDataPtr(i);
+		if (iconData->str == str)
 			SetCurSel(i);
 	}
 
@@ -209,20 +202,20 @@ void CSmallIconComboBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	}
 
   //Draw the icon
-	_IconComboData* pData = (_IconComboData*) lpDIS->itemData;
-	ASSERT(pData != NULL);
-	if (pData && lpDIS->itemData != 0xFFFFFFFF) {
-		DrawIconEx(pDC->GetSafeHdc(), lpDIS->rcItem.left + 1, lpDIS->rcItem.top + 1, pData->m_hIcon, 16, 16, 0, NULL, DI_NORMAL);
+	iconData = (_IconComboData*) lpDIS->itemData;
+	ASSERT(iconData != NULL);
+	if (iconData && lpDIS->itemData != -1) {
+		DrawIconEx(pDC->GetSafeHdc(), lpDIS->rcItem.left + 1, lpDIS->rcItem.top + 1, iconData->m_hIcon, 16, 16, 0, NULL, DI_NORMAL);
 		CRect rect = lpDIS->rcItem;
 		rect.left = lpDIS->rcItem.left + 25;
 		pDC->SetBkMode(TRANSPARENT);
-		if (pData->str == "folder") {
+		if (iconData->str == _T("folder")) {
 			pDC->SetTextColor(RGB(150, 150, 150));
 		}
 		else {
 			pDC->SetTextColor(RGB(0, 0, 0));
 		}
-		pDC->DrawText(pData->str, &rect, DT_TABSTOP | DT_VCENTER | DT_SINGLELINE);
+		pDC->DrawText(iconData->str, &rect, DT_TABSTOP | DT_VCENTER | DT_SINGLELINE);
 	}
 }
 
@@ -243,18 +236,18 @@ void CSmallIconComboBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 int CSmallIconComboBox::AddString(LPCTSTR /*lpszString*/)
 {
 	ASSERT(FALSE); //Use AddIcon not AddString
-	return CB_ERR;
+	return -1;
 }
 
 int CSmallIconComboBox::InsertString(int /*nIndex*/, LPCTSTR /*lpszString*/)
 {
 	ASSERT(FALSE); //Use InsertIcon not InsertString
-	return CB_ERR;
+	return -1;
 }
 
 int CSmallIconComboBox::DeleteString(int /*nIndex*/)
 {
 	ASSERT(FALSE); //Use DeleteIcon not DeleteString
-	return CB_ERR;
+	return -1;
 }
 
