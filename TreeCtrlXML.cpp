@@ -1,4 +1,4 @@
-
+#include "pch.h"
 #include "resource.h"
 //#include "FileVersion.h"
 #include "TreeCtrlXML.h"
@@ -223,7 +223,7 @@ bool CTreeCtrlXML::LoadFromXML(const CString& a_strFile)
 	tinyxml2::XMLDocument xmlDoc;
 	//USES_CONVERSION;
 	//const char* cstr = (CT2A)a_strFile;
-	if (XML_SUCCESS != xmlDoc.LoadFile((CW2A)a_strFile))
+	if (XML_SUCCESS != xmlDoc.LoadFile((CT2A)a_strFile))
 		return false;
 	
 	xmlRoot = xmlDoc.FirstChildElement();
@@ -277,7 +277,7 @@ void CTreeCtrlXML::LoadItem(tinyxml2::XMLNode* a_pNode, HTREEITEM a_hTreeParent)
 	XMLNode* pChild = NULL;
 	bool bWithoutAttr = false;
 
-	CString strAttr = "";
+	CString strAttr = _T("");
 	if (pEl->Attribute("Name") == NULL) {
 		if (pEl->GetText() != "") {
 			bWithoutAttr = true;
@@ -449,12 +449,12 @@ bool CTreeCtrlXML::SaveToXML(const CString& a_strFile)
 			node->expand = "true";
 
 		pEl->SetValue("Item");
-		pEl->SetAttribute("Name", (CW2A)node->name);
-		pEl->SetAttribute("Type", (CW2A)node->type);
-		if (node->type == "application") pEl->SetAttribute("Path", (CW2A)node->path);
-		if (node->type == "container") pEl->SetAttribute("Expand", (CW2A)node->expand);
-		pEl->SetAttribute("Title", (CW2A)node->title);
-		if (node->type == "application") pEl->SetAttribute("Icon", (CW2A)node->icon);
+		pEl->SetAttribute("Name", (CT2A)node->name);
+		pEl->SetAttribute("Type", (CT2A)node->type);
+		if (node->type == "application") pEl->SetAttribute("Path", (CT2A)node->path);
+		if (node->type == "container") pEl->SetAttribute("Expand", (CT2A)node->expand);
+		pEl->SetAttribute("Title", (CT2A)node->title);
+		if (node->type == "application") pEl->SetAttribute("Icon", (CT2A)node->icon);
 		//pEl->SetAttribute("Id", node->id);
 		
 		//delete node;
@@ -465,7 +465,7 @@ bool CTreeCtrlXML::SaveToXML(const CString& a_strFile)
 
 	CString strFile = a_strFile;
 
-	return xmlDoc.SaveFile((CW2A)a_strFile);
+	return xmlDoc.SaveFile((CT2A)a_strFile);
 
 	// Save XML
 	

@@ -793,7 +793,7 @@ void CAPPsStarterDlg::OnImportApp()
 		{
 			CString csFileName(dlg.GetNextPathName(pos));
 			CString csFileTitle = PathFindFileName(csFileName);
-			PathRemoveExtensionW(csFileTitle.GetBuffer());
+			PathRemoveExtension(csFileTitle.GetBuffer());
 			csFileTitle.ReleaseBuffer();
 			//implement ur fn to open the file accordingly
 

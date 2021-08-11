@@ -17,7 +17,7 @@ All rights reserved.
 
 
 /////////////////////////////////  Includes  //////////////////////////////////
-
+#include "pch.h"
 #include "IconComboBox.h"
 
 #ifdef _DEBUG
@@ -33,7 +33,7 @@ struct _IconComboData
 {
   HICON m_hIcon = NULL;
   UINT  m_nIconID = NULL;
-  CString str = "";
+  CString str = _T("");
 };
 
 
