@@ -1156,51 +1156,26 @@ void CAPPsStarterDlg::ReadReg()
 	}
 
 	CString strSection = NULL;
-	CString strAlwaysOnTop = _T("AlwaysOnTop");
-	CString strWindowHight = _T("WindowHight");
-	CString strWindowWidth = _T("WindowWidth");
-	CString strOffsetX = _T("OffsetX");
-	CString strOffsetY = _T("OffsetY");
-	CString strShowCmd = _T("ShowCmd");
 	CWinApp* pApp = AfxGetApp();
 
-	int iAlwaysOnTop, iWindowHight, iWindowWidth, iOffsetX, iOffsetY, iShowCmd;
-	iAlwaysOnTop = pApp->GetProfileInt(strSection, strAlwaysOnTop, 0);
+	int iAlwaysOnTop;
+	iAlwaysOnTop = pApp->GetProfileInt(strSection, _T("AlwaysOnTop"), 0);
 
 	if (iAlwaysOnTop) {
 		m_check.SetCheck(1);
-
 	}
 	else {
 		m_check.SetCheck(0);
 	}
 	OnBnClickedCheck1();
 
-	iWindowHight = pApp->GetProfileInt(strSection, strWindowHight, 0);
-	iWindowWidth = pApp->GetProfileInt(strSection, strWindowWidth, 0);
-	iOffsetX = pApp->GetProfileInt(strSection, strOffsetX, 0);
-	iOffsetY = pApp->GetProfileInt(strSection, strOffsetY, 0);
+	WINDOWPLACEMENT* lwp;
+	UINT nl;
 
-	iShowCmd = pApp->GetProfileInt(strSection, strShowCmd, 1);
-
-	if ((iOffsetX == 0 && iOffsetY == 0)) { // first start app?
-		CenterWindow();
-	}
-	else if ((iOffsetX < 0 && iOffsetY < 0)) { //winow is minimized
-		ShowWindow(SW_SHOWNORMAL);
-	}
-	else {
-		ShowWindow(SW_HIDE);
-		SetWindowPos(0, iOffsetX, iOffsetY, iWindowWidth, iWindowHight, SWP_NOZORDER);
-		if (iShowCmd == 2) {
-			ShowWindow(SW_SHOWMINIMIZED);
-		}
-		else if (iShowCmd == 3) {
-			ShowWindow(SW_SHOWMAXIMIZED);
-		}
-		else {
-			ShowWindow(SW_SHOWNORMAL);
-		}
+	if (pApp->GetProfileBinary(strSection, _T("WP"), (LPBYTE*)&lwp, &nl))
+	{
+		SetWindowPlacement(lwp);
+		delete[] lwp;
 	}
 }
 
@@ -1211,36 +1186,18 @@ void CAPPsStarterDlg::WhriteReg()
 	}
 	
 	CString strSection = NULL;
-	CString strAlwaysOnTop = _T("AlwaysOnTop");
-	CString strWindowHight = _T("WindowHight");
-	CString strWindowWidth = _T("WindowWidth");
-	CString strOffsetX = _T("OffsetX");
-	CString strOffsetY = _T("OffsetY");
-	CString strShowCmd = _T("ShowCmd");
 
 	CWinApp* pApp = AfxGetApp();
 
-	int iAlwaysOnTop, iWindowHight, iWindowWidth, iOffsetX, iOffsetY, iShowCmd;
+	int iAlwaysOnTop;
 	iAlwaysOnTop = m_check.GetCheck();
-	pApp->WriteProfileInt(strSection, strAlwaysOnTop, iAlwaysOnTop);
+	pApp->WriteProfileInt(strSection, _T("AlwaysOnTop"), iAlwaysOnTop);
 
 	WINDOWPLACEMENT wp;
 	GetWindowPlacement(&wp);
-	RECT rcNormalPosition = wp.rcNormalPosition;
-	
-	//pApp->DelRegTree
-	CRect r;
-	this->GetWindowRect(r);
-	iWindowHight = rcNormalPosition.bottom - rcNormalPosition.top;
-	pApp->WriteProfileInt(strSection, strWindowHight, iWindowHight);
-	iWindowWidth = rcNormalPosition.right - rcNormalPosition.left;
-	pApp->WriteProfileInt(strSection, strWindowWidth, iWindowWidth);
-	iOffsetX = rcNormalPosition.left;
-	pApp->WriteProfileInt(strSection, strOffsetX, iOffsetX);
-	iOffsetY = rcNormalPosition.top;
-	pApp->WriteProfileInt(strSection, strOffsetY, iOffsetY);
-	iShowCmd = wp.showCmd;
-	pApp->WriteProfileInt(strSection, strShowCmd, iShowCmd);
+
+	pApp->WriteProfileBinary(strSection, _T("WP"), (LPBYTE)&wp, sizeof(wp));
+
 }
 
 BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
@@ -1914,3 +1871,37 @@ void CAPPsStarterDlg::OnBnClickedButtonMenu()
 	}
 }
 
+UINT CAPPsStarterDlg::startThreadImport(LPVOID param)
+{
+	THREADSTRUCT* ts = (THREADSTRUCT*)param;
+	ts->_this->OnImportApp();
+	//ts->_this->SetTimer(TIMER_EASEIN, 10, NULL); // запускаем таймер появления
+
+	delete ts;
+	return 1;
+}
+
+UINT CAPPsStarterDlg::startThreadOut(LPVOID param)
+{
+	THREADSTRUCT* ts = (THREADSTRUCT*)param;
+	//ts->_this->StartTime = GetTickCount(); // фиксируем текущее время
+	//ts->_this->SetTimer(TIMER_EASEOUT, 10, NULL); // запускаем таймер исчезновения
+
+	delete ts;
+	return 1;
+}
+
+void CAPPsStarterDlg::startImport()
+{
+	THREADSTRUCT* _param = new THREADSTRUCT;
+	_param->_this = this;
+	AfxBeginThread(startThreadImport, _param); // запускаем отдельный поток
+
+}
+
+void CAPPsStarterDlg::startOut()
+{
+	THREADSTRUCT* _param = new THREADSTRUCT;
+	_param->_this = this;
+	AfxBeginThread(startThreadOut, _param); // запускаем отдельный поток
+}

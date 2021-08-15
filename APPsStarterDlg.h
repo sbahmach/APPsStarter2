@@ -56,6 +56,15 @@ protected:
 		CString icon = _T("");
 		CString expand = _T("false");
 	};
+	typedef struct THREADSTRUCT
+	{
+		CAPPsStarterDlg* _this;
+	} THREADSTRUCT;
+
+	static UINT startThreadImport(LPVOID param); //запуск отрисовки перемещени€ в отдельном потоке (по€вление)
+	static UINT startThreadOut(LPVOID param); //запуск отрисовки перемещени€ в отдельном потоке (исчезновение)
+	void startImport(); // запуск отдельного потока
+	void startOut(); // запуск отдельного потока
 
 	node_data* node = 0;
 
