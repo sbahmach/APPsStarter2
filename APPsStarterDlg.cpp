@@ -434,7 +434,7 @@ void CAPPsStarterDlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 		//m_cbIcon.SetCurSel(1);
 	}
 	
-	if (node->path.Compare(_T("")) != 0) {
+	if (node->path.Compare(_T("")) == 0) {
 		m_btStart.EnableWindow(FALSE);
 	}
 	else {
