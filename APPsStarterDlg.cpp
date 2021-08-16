@@ -1168,14 +1168,17 @@ void CAPPsStarterDlg::ReadReg()
 		m_check.SetCheck(0);
 	}
 	OnBnClickedCheck1();
-
+		
 	WINDOWPLACEMENT* lwp;
 	UINT nl;
 
 	if (pApp->GetProfileBinary(strSection, _T("WP"), (LPBYTE*)&lwp, &nl))
 	{
-		SetWindowPlacement(lwp);
-		delete[] lwp;
+		CRect r = lwp->rcNormalPosition;
+		if (::MonitorFromRect(r, MONITOR_DEFAULTTONULL) != nullptr) {
+			SetWindowPlacement(lwp);
+			delete[] lwp;
+		}
 	}
 }
 
@@ -1854,7 +1857,8 @@ void CAPPsStarterDlg::OnBnClickedButtonMenu()
 		OnLoad();
 		break;
 	case ID_MENU_IMPORT_DEF:
-		OnReload();
+		//OnReload();
+		WhriteReg();
 		break;
 	case ID_MENU_EDIT:
 		OnEdit();
