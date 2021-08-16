@@ -205,6 +205,10 @@ update_revision.cmd</Command>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
     </ResourceCompile>
+    <PreBuildEvent>
+      <Command>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File update_version.ps1 "./ver_build.h"
+update_revision.cmd</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AutoMessageBox.h" />
