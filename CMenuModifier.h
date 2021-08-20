@@ -353,10 +353,10 @@ CMenuModifier::CMenuModifier()
 	clr_TextEnabled		=GetSysColor(COLOR_MENUTEXT);
 	clr_TextDisabled	=GetSysColor(COLOR_GRAYTEXT);
 
-	clr_Separator		=RGB3(160);
-	clr_SelectBorder	=RGB3(200);
-	clr_Selected		=RGB3(230);
-	clr_Item			=RGB3(245);
+	clr_Separator		= RGB3(160);
+	clr_SelectBorder	= RGB(47, 145, 207); // RGB3(200);
+	clr_Selected		= RGB(201, 225, 255); //RGB3(230);
+	clr_Item			= RGB3(255);
 
 	//-------------------------------
 	b_UseObmBitmap	=1;

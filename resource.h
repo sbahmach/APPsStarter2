@@ -1,12 +1,11 @@
 //{{NO_DEPENDENCIES}}
-// Включаемый файл, созданный в Microsoft Visual C++.
-// Используется APPsStarter.rc
+// Microsoft Visual C++ generated include file.
+// Used by APPsStarter.rc
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
 #define IDD_APPsStarter_DIALOG          102
-#define IDD_APPsSTARTER_DIALOG          102
 #define IDR_MAINFRAME                   128
 #define IDI_1C                          130
 #define IDI_APP                         131
@@ -27,22 +26,20 @@
 #define IDB_BITMAP4                     167
 #define BAR_MAIN                        168
 #define MU_MAIN                         177
-#define IDC_TREE1                       1000
-#define IDC_BUTTON_START                1001
+#define IDC_TREE                        1000
 #define IDC_BUTTON_LOAD                 1002
 #define IDC_BUTTON_EDIT                 1003
 #define IDC_BUTTON_LOAD2                1003
 #define IDC_BUTTON_RELOAD               1004
-#define IDC_STATIC_1                    1005
+#define IDC_STATIC_MAINTITLE            1005
 #define IDC_STATIC_2                    1006
-#define IDC_CHECK1                      1007
+#define IDC_CHECK_ONTOP                 1007
 #define IDC_BUTTON_SAVE                 1008
 #define IDC_BUTTON_MENU                 1009
 #define IDC_EDIT_NAME                   1010
 #define IDC_EDIT_TITLE                  1011
 #define IDC_EDIT_PATH                   1012
-#define IDC_EDIT_ID                     1013
-#define IDC_BUTTON_PATH                 1013
+#define IDC_BUTTON_IMPORT               1013
 #define IDC_COMBO_ICON                  1014
 #define IDC_CHECK_EXPAND                1015
 #define IDC_STATIC_NAME                 1016
@@ -50,8 +47,6 @@
 #define IDC_STATIC_PATH                 1018
 #define IDC_STATIC_ICON                 1019
 #define IDC_STATIC_EXPAND               1020
-#define IDC_STATIC_ICON2                1020
-#define IDC_STATIC_PATH2                1021
 #define IDC_STATIC_ID                   1021
 #define IDC_EDIT_PARENT                 1022
 #define IDC_STATIC_ICON3                1022
@@ -62,6 +57,8 @@
 #define IDC_BUTTON1                     1031
 #define IDC_RADIO1                      1032
 #define IDC_CHECK2                      1034
+#define IDC_EDIT1                       1035
+#define IDC_STATIC_ONTOP                1036
 #define ID_EDIT_FILE                    32783
 #define ID_EDIT_EDIT                    32784
 #define ID_EDIT_32785                   32785
@@ -120,7 +117,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        178
 #define _APS_NEXT_COMMAND_VALUE         32853
-#define _APS_NEXT_CONTROL_VALUE         1035
+#define _APS_NEXT_CONTROL_VALUE         1037
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

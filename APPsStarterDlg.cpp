@@ -25,7 +25,10 @@
 #endif
 
 #define APPWM_ICONNOTIFY (WM_APP + 1)
-
+#define INITIALX_96DPI 0 
+#define INITIALY_96DPI 0 
+#define INITIALWIDTH_96DPI 800
+#define INITIALHEIGHT_96DPI 500
 // CAboutDlg dialog used for App About
 
 class CAboutDlg : public CDialog
@@ -83,38 +86,55 @@ CAPPsStarterDlg::CAPPsStarterDlg(CWnd* pParent /*=nullptr*/)
 
 	Brush_Main.CreateSolidBrush(RGB(255, 255, 255));
 
-	LOGFONT lf_Title;
+	/*LOGFONT lf_Title;
 	memset(&lf_Title, 0, sizeof(LOGFONT));
 	lf_Title.lfHeight = 36;
 	lf_Title.lfWeight = FW_MEDIUM;
 	lf_Title.lfCharSet = DEFAULT_CHARSET;
 	_tcscpy(lf_Title.lfFaceName, _T("Arial Narrow"));
-	m_font_Title.CreateFontIndirect(&lf_Title);
+	m_font_Title.CreateFontIndirect(&lf_Title);*/
 }
 
 void CAPPsStarterDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_TREE1, m_tree);
-	DDX_Control(pDX, IDC_BUTTON_MENU, m_btMenu);
-	DDX_Control(pDX, IDC_BUTTON_START, m_btStart);
-	DDX_Control(pDX, IDC_BUTTON_PATH, m_btPath);
+	//DDX_Control(pDX, IDC_TREE1, m_tree);
+	//DDX_Control(pDX, IDC_BUTTON_MENU, m_btMenu);
+	//DDX_Control(pDX, IDC_BUTTON_START, m_btStart);
+	//DDX_Control(pDX, IDC_BUTTON_PATH, m_btPath);
+	//DDX_Control(pDX, IDCANCEL, m_btCancel);
+	//DDX_Control(pDX, IDC_STATIC_1, m_Title);
+	//DDX_Control(pDX, IDC_STATIC_2, m_stat);
+	////DDX_Control(pDX, IDC_STATIC_PARENT, m_statParent);
+	////DDX_Control(pDX, IDC_STATIC_ID, m_statID);
+	//DDX_Control(pDX, IDC_STATIC_NAME, m_statName);
+	//DDX_Control(pDX, IDC_STATIC_TITLE, m_statTitle);
+	//DDX_Control(pDX, IDC_STATIC_PATH, m_statPath);
+	//DDX_Control(pDX, IDC_STATIC_ICON, m_statIcon);
+	//DDX_Control(pDX, IDC_CHECK1, m_check);
+	//DDX_Control(pDX, IDC_EDIT_NAME, m_editName);
+	//DDX_Control(pDX, IDC_EDIT_TITLE, m_editTitle);
+	//DDX_Control(pDX, IDC_EDIT_PATH, m_editPath);
+	////DDX_Control(pDX, IDC_EDIT_ID, m_editID);
+	////DDX_Control(pDX, IDC_EDIT_PARENT, m_editParent);
+	//DDX_Control(pDX, IDC_COMBO_ICON, m_cbIcon);
+	DDX_Control(pDX, IDOK, m_btOK);
 	DDX_Control(pDX, IDCANCEL, m_btCancel);
-	DDX_Control(pDX, IDC_STATIC_1, m_Title);
-	DDX_Control(pDX, IDC_STATIC_2, m_stat);
-	//DDX_Control(pDX, IDC_STATIC_PARENT, m_statParent);
-	//DDX_Control(pDX, IDC_STATIC_ID, m_statID);
-	DDX_Control(pDX, IDC_STATIC_NAME, m_statName);
-	DDX_Control(pDX, IDC_STATIC_TITLE, m_statTitle);
-	DDX_Control(pDX, IDC_STATIC_PATH, m_statPath);
-	DDX_Control(pDX, IDC_STATIC_ICON, m_statIcon);
-	DDX_Control(pDX, IDC_CHECK1, m_check);
-	DDX_Control(pDX, IDC_EDIT_NAME, m_editName);
-	DDX_Control(pDX, IDC_EDIT_TITLE, m_editTitle);
-	DDX_Control(pDX, IDC_EDIT_PATH, m_editPath);
-	//DDX_Control(pDX, IDC_EDIT_ID, m_editID);
-	//DDX_Control(pDX, IDC_EDIT_PARENT, m_editParent);
+	DDX_Control(pDX, IDC_BUTTON_MENU, m_btMenu);
+	DDX_Control(pDX, IDC_BUTTON_IMPORT, m_btImport);
+	DDX_Control(pDX, IDC_CHECK_ONTOP, m_ckOnTop);
+	DDX_Control(pDX, IDC_EDIT_NAME, m_edName);
+	DDX_Control(pDX, IDC_EDIT_TITLE, m_edTitle);
+	DDX_Control(pDX, IDC_EDIT_PATH, m_edPath);
 	DDX_Control(pDX, IDC_COMBO_ICON, m_cbIcon);
+	DDX_Control(pDX, IDC_STATIC_MAINTITLE, m_stMainTitle);
+	DDX_Control(pDX, IDC_STATIC_ONTOP, m_stOnTop);
+	DDX_Control(pDX, IDC_STATIC_NAME, m_stName);
+	DDX_Control(pDX, IDC_STATIC_TITLE, m_stTitle);
+	DDX_Control(pDX, IDC_STATIC_PATH, m_stPath);
+	DDX_Control(pDX, IDC_STATIC_ICON, m_stIcon);
+
+	DDX_Control(pDX, IDC_TREE, m_tree);
 }
 
 
@@ -122,30 +142,36 @@ void CAPPsStarterDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAPPsStarterDlg, CDialog)
 	
 	ON_WM_SYSCOMMAND()
-	//ON_WM_PAINT()
+	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_MESSAGE(WM_DROPFILES, OnDropFiles)
 	ON_WM_LBUTTONDOWN()
-	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, OnTvnSelchangedTree1)
-	ON_NOTIFY(NM_DBLCLK, IDC_TREE1, OnNMDblclkTree1)
-	ON_BN_CLICKED(IDC_BUTTON_START, OnStart)
+	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE, OnTvnSelchangedTree1)
+	ON_NOTIFY(NM_DBLCLK, IDC_TREE, OnNMDblclkTree1)
+	ON_BN_CLICKED(IDOK, OnStart)
 	ON_WM_CONTEXTMENU()
 	ON_WM_GETMINMAXINFO()
 	ON_WM_CTLCOLOR()
 	ON_WM_DRAWITEM()
 	ON_WM_MEASUREITEM()
 	ON_WM_PAINT()
+	ON_WM_SIZE()
+	ON_WM_SIZING()
+	//ON_WM_MOVE()
+	//ON_WM_MOVING()
+	ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
+	//ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
 	ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
-	ON_BN_CLICKED(IDC_CHECK1, &CAPPsStarterDlg::OnBnClickedCheck1)
+	ON_BN_CLICKED(IDC_CHECK_ONTOP, &CAPPsStarterDlg::OnBnClickedCheck1)
 
 	ON_EN_KILLFOCUS(IDC_EDIT_NAME, &CAPPsStarterDlg::OnEnKillfocusEditName)
 	ON_EN_KILLFOCUS(IDC_EDIT_TITLE, &CAPPsStarterDlg::OnEnKillfocusEditTitle)
 	ON_EN_KILLFOCUS(IDC_EDIT_PATH, &CAPPsStarterDlg::OnEnKillfocusEditPath)
 	ON_CBN_SELCHANGE(IDC_COMBO_ICON, &CAPPsStarterDlg::OnCbnSelchangeComboIcon)
 
-	ON_NOTIFY(TVN_ENDLABELEDIT, IDC_TREE1, &CAPPsStarterDlg::OnTvnEndlabeleditTree1)
-	ON_NOTIFY(TVN_BEGINLABELEDIT, IDC_TREE1, &CAPPsStarterDlg::OnTvnBeginlabeleditTree1)
-	ON_BN_CLICKED(IDC_BUTTON_PATH, &CAPPsStarterDlg::OnBnClickedButtonPath)
+	ON_NOTIFY(TVN_ENDLABELEDIT, IDC_TREE, &CAPPsStarterDlg::OnTvnEndlabeleditTree1)
+	ON_NOTIFY(TVN_BEGINLABELEDIT, IDC_TREE, &CAPPsStarterDlg::OnTvnBeginlabeleditTree1)
+	ON_BN_CLICKED(IDC_BUTTON_IMPORT, &CAPPsStarterDlg::OnBnClickedButtonPath)
     ON_BN_CLICKED(IDC_BUTTON_MENU, &CAPPsStarterDlg::OnBnClickedButtonMenu)
 END_MESSAGE_MAP()
 
@@ -187,13 +213,15 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 		| CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
 	m_wndToolBar.LoadToolBar(BAR_MAIN);
 
-	//COLORREF clrMenuBar = COLOR_MYDLG;
-	//COLORREF clrVertBar = RGB(0, 192, 192);
-
-	//CMenu* pMenu = GetMenu();
-	m_tree.ModifyStyle(0, TVS_EDITLABELS);
+	
+	GetWindowRect(rcWindowDef);
+	//ShowWindow(SW_HIDE);
+	/*CString strRC;
+	strRC.Format(_T("W: %d, H: %d", rcWindowDef.Width(), rcWindowDef.Height()));
+	MessageBox(strRC);*/
+	
 	//m_tree.ModifyStyle(0, TVS_DISABLEDRAGDROP);
-
+	//UpdateData(FALSE);
 
 	HTREEITEM hItem = m_tree.GetSelectedItem();
 
@@ -238,7 +266,7 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 
 	m_tree.SetImageList(&m_tree.m_imageList, TVSIL_NORMAL);
 
-	m_Title.SetFont(&m_font_Title);
+	//m_stTitle.SetFont(&m_font_Title);
 
 	COLORREF col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
@@ -257,33 +285,43 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	col_BtnFrame_IsHover = RGB(2, 100, 162);
 	col_BtnFrame_Selected = RGB(255, 255, 255);
 
-	m_btStart.SetWindowText(_T("«јѕ”—“»“№"));
-	m_btStart.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
+	//m_btStart.SetWindowText(_T("«јѕ”—“»“№"));
+	m_btOK.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
 		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
 
-	m_btMenu.SetWindowText(_T("ћ≈Ќё"));
+	//m_btMenu.SetWindowText(_T("ћ≈Ќё"));
 	m_btMenu.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
 		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
 
-	m_btPath.SetWindowText(_T("..."));
-	m_btPath.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
+	//m_btPath.SetWindowText(_T("..."));
+	m_btImport.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
 		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
 
-	m_btCancel.SetWindowText(_T("«ј –џ“№"));
+	//m_btCancel.SetWindowText(_T("«ј –џ“№"));
 	m_btCancel.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
 		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
 
-	this->GetWindowRect(rc_window);
-
-	ReadReg();
+	m_tree.ModifyStyle(0, TVS_EDITLABELS);
 	DragAcceptFiles(true);
+
+	
+	ReadReg();
+	DynimicLayoutCalculate();
 
 	OnOpen();
 
+	/*CRect rc;
+	CWnd* wnd = GetDlgItem(IDC_BUTTON_START);
+	wnd->GetWindowRect(&rc);
+	ScreenToClient(rc);
+	rc.left -= 10* getSystemScaleFactor();
+	wnd->SetWindowPos(NULL, rc.left, rc.top, rc.Width(), rc.Height(), SWP_SHOWWINDOW);*/
+	//m_btStart.SetWindowPos
+	//ShowWindow(SW_SHOW);
 	return TRUE;
 }
 
@@ -306,7 +344,7 @@ HBRUSH CAPPsStarterDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	switch (nCtlColor)
 	{
 	case CTLCOLOR_STATIC:
-		if (pWnd->GetDlgCtrlID() == IDC_STATIC_1) {
+		if (pWnd->GetDlgCtrlID() == IDC_STATIC_MAINTITLE) {
 			pDC->SetTextColor(RGB(47, 145, 207));
 		}
 		break;
@@ -342,42 +380,7 @@ void CAPPsStarterDlg::OnPaint()
 	}
 	else
 	{
-		CPaintDC dc(this);
-
-		/*CRect rect;
-		GetClientRect(&rect);
-
-		BITMAP bmp;
-		HBITMAP hBmp = ::LoadBitmap(::AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP1));
-		::GetObject(hBmp, sizeof(bmp), &bmp);
-		HDC hDC = ::CreateCompatibleDC(NULL);
-		SelectObject(hDC, hBmp);
-		::BitBlt(dc.m_hDC, 10, 5, rect.Width(), rect.Height(), hDC, 0, 0, SRCCOPY);
-		CDialog::OnPaint();*/
-
-
-		
-
-			CFont* pFt = dc.SelectObject(CFont::FromHandle((HFONT)::GetStockObject(ANSI_FIXED_FONT)));
-			int iBkMode = dc.SetBkMode(TRANSPARENT);
-
-			CRect rc;
-			GetClientRect(&rc);
-			
-
-			//==================================================
-			/*CString cs = "Right click and double click to show 2 popup menus.\n"
-				"Visit Help for help-contents.\n\n"
-				"Don't forget:\n"
-				"First pixel of tool bar stands for transparent color.\n\n";
-			dc.DrawText(cs, &rc, 0);*/
-			/*int cxIcon = GetSystemMetrics(SM_CXICON);
-			int cyIcon = GetSystemMetrics(SM_CYICON);
-			DrawIconEx(dc, rc.left, rc.top, hIcon, 16, 16, 0, nullptr, DI_NORMAL);*/
-
-			//==================================================
-			dc.SetBkMode(iBkMode);
-			dc.SelectObject(pFt);
+		CDialog::OnPaint();
 		
 	}
 }
@@ -389,8 +392,9 @@ HCURSOR CAPPsStarterDlg::OnQueryDragIcon()
 
 void CAPPsStarterDlg::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 {
-	lpMMI->ptMinTrackSize.x = rc_window.Width();
-	lpMMI->ptMinTrackSize.y = rc_window.Height();
+	__super::OnGetMinMaxInfo(lpMMI);
+	lpMMI->ptMinTrackSize.x = MulDiv(INITIALWIDTH_96DPI, iCurrentDPI, 96);
+	lpMMI->ptMinTrackSize.y = MulDiv(INITIALHEIGHT_96DPI, iCurrentDPI, 96);
 }
 
 void CAPPsStarterDlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
@@ -403,27 +407,27 @@ void CAPPsStarterDlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 	// !!!!
 	node = (node_data*)m_tree.GetItemData(hItem);
 	CString strPath(node->path);
-	m_Title.SetWindowText(node->title == _T("") ? node->name : node->title);
-	m_editName.SetWindowText(node->name);
-	m_editTitle.SetWindowText(node->title);
+	m_stMainTitle.SetWindowText(node->title == _T("") ? node->name : node->title);
+	m_edName.SetWindowText(node->name);
+	m_edTitle.SetWindowText(node->title);
 	//m_statID.SetWindowText(node->id);
 	//m_statParent.SetWindowText(node->parent);
 
 	if (node->type.MakeLower() == _T("container")) {
-		m_editPath.EnableWindow(false);
-		m_statPath.EnableWindow(false);
-		m_statIcon.EnableWindow(false);
-		m_editPath.SetWindowText(_T(""));
-		m_btPath.EnableWindow(false);
+		m_edPath.EnableWindow(false);
+		m_stPath.EnableWindow(false);
+		m_stIcon.EnableWindow(false);
+		m_edPath.SetWindowText(_T(""));
+		m_btImport.EnableWindow(false);
 		m_cbIcon.EnableWindow(false);
 	}
 	else {
-		m_editPath.EnableWindow(true);
-		m_statPath.EnableWindow(true);
-		m_statIcon.EnableWindow(true);
-		m_editPath.SetWindowText(node->path);
+		m_edPath.EnableWindow(true);
+		m_stPath.EnableWindow(true);
+		m_stIcon.EnableWindow(true);
+		m_edPath.SetWindowText(node->path);
 		m_cbIcon.EnableWindow(true);
-		m_btPath.EnableWindow(true);
+		m_btImport.EnableWindow(true);
 	}
 	if (node->icon == _T("")) {
 		m_cbIcon.SetCurSelIcon(_T("folder"));
@@ -435,10 +439,10 @@ void CAPPsStarterDlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 	}
 	
 	if (node->path.Compare(_T("")) == 0) {
-		m_btStart.EnableWindow(FALSE);
+		m_btOK.EnableWindow(FALSE);
 	}
 	else {
-		m_btStart.EnableWindow(TRUE);
+		m_btOK.EnableWindow(TRUE);
 	}
 	//m_cbIcon.SetCurSelIcon(node->icon == _T("") ? _T("folder") : node->icon);
 	//m_btStart.EnableWindow(node->path == _T("") ? FALSE : TRUE);
@@ -604,7 +608,7 @@ void CAPPsStarterDlg::OnEdit()
 
 void CAPPsStarterDlg::OnBnClickedCancel()
 {
-	WhriteReg();
+	WriteReg();
 	CDialog::OnCancel();
 }
 
@@ -878,14 +882,14 @@ void CAPPsStarterDlg::OnImportApp()
 
 
 
-			m_editPath.SetWindowText(csFileName);
+			m_edPath.SetWindowText(csFileName);
 			OnEnKillfocusEditPath();
-			m_editName.SetWindowText(csFileTitle);
+			m_edName.SetWindowText(csFileTitle);
 			OnEnKillfocusEditName();
-			m_editTitle.SetWindowText(strDesc2);
+			m_edTitle.SetWindowText(strDesc2);
 			OnEnKillfocusEditTitle();
 			if (strDesc2 == "")
-				m_Title.SetWindowText(dlg.GetFileTitle());
+				m_stMainTitle.SetWindowText(dlg.GetFileTitle());
 			m_cbIcon.SetCurSelIcon(_T("appsicon"));
 
 			m_tree.SetFocus();
@@ -1125,7 +1129,6 @@ void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)
 				//MessageBox("јхтунг!!!", "Yup!", MB_ICONINFORMATION);
 				break;
 			}
-
 		}
 	}
 }
@@ -1138,7 +1141,7 @@ void CAPPsStarterDlg::OnOK()
 void CAPPsStarterDlg::OnBnClickedCheck1()
 {
 	// TODO: Add your control notification handler code here
-	bool bChecked = m_check.GetCheck();
+	bool bChecked = m_ckOnTop.GetCheck();
 	// First get the current Window Styles
 	LONG style = GetWindowLong(m_hWnd, GWL_STYLE);
 	if (!bChecked) {
@@ -1151,7 +1154,28 @@ void CAPPsStarterDlg::OnBnClickedCheck1()
 
 void CAPPsStarterDlg::ReadReg()
 {
-	if (m_bNoSaveSettings) {
+	CString strSection = NULL;
+
+	WINDOWPLACEMENT* lwp;
+	UINT nl;
+
+	if (AfxGetApp()->GetProfileBinary(strSection, _T("WP"), (LPBYTE*)&lwp, &nl))
+	{
+		CRect r = lwp->rcNormalPosition;
+		if (::MonitorFromRect(r, MONITOR_DEFAULTTONULL) != nullptr) {
+			int w = max(lwp->rcNormalPosition.right - lwp->rcNormalPosition.left, rcWindowDef.Width());
+			int h = max(lwp->rcNormalPosition.bottom - lwp->rcNormalPosition.top, rcWindowDef.Height());
+			int iOldDPI = AfxGetApp()->GetProfileInt(strSection, _T("DPI"), 0);
+			w = MulDiv(w, iCurrentDPI, iOldDPI);
+			h = MulDiv(h, iCurrentDPI, iOldDPI);
+			lwp->rcNormalPosition.right = lwp->rcNormalPosition.left + w;
+			lwp->rcNormalPosition.bottom = lwp->rcNormalPosition.top + h;
+			SetWindowPlacement(lwp);
+		}
+	}
+	delete[] lwp;
+
+	/*if (m_bNoSaveSettings) {
 		return;
 	}
 
@@ -1162,10 +1186,10 @@ void CAPPsStarterDlg::ReadReg()
 	iAlwaysOnTop = pApp->GetProfileInt(strSection, _T("AlwaysOnTop"), 0);
 
 	if (iAlwaysOnTop) {
-		m_check.SetCheck(1);
+		m_ckOnTop.SetCheck(1);
 	}
 	else {
-		m_check.SetCheck(0);
+		m_ckOnTop.SetCheck(0);
 	}
 	OnBnClickedCheck1();
 		
@@ -1179,12 +1203,19 @@ void CAPPsStarterDlg::ReadReg()
 			SetWindowPlacement(lwp);
 			delete[] lwp;
 		}
-	}
+	}*/
 }
 
-void CAPPsStarterDlg::WhriteReg()
+void CAPPsStarterDlg::WriteReg()
 {
-	if (m_bNoSaveSettings) {
+
+	CString strSection = NULL;
+	AfxGetApp()->WriteProfileInt(strSection, _T("DPI"), iCurrentDPI);
+
+	WINDOWPLACEMENT wp;
+	GetWindowPlacement(&wp);
+	AfxGetApp()->WriteProfileBinary(strSection, _T("WP"), (LPBYTE)&wp, sizeof(wp));
+	/*if (m_bNoSaveSettings) {
 		return;
 	}
 	
@@ -1193,13 +1224,13 @@ void CAPPsStarterDlg::WhriteReg()
 	CWinApp* pApp = AfxGetApp();
 
 	int iAlwaysOnTop;
-	iAlwaysOnTop = m_check.GetCheck();
+	iAlwaysOnTop = m_ckOnTop.GetCheck();
 	pApp->WriteProfileInt(strSection, _T("AlwaysOnTop"), iAlwaysOnTop);
 
 	WINDOWPLACEMENT wp;
 	GetWindowPlacement(&wp);
 
-	pApp->WriteProfileBinary(strSection, _T("WP"), (LPBYTE)&wp, sizeof(wp));
+	pApp->WriteProfileBinary(strSection, _T("WP"), (LPBYTE)&wp, sizeof(wp));*/
 
 }
 
@@ -1217,7 +1248,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
-		if (i == IDC_TREE1) {
+		if (i == IDC_TREE) {
 			OnDublicate();
 		}
 		return TRUE;
@@ -1227,7 +1258,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
-		if (i == IDC_TREE1) {
+		if (i == IDC_TREE) {
 			OnRunAs();
 		}
 		return TRUE;
@@ -1237,7 +1268,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
-		if (i == IDC_TREE1) {
+		if (i == IDC_TREE) {
 			OnOpenWith();
 		}
 		return TRUE;
@@ -1246,7 +1277,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
-		if (i == IDC_TREE1) {
+		if (i == IDC_TREE) {
 			OnInsertItem();
 		}
 		return TRUE;
@@ -1255,7 +1286,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
-		if (i == IDC_TREE1) {
+		if (i == IDC_TREE) {
 			OnSortAZ();
 		}
 		return TRUE;
@@ -1265,7 +1296,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
-		if (i == IDC_TREE1) {
+		if (i == IDC_TREE) {
 			OnSortZA();
 		}
 		return TRUE;
@@ -1275,7 +1306,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
-		if (i == IDC_TREE1) {
+		if (i == IDC_TREE) {
 			OnReload();
 		}
 		return TRUE;
@@ -1284,7 +1315,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 	if (GetAsyncKeyState(VK_SHIFT) & 0x8000 && (pMsg->wParam == 0x4F)) { //shft+O
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
-		if (i == IDC_TREE1) {
+		if (i == IDC_TREE) {
 			OnOpenDirectory();
 		}
 		return TRUE;
@@ -1293,7 +1324,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 	if (GetAsyncKeyState(VK_SHIFT) & 0x8000 && (pMsg->wParam == 0x4E)) { //shft+N
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
-		if (i == IDC_TREE1) {
+		if (i == IDC_TREE) {
 			OnInsertFolder();
 		}
 		return TRUE;
@@ -1303,7 +1334,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
-		if (i == IDC_TREE1) {
+		if (i == IDC_TREE) {
 			
 			HTREEITEM hSelectedItem = m_tree.GetSelectedItem();
 			if (hSelectedItem != NULL)
@@ -1336,15 +1367,15 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
 		if (i == IDC_EDIT_NAME) {
-			m_editName.Undo();
+			m_edName.Undo();
 			return TRUE;
 		}
 		if (i == IDC_EDIT_TITLE) {
-			m_editTitle.Undo();
+			m_edTitle.Undo();
 			return TRUE;
 		}
 		if (i == IDC_EDIT_PATH) {
-			m_editPath.Undo();
+			m_edPath.Undo();
 			return TRUE;
 		}
 	}
@@ -1352,7 +1383,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 	if ((pMsg->message == WM_KEYDOWN) && pMsg->wParam == VK_DELETE) {
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
-		if (i == IDC_TREE1) {
+		if (i == IDC_TREE) {
 			OnDeleteItem();
 			return TRUE;
 		}
@@ -1365,7 +1396,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 		{
 			CWnd* pWnd = GetFocus();
 			UINT i = pWnd->GetDlgCtrlID();
-			if (i == IDC_TREE1) {
+			if (i == IDC_TREE) {
 				OnMoveUp();
 				return TRUE;
 			}
@@ -1374,7 +1405,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 		{
 			CWnd* pWnd = GetFocus();
 			UINT i = pWnd->GetDlgCtrlID();
-			if (i == IDC_TREE1) {
+			if (i == IDC_TREE) {
 				OnMoveDown();
 				return TRUE;
 			}
@@ -1427,7 +1458,7 @@ void CAPPsStarterDlg::OnEnKillfocusEditName()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	CString str;
-	m_editName.GetWindowText(str);
+	m_edName.GetWindowText(str);
 	HTREEITEM hti;
 
 	hti = m_tree.GetSelectedItem();
@@ -1437,7 +1468,7 @@ void CAPPsStarterDlg::OnEnKillfocusEditName()
 	node->name = str;
 	m_tree.SetItemData(hti, (DWORD_PTR)node);
 	m_tree.SetItemText(hti, str);// .SetWindowText(str);
-	m_Title.SetWindowText(node->title == "" ? str : node->title);
+	m_stMainTitle.SetWindowText(node->title == "" ? str : node->title);
 }
 
 
@@ -1445,7 +1476,7 @@ void CAPPsStarterDlg::OnEnKillfocusEditTitle()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	CString str;
-	m_editTitle.GetWindowText(str);
+	m_edTitle.GetWindowText(str);
 
 	HTREEITEM hti;
 	hti = m_tree.GetSelectedItem();
@@ -1454,7 +1485,7 @@ void CAPPsStarterDlg::OnEnKillfocusEditTitle()
 
 	node->title = str;
 	m_tree.SetItemData(hti, (DWORD_PTR)node);
-	m_Title.SetWindowText(str);
+	m_stMainTitle.SetWindowText(str);
 
 
 }
@@ -1464,7 +1495,7 @@ void CAPPsStarterDlg::OnEnKillfocusEditPath()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	CString str;
-	m_editPath.GetWindowText(str);
+	m_edPath.GetWindowText(str);
 
 	HTREEITEM hti;
 	hti = m_tree.GetSelectedItem();
@@ -1596,8 +1627,8 @@ void CAPPsStarterDlg::OnTvnEndlabeleditTree1(NMHDR* pNMHDR, LRESULT* pResult)
 	node->name = str;
 	m_tree.SetItemData(hti, (DWORD_PTR)node);
 	//m_tree.SetItemText(hti, str);// .SetWindowText(str);
-	m_editName.SetWindowText(str);
-	m_Title.SetWindowText(node->title == "" ? str : node->title);
+	m_edName.SetWindowText(str);
+	m_stMainTitle.SetWindowText(node->title == "" ? str : node->title);
 	// пусть у нас дл€ примера нельз€, чтобы новое им€ элемен
 	// иначе прин€ть изменени€
 	*pResult = 1;
@@ -1792,14 +1823,14 @@ void CAPPsStarterDlg::OnBnClickedButtonPath()
 
 		
 
-		m_editPath.SetWindowText(dlg.GetPathName());
+		m_edPath.SetWindowText(dlg.GetPathName());
 		OnEnKillfocusEditPath();
-		m_editName.SetWindowText(dlg.GetFileTitle());
+		m_edName.SetWindowText(dlg.GetFileTitle());
 		OnEnKillfocusEditName();
-		m_editTitle.SetWindowText(strDesc2);
+		m_edTitle.SetWindowText(strDesc2);
 		OnEnKillfocusEditTitle();
 		if (strDesc2 == "")
-			m_Title.SetWindowText(dlg.GetFileTitle());
+			m_stMainTitle.SetWindowText(dlg.GetFileTitle());
 		m_cbIcon.SetCurSelIcon(_T("appsicon"));
 
 		m_tree.SetFocus();
@@ -1858,7 +1889,7 @@ void CAPPsStarterDlg::OnBnClickedButtonMenu()
 		break;
 	case ID_MENU_IMPORT_DEF:
 		//OnReload();
-		WhriteReg();
+		WriteReg();
 		break;
 	case ID_MENU_EDIT:
 		OnEdit();
@@ -1875,37 +1906,394 @@ void CAPPsStarterDlg::OnBnClickedButtonMenu()
 	}
 }
 
-UINT CAPPsStarterDlg::startThreadImport(LPVOID param)
-{
-	THREADSTRUCT* ts = (THREADSTRUCT*)param;
-	ts->_this->OnImportApp();
-	//ts->_this->SetTimer(TIMER_EASEIN, 10, NULL); // запускаем таймер по€влени€
+//UINT CAPPsStarterDlg::startThreadImport(LPVOID param)
+//{
+//	THREADSTRUCT* ts = (THREADSTRUCT*)param;
+//	ts->_this->OnImportApp();
+//	//ts->_this->SetTimer(TIMER_EASEIN, 10, NULL); // запускаем таймер по€влени€
+//
+//	delete ts;
+//	return 1;
+//}
+//
+//UINT CAPPsStarterDlg::startThreadOut(LPVOID param)
+//{
+//	THREADSTRUCT* ts = (THREADSTRUCT*)param;
+//	//ts->_this->StartTime = GetTickCount(); // фиксируем текущее врем€
+//	//ts->_this->SetTimer(TIMER_EASEOUT, 10, NULL); // запускаем таймер исчезновени€
+//
+//	delete ts;
+//	return 1;
+//}
+//
+//void CAPPsStarterDlg::startImport()
+//{
+//	THREADSTRUCT* _param = new THREADSTRUCT;
+//	_param->_this = this;
+//	AfxBeginThread(startThreadImport, _param); // запускаем отдельный поток
+//
+//}
+//
+//void CAPPsStarterDlg::startOut()
+//{
+//	THREADSTRUCT* _param = new THREADSTRUCT;
+//	_param->_this = this;
+//	AfxBeginThread(startThreadOut, _param); // запускаем отдельный поток
+//}
 
-	delete ts;
-	return 1;
+void CAPPsStarterDlg::OnSize(UINT nType, int cx, int cy)
+{
+	__super::OnSize(nType, cx, cy);
+	DynimicLayoutCalculate();
 }
 
-UINT CAPPsStarterDlg::startThreadOut(LPVOID param)
+void CAPPsStarterDlg::OnSizing(UINT nSide, LPRECT pRect)
 {
-	THREADSTRUCT* ts = (THREADSTRUCT*)param;
-	//ts->_this->StartTime = GetTickCount(); // фиксируем текущее врем€
-	//ts->_this->SetTimer(TIMER_EASEOUT, 10, NULL); // запускаем таймер исчезновени€
+	__super::OnSizing(nSide, pRect);
 
-	delete ts;
-	return 1;
+	CRect rc;
+	GetWindowRect(&rc);
+
+	int x = MulDiv(INITIALWIDTH_96DPI, iCurrentDPI, 96);
+	int y = MulDiv(INITIALHEIGHT_96DPI, iCurrentDPI, 96);
+
+	if (rc.Width() <= x || rc.Height() <= y) {
+		return;
+	}
+
+	DynimicLayoutCalculate();
 }
 
-void CAPPsStarterDlg::startImport()
+LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 {
-	THREADSTRUCT* _param = new THREADSTRUCT;
-	_param->_this = this;
-	AfxBeginThread(startThreadImport, _param); // запускаем отдельный поток
+	CRect rc;
+	int iOldDPI = iCurrentDPI;
+	iCurrentDPI = GetWindowDPI(m_hWnd);
 
+
+
+	GetWindowRect(&rc);
+	int dpiScaledWidth, dpiScaledHeight;
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	CWnd* pwndChild = GetWindow(GW_CHILD);
+	while (pwndChild) {
+		pwndChild->GetWindowRect(&rc);
+		//pwndChild->EnableWindow(FALSE);
+		dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+		dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+		
+		pwndChild->SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+		//if (pwndChild->GetDlgCtrlID() == IDC_COMBO_ICON) {
+		//	m_cbIcon.SetItemHeight(-1, dpiScaledHeight);
+		//	//m_cbIcon.SetItemHeight(0, dpiScaledHeight);
+		//}
+		pwndChild = pwndChild->GetNextWindow();
+	};
+
+
+	/*m_ckOnTop.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_ckOnTop.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_stOnTop.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_stOnTop.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_stMainTitle.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_stMainTitle.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_edName.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_edName.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_stName.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_stName.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_edTitle.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_edTitle.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_stTitle.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_stTitle.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_edPath.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_edPath.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_stPath.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_stPath.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_btOK.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_btOK.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_btCancel.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_btCancel.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_btMenu.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_btMenu.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_btImport.GetWindowRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_btImport.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+	
+	m_cbIcon.GetClientRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_cbIcon.SetItemHeight(-1, dpiScaledHeight);
+	m_cbIcon.SetItemHeight(0, dpiScaledHeight);
+	m_cbIcon.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);*/
+
+	DynimicLayoutCalculate();
+
+	return 0;
 }
 
-void CAPPsStarterDlg::startOut()
+void CAPPsStarterDlg::DynimicLayoutCalculate()
 {
-	THREADSTRUCT* _param = new THREADSTRUCT;
-	_param->_this = this;
-	AfxBeginThread(startThreadOut, _param); // запускаем отдельный поток
+	int iOffset;
+
+	iOffset = MulDiv(10, iCurrentDPI, 96);
+
+
+	CRect rcCheckOnTop;
+	CRect rcStaticOnTop;
+	CRect rcStaticMainTitle;
+	CRect rcTree;
+	CRect rcStaticName;
+	CRect rcStaticTitle;
+	CRect rcStaticPath;
+	CRect rcStaticIcon;
+	CRect rcEditName;
+	CRect rcEditTitle;
+	CRect rcEditPath;
+	CRect rcComboIcon;
+	CRect rcButtonImport;
+	CRect rcButtonMenu;
+	CRect rcButtonOK;
+	CRect rcButtonCancel;
+	CRect rcWindow;
+
+	GetClientRect(rcWindow);
+	m_ckOnTop.GetClientRect(rcCheckOnTop);
+	m_stOnTop.GetClientRect(rcStaticOnTop);
+	m_stMainTitle.GetClientRect(rcStaticMainTitle);
+	m_tree.GetClientRect(rcTree);
+	m_stName.GetClientRect(rcStaticName);
+	m_stTitle.GetClientRect(rcStaticTitle);
+	m_stPath.GetClientRect(rcStaticPath);
+	m_stIcon.GetClientRect(rcStaticIcon);
+	m_edName.GetWindowRect(rcEditName);
+	m_edTitle.GetWindowRect(rcEditTitle);
+	m_edPath.GetWindowRect(rcEditPath);
+	m_cbIcon.GetWindowRect(rcComboIcon);
+	m_btImport.GetClientRect(rcButtonImport);
+	m_btMenu.GetClientRect(rcButtonMenu);
+	m_btOK.GetClientRect(rcButtonOK);
+	m_btCancel.GetClientRect(rcButtonCancel);
+
+
+	int h, w;
+
+	h = rcCheckOnTop.Height();
+	w = rcCheckOnTop.Width();
+	rcCheckOnTop.left = rcWindow.right - w - iOffset;
+	rcCheckOnTop.right = rcWindow.right - iOffset;
+	rcCheckOnTop.top = rcWindow.top + iOffset;
+	rcCheckOnTop.bottom = rcWindow.top + h + iOffset;
+	m_ckOnTop.MoveWindow(rcCheckOnTop.left, rcCheckOnTop.top, rcCheckOnTop.Width(), rcCheckOnTop.Height());
+
+
+	h = rcStaticOnTop.Height();
+	w = rcStaticOnTop.Width();
+	rcStaticOnTop.left = iOffset;
+	rcStaticOnTop.right = rcCheckOnTop.left - iOffset;
+	rcStaticOnTop.top = rcCheckOnTop.top;
+	rcStaticOnTop.bottom = rcCheckOnTop.bottom;
+	m_stOnTop.MoveWindow(rcStaticOnTop.left, rcStaticOnTop.top, rcStaticOnTop.Width(), rcStaticOnTop.Height());
+
+	h = rcStaticMainTitle.Height();
+	w = rcStaticMainTitle.Width();
+	rcStaticMainTitle.left = iOffset;
+	rcStaticMainTitle.right = rcWindow.right - iOffset;
+	rcStaticMainTitle.top = rcCheckOnTop.bottom;
+	rcStaticMainTitle.bottom = rcCheckOnTop.bottom + h;
+	m_stMainTitle.MoveWindow(rcStaticMainTitle.left, rcStaticMainTitle.top, rcStaticMainTitle.Width(), rcStaticMainTitle.Height());
+
+	h = rcTree.Height();
+	w = rcTree.Width();
+	rcTree.left = iOffset;
+	rcTree.right = rcTree.left + (long)(rcWindow.Width() / 2.3);// .left + w;
+	rcTree.top = rcStaticMainTitle.bottom;
+	rcTree.bottom = rcWindow.bottom - iOffset;
+	m_tree.MoveWindow(rcTree.left, rcTree.top, rcTree.Width(), rcTree.Height());
+
+	h = rcStaticName.Height();
+	w = rcStaticName.Width();
+	rcStaticName.left = rcTree.right + iOffset;
+	rcStaticName.right = rcStaticName.left + w;
+	rcStaticName.top = rcTree.top;
+	rcStaticName.bottom = rcStaticName.top + h;
+	m_stName.MoveWindow(rcStaticName.left, rcStaticName.top, rcStaticName.Width(), rcStaticName.Height());
+
+	h = rcEditName.Height();
+	w = rcEditName.Width();
+	rcEditName.left = rcStaticName.right;
+	rcEditName.right = rcWindow.right - iOffset;
+	rcEditName.top = rcStaticName.top;
+	rcEditName.bottom = rcEditName.top + h;
+	m_edName.MoveWindow(rcEditName.left, rcEditName.top, rcEditName.Width(), rcEditName.Height());
+
+	h = rcStaticTitle.Height();
+	w = rcStaticTitle.Width();
+	rcStaticTitle.left = rcTree.right + iOffset;
+	rcStaticTitle.right = rcStaticTitle.left + w;
+	rcStaticTitle.top = rcEditName.bottom + iOffset;
+	rcStaticTitle.bottom = rcStaticTitle.top + h;
+	m_stTitle.MoveWindow(rcStaticTitle.left, rcStaticTitle.top, rcStaticTitle.Width(), rcStaticTitle.Height());
+
+	h = rcEditTitle.Height();
+	w = rcEditTitle.Width();
+	rcEditTitle.left = rcStaticTitle.right;
+	rcEditTitle.right = rcWindow.right - iOffset;
+	rcEditTitle.top = rcStaticTitle.top;
+	rcEditTitle.bottom = rcEditTitle.top + h;
+	m_edTitle.MoveWindow(rcEditTitle.left, rcEditTitle.top, rcEditTitle.Width(), rcEditTitle.Height());
+
+	h = rcStaticPath.Height();
+	w = rcStaticPath.Width();
+	rcStaticPath.left = rcTree.right + iOffset;
+	rcStaticPath.right = rcStaticPath.left + w;
+	rcStaticPath.top = rcEditTitle.bottom + iOffset;
+	rcStaticPath.bottom = rcStaticPath.top + h;
+	m_stPath.MoveWindow(rcStaticPath.left, rcStaticPath.top, rcStaticPath.Width(), rcStaticPath.Height());
+
+	h = rcButtonImport.Height();
+	w = rcButtonImport.Width();
+	rcButtonImport.right = rcWindow.right - iOffset;
+	rcButtonImport.left = rcButtonImport.right - w;
+	rcButtonImport.top = rcStaticPath.top;
+	rcButtonImport.bottom = rcButtonImport.top + h;
+	m_btImport.MoveWindow(rcButtonImport.left, rcButtonImport.top, rcButtonImport.Width(), rcButtonImport.Height());
+
+	h = rcEditPath.Height();
+	w = rcEditPath.Width();
+	rcEditPath.left = rcStaticPath.right;
+	rcEditPath.right = rcButtonImport.left - (iOffset / 2);
+	rcEditPath.top = rcStaticPath.top;
+	rcEditPath.bottom = rcEditPath.top + h;
+	m_edPath.MoveWindow(rcEditPath.left, rcEditPath.top, rcEditPath.Width(), rcEditPath.Height());
+
+	h = rcStaticIcon.Height();
+	w = rcStaticIcon.Width();
+	rcStaticIcon.left = rcTree.right + iOffset;
+	rcStaticIcon.right = rcStaticIcon.left + w;
+	rcStaticIcon.top = rcButtonImport.bottom + iOffset;
+	rcStaticIcon.bottom = rcStaticIcon.top + h;
+	m_stIcon.MoveWindow(rcStaticIcon.left, rcStaticIcon.top, rcStaticIcon.Width(), rcStaticPath.Height());
+
+	h = rcComboIcon.Height();
+	w = rcComboIcon.Width();
+	rcComboIcon.left = rcEditPath.left;
+	rcComboIcon.right = rcComboIcon.left + w;
+	rcComboIcon.top = rcStaticIcon.top;
+	rcComboIcon.bottom = rcComboIcon.top + h;
+	m_cbIcon.MoveWindow(rcComboIcon.left, rcComboIcon.top, rcComboIcon.Width(), rcComboIcon.Height());
+
+	h = rcButtonMenu.Height();
+	w = rcButtonMenu.Width();
+	rcButtonMenu.right = rcComboIcon.right;
+	rcButtonMenu.left = rcComboIcon.left;
+	rcButtonMenu.top = rcComboIcon.bottom + iOffset + iOffset;
+	rcButtonMenu.bottom = rcButtonMenu.top + h;
+	m_btMenu.MoveWindow(rcButtonMenu.left, rcButtonMenu.top, rcButtonMenu.Width(), rcButtonMenu.Height());
+
+	h = rcButtonCancel.Height();
+	w = rcButtonCancel.Width();
+	rcButtonCancel.right = rcWindow.right - iOffset;
+	rcButtonCancel.left = rcButtonCancel.right - w;
+	rcButtonCancel.top = rcWindow.bottom - iOffset - h;
+	rcButtonCancel.bottom = rcWindow.bottom - iOffset;
+	m_btCancel.MoveWindow(rcButtonCancel.left, rcButtonCancel.top, rcButtonCancel.Width(), rcButtonCancel.Height());
+
+	h = rcButtonOK.Height();
+	w = rcButtonOK.Width();
+	rcButtonOK.right = rcWindow.right - iOffset;
+	rcButtonOK.left = rcButtonOK.right - w;
+	rcButtonOK.top = rcButtonCancel.top - iOffset - h;
+	rcButtonOK.bottom = rcButtonOK.top + h;
+	m_btOK.MoveWindow(rcButtonOK.left, rcButtonOK.top, rcButtonOK.Width(), rcButtonOK.Height());
+
+	CFont* pFont = GetFont();
+	if (NULL != pFont)
+	{
+		LOGFONT lf;
+		pFont->GetLogFont(&lf);
+		memset(&lf, 0, sizeof(LOGFONT));
+		lf.lfHeight = -MulDiv(24, iCurrentDPI, 72);
+		_tcscpy(lf.lfFaceName, _T("Arial Narrow"));
+		m_font1.CreateFontIndirect(&lf);
+	}
+
+	CFont* pFont2 = GetFont();
+	if (NULL != pFont2)
+	{
+		LOGFONT lf;
+		memset(&lf, 0, sizeof(LOGFONT));
+		pFont2->GetLogFont(&lf);
+		lf.lfHeight = -MulDiv(10, iCurrentDPI, 72);
+		m_font2.CreateFontIndirect(&lf);
+	}
+
+	CFont* pFont3 = GetFont();
+	if (NULL != pFont3)
+	{
+		LOGFONT lf;
+		memset(&lf, 0, sizeof(LOGFONT));
+		pFont3->GetLogFont(&lf);
+		lf.lfHeight = -MulDiv(lf.lfHeight, iCurrentDPI, 72);
+		m_font3.CreateFontIndirect(&lf);
+	}
+
+	m_stMainTitle.SetFont(&m_font1);
+
+	m_tree.SetFont(&m_font3);
+	m_stOnTop.SetFont(&m_font3);
+	m_stName.SetFont(&m_font3);
+	m_stTitle.SetFont(&m_font3);
+	m_stPath.SetFont(&m_font3);
+	m_stIcon.SetFont(&m_font3);
+	m_cbIcon.SetFont(&m_font3);
+	m_edName.SetFont(&m_font3);
+	m_edTitle.SetFont(&m_font3);
+	m_edPath.SetFont(&m_font3);
+	m_btImport.SetFont(&m_font3);
+
+	m_btOK.SetFont(&m_font2);
+	m_btCancel.SetFont(&m_font2);
+	m_btMenu.SetFont(&m_font2);
+
+	Invalidate();
 }

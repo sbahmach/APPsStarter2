@@ -2,7 +2,7 @@
 #include "resource.h"
 //#include "FileVersion.h"
 #include "TreeCtrlXML.h"
- //using namespace tinyxml2;
+ using namespace tinyxml2;
 CTreeCtrlXML::CTreeCtrlXML(void)
 {
 	//ModifyStyle(0, TVS_EDITLABELS);
@@ -891,7 +891,7 @@ void CTreeCtrlXML::OnMouseMove(UINT nFlags, CPoint point)
 {
 	HTREEITEM	hitem,hnitem;
 	UINT		flags = NULL;
-
+	//SetCursor(LoadCursor(NULL, IDC_ARROW));
 	if (m_nHoverTimerID)
 	{
 		KillTimer(m_nHoverTimerID);
@@ -900,7 +900,8 @@ void CTreeCtrlXML::OnMouseMove(UINT nFlags, CPoint point)
 
 	if (m_bLDragging)
 	{
-		
+		SetCursor(LoadCursor(NULL, IDC_ARROW));
+		ModifyStyle(TVS_TRACKSELECT, 0);
 		POINT pt = point;
 		ClientToScreen(&pt);
 
@@ -960,6 +961,9 @@ void CTreeCtrlXML::OnLButtonUp(UINT nFlags, CPoint point)
 	if (m_bLDragging)
 	{
 		m_bLDragging = FALSE;
+		//SetCursor(LoadCursor(NULL, IDC_HAND));
+		ModifyStyle(0, TVS_TRACKSELECT);
+		//SetCursor(LoadCursor(NULL, IDC_ARROW));
 		//CImageList::DragLeave(this);
 		//CImageList::EndDrag();
 		ReleaseCapture();
@@ -1005,6 +1009,7 @@ void CTreeCtrlXML::OnLButtonUp(UINT nFlags, CPoint point)
 		HTREEITEM htiNew = CopyBranch(htiDrag, htiParent, htiAfter);
 		DeleteItem(m_hitemDrag);
 		SelectItem(htiNew);
+		
 	}
 
 }

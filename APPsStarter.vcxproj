@@ -98,6 +98,10 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <ManifestFile>
+      </ManifestFile>
+      <AdditionalManifestDependencies>
+      </AdditionalManifestDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -113,6 +117,9 @@
       <Command>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File update_version.ps1 "./ver_build.h"
 update_revision.cmd</Command>
     </PreBuildEvent>
+    <Manifest>
+      <AdditionalManifestFiles>appname.exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -124,6 +131,10 @@ update_revision.cmd</Command>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <ManifestFile>
+      </ManifestFile>
+      <AdditionalManifestDependencies>
+      </AdditionalManifestDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -139,6 +150,9 @@ update_revision.cmd</Command>
       <Command>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File update_version.ps1 "./ver_build.h"
 update_revision.cmd</Command>
     </PreBuildEvent>
+    <Manifest>
+      <AdditionalManifestFiles>appname.exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -157,6 +171,10 @@ update_revision.cmd</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>
       </AdditionalDependencies>
+      <ManifestFile>
+      </ManifestFile>
+      <AdditionalManifestDependencies>
+      </AdditionalManifestDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -177,6 +195,9 @@ update_revision.cmd</Command>
       <Command>
       </Command>
     </PostBuildEvent>
+    <Manifest>
+      <AdditionalManifestFiles>appname.exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -192,6 +213,10 @@ update_revision.cmd</Command>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <ManifestFile>
+      </ManifestFile>
+      <AdditionalManifestDependencies>
+      </AdditionalManifestDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -209,6 +234,9 @@ update_revision.cmd</Command>
       <Command>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File update_version.ps1 "./ver_build.h"
 update_revision.cmd</Command>
     </PreBuildEvent>
+    <Manifest>
+      <AdditionalManifestFiles>appname.exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AutoMessageBox.h" />
@@ -263,6 +291,9 @@ update_revision.cmd</Command>
     <Image Include="res\vcam.ico" />
     <Image Include="res\APPsStarter.ico" />
     <Image Include="res\web.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="appname.exe.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
