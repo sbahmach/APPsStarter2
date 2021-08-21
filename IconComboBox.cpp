@@ -172,7 +172,8 @@ void CSmallIconComboBox::SetCurSelIcon(CString str)
 
 void CSmallIconComboBox::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct) 
 {
-  lpMeasureItemStruct->itemHeight = 18;
+	//iCurrentDPI = GetWindowDPI(GetSafeHwnd());
+	lpMeasureItemStruct->itemHeight = 18;// MulDiv(18, iCurrentDPI, 96);
 }
 
 void CSmallIconComboBox::DrawItem(LPDRAWITEMSTRUCT lpDIS) 

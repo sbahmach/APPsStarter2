@@ -126,9 +126,10 @@ void CAPPsStarterDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_NAME, m_edName);
 	DDX_Control(pDX, IDC_EDIT_TITLE, m_edTitle);
 	DDX_Control(pDX, IDC_EDIT_PATH, m_edPath);
-	DDX_Control(pDX, IDC_COMBO_ICON, m_cbIcon);
+	DDX_Control(pDX, IDC_COMBO_ICONS, m_cb2);
+	//DDX_Control(pDX, IDC_COMBO_ICON, m_cbIcon);
 	DDX_Control(pDX, IDC_STATIC_MAINTITLE, m_stMainTitle);
-	DDX_Control(pDX, IDC_STATIC_ONTOP, m_stOnTop);
+	//DDX_Control(pDX, IDC_STATIC_ONTOP, m_stOnTop);
 	DDX_Control(pDX, IDC_STATIC_NAME, m_stName);
 	DDX_Control(pDX, IDC_STATIC_TITLE, m_stTitle);
 	DDX_Control(pDX, IDC_STATIC_PATH, m_stPath);
@@ -167,12 +168,13 @@ BEGIN_MESSAGE_MAP(CAPPsStarterDlg, CDialog)
 	ON_EN_KILLFOCUS(IDC_EDIT_NAME, &CAPPsStarterDlg::OnEnKillfocusEditName)
 	ON_EN_KILLFOCUS(IDC_EDIT_TITLE, &CAPPsStarterDlg::OnEnKillfocusEditTitle)
 	ON_EN_KILLFOCUS(IDC_EDIT_PATH, &CAPPsStarterDlg::OnEnKillfocusEditPath)
-	ON_CBN_SELCHANGE(IDC_COMBO_ICON, &CAPPsStarterDlg::OnCbnSelchangeComboIcon)
+	//ON_CBN_SELCHANGE(IDC_COMBO_ICON, &CAPPsStarterDlg::OnCbnSelchangeComboIcon)
 
 	ON_NOTIFY(TVN_ENDLABELEDIT, IDC_TREE, &CAPPsStarterDlg::OnTvnEndlabeleditTree1)
 	ON_NOTIFY(TVN_BEGINLABELEDIT, IDC_TREE, &CAPPsStarterDlg::OnTvnBeginlabeleditTree1)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT, &CAPPsStarterDlg::OnBnClickedButtonPath)
     ON_BN_CLICKED(IDC_BUTTON_MENU, &CAPPsStarterDlg::OnBnClickedButtonMenu)
+	ON_CBN_SELCHANGE(IDC_COMBO_ICONS, &CAPPsStarterDlg::OnCbnSelchangeCombo2)
 END_MESSAGE_MAP()
 
 
@@ -225,7 +227,7 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 
 	HTREEITEM hItem = m_tree.GetSelectedItem();
 
-	m_cbIcon.InsertIcon(0, IDI_FOLDER, _T("folder"));
+	/*m_cbIcon.InsertIcon(0, IDI_FOLDER, _T("folder"));
 	m_cbIcon.InsertIcon(1, IDI_1C, _T("1c"));
 	m_cbIcon.InsertIcon(2, IDI_MEDOC, _T("medoc"));
 	m_cbIcon.InsertIcon(3, IDI_RDP, _T("rdp"));
@@ -237,34 +239,15 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	m_cbIcon.InsertIcon(9, IDI_CMD, _T("cmd"));
 	m_cbIcon.InsertIcon(10, IDI_SCRIPT, _T("script"));
 	m_cbIcon.InsertIcon(11, IDI_PSHELL, _T("pshell"));
-	m_cbIcon.InsertIcon(12, IDI_APP, _T("appsicon"));
+	m_cbIcon.InsertIcon(12, IDI_APP, _T("appsicon"));*/
+
+	
+	SetImageList();
 
 	m_tree.SetFocus();
 	m_tree.SelectItem(hItem);
 
-	HICON icon[13];
-	icon[0] = AfxGetApp()->LoadIcon(IDI_FOLDER);
-	icon[1] = AfxGetApp()->LoadIcon(IDI_1C);
-	icon[2] = AfxGetApp()->LoadIcon(IDI_MEDOC);
-	icon[3] = AfxGetApp()->LoadIcon(IDI_RDP);
-	icon[4] = AfxGetApp()->LoadIcon(IDI_APP);
-	icon[5] = AfxGetApp()->LoadIcon(IDI_MAIL);
-	icon[6] = AfxGetApp()->LoadIcon(IDI_WEB);
-	icon[7] = AfxGetApp()->LoadIcon(IDI_SHARE);
-	icon[8] = AfxGetApp()->LoadIcon(IDI_VCAM);
-	icon[9] = AfxGetApp()->LoadIcon(IDI_CMD);
-	icon[10] = AfxGetApp()->LoadIcon(IDI_SCRIPT);
-	icon[11] = AfxGetApp()->LoadIcon(IDI_PSHELL);
-	icon[12] = AfxGetApp()->LoadIcon(IDI_APP);
-
-	m_tree.m_imageList.Create(16, 16, ILC_MASK | ILC_COLOR32, 0, 0);
-	m_tree.m_imageList.SetBkColor(0xffffff);
-	for (int i = 0; i < 13; i++)
-	{
-		m_tree.m_imageList.Add(icon[i]);
-	}
-
-	m_tree.SetImageList(&m_tree.m_imageList, TVSIL_NORMAL);
+	
 
 	//m_stTitle.SetFont(&m_font_Title);
 
@@ -308,12 +291,15 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	m_tree.ModifyStyle(0, TVS_EDITLABELS);
 	DragAcceptFiles(true);
 
+	//m_cb1.SetCurSel(0);
 	
 	ReadReg();
 	DynimicLayoutCalculate();
 
 	OnOpen();
-
+	CRect rcWin;
+	GetWindowRect(&rcWin);
+	InvalidateRect(&rcWin);
 	/*CRect rc;
 	CWnd* wnd = GetDlgItem(IDC_BUTTON_START);
 	wnd->GetWindowRect(&rc);
@@ -419,22 +405,30 @@ void CAPPsStarterDlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
 		m_stIcon.EnableWindow(false);
 		m_edPath.SetWindowText(_T(""));
 		m_btImport.EnableWindow(false);
-		m_cbIcon.EnableWindow(false);
+		//m_cbIcon.EnableWindow(false);
+		m_cb2.EnableWindow(false);
 	}
 	else {
 		m_edPath.EnableWindow(true);
 		m_stPath.EnableWindow(true);
 		m_stIcon.EnableWindow(true);
 		m_edPath.SetWindowText(node->path);
-		m_cbIcon.EnableWindow(true);
+		//m_cbIcon.EnableWindow(true);
+		m_cb2.EnableWindow(true);
 		m_btImport.EnableWindow(true);
 	}
 	if (node->icon == _T("")) {
-		m_cbIcon.SetCurSelIcon(_T("folder"));
+		//m_cbIcon.SetCurSelIcon(_T("folder"));
+		int i = m_cb2.FindStringExact(0, _T("folder"));
+		m_cb2.SetCurSel(i);
+		//m_cb2.SelectString(0, _T("folder"));
 		//m_cbIcon.SetCurSel(0);
 	}
 	else {
-		m_cbIcon.SetCurSelIcon(node->icon);
+		//m_cbIcon.SetCurSelIcon(node->icon);
+		int i = m_cb2.FindStringExact(0, node->icon);
+		m_cb2.SetCurSel(i);
+		//m_cbIcon.SetCurSel(1);
 		//m_cbIcon.SetCurSel(1);
 	}
 	
@@ -890,8 +884,10 @@ void CAPPsStarterDlg::OnImportApp()
 			OnEnKillfocusEditTitle();
 			if (strDesc2 == "")
 				m_stMainTitle.SetWindowText(dlg.GetFileTitle());
-			m_cbIcon.SetCurSelIcon(_T("appsicon"));
-
+			//m_cbIcon.SetCurSelIcon(_T("appsicon"));
+			int i = m_cb2.FindStringExact(0, _T("appsicon"));
+			m_cb2.SetCurSel(i);
+			
 			m_tree.SetFocus();
 
 		}
@@ -1516,60 +1512,60 @@ void CAPPsStarterDlg::OnEnKillfocusEditPath()
 //}
 
 
-void CAPPsStarterDlg::OnCbnSelchangeComboIcon()
-{
-	// TODO: добавьте свой код обработчика уведомлений
-	int i = m_cbIcon.GetCurSel();
-	HTREEITEM hti = m_tree.GetSelectedItem();
-
-	node = (node_data*)m_tree.GetItemData(hti);
-	switch (i) {
-	case 0:
-		node->icon = _T("folder");
-		break;
-	case 1:
-		node->icon = _T("1c");
-		break;
-	case 2:
-		node->icon = _T("medoc");
-		break;
-	case 3:
-		node->icon = _T("rdp");
-		break;
-	case 4:
-		node->icon = _T("app");
-		break;
-	case 5:
-		node->icon = _T("mail");
-		break;
-	case 6:
-		node->icon = _T("web");
-		break;
-	case 7:
-		node->icon = _T("share");
-		break;
-	case 8:
-		node->icon = _T("vcam");
-		break;
-	case 9:
-		node->icon = _T("cmd");
-		break;
-	case 10:
-		node->icon = _T("script");
-		break;
-	case 11:
-		node->icon = _T("pshell");
-		break;
-	case 12:
-		node->icon = _T("appsicon");
-		break;
-	default:
-		break;
-	}
-	m_tree.SetFocus();
-	m_tree.SetItemData(hti, (DWORD_PTR)node);
-	m_tree.SetItemImage(hti, i, i);
-}
+//void CAPPsStarterDlg::OnCbnSelchangeComboIcon()
+//{
+//	// TODO: добавьте свой код обработчика уведомлений
+//	int i = m_cbIcon.GetCurSel();
+//	HTREEITEM hti = m_tree.GetSelectedItem();
+//
+//	node = (node_data*)m_tree.GetItemData(hti);
+//	switch (i) {
+//	case 0:
+//		node->icon = _T("folder");
+//		break;
+//	case 1:
+//		node->icon = _T("1c");
+//		break;
+//	case 2:
+//		node->icon = _T("medoc");
+//		break;
+//	case 3:
+//		node->icon = _T("rdp");
+//		break;
+//	case 4:
+//		node->icon = _T("app");
+//		break;
+//	case 5:
+//		node->icon = _T("mail");
+//		break;
+//	case 6:
+//		node->icon = _T("web");
+//		break;
+//	case 7:
+//		node->icon = _T("share");
+//		break;
+//	case 8:
+//		node->icon = _T("vcam");
+//		break;
+//	case 9:
+//		node->icon = _T("cmd");
+//		break;
+//	case 10:
+//		node->icon = _T("script");
+//		break;
+//	case 11:
+//		node->icon = _T("pshell");
+//		break;
+//	case 12:
+//		node->icon = _T("appsicon");
+//		break;
+//	default:
+//		break;
+//	}
+//	m_tree.SetFocus();
+//	m_tree.SetItemData(hti, (DWORD_PTR)node);
+//	m_tree.SetItemImage(hti, i, i);
+//}
 
 void CAPPsStarterDlg::OnMoveUp()
 {
@@ -1649,8 +1645,8 @@ void CAPPsStarterDlg::OnEnSetfocusEditName()
 void CAPPsStarterDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	//must put class member menu at last
-	md_Popup.OnDrawItem(nIDCtl, lpDrawItemStruct);
-	md_Main.OnDrawItem(nIDCtl, lpDrawItemStruct);
+	md_Popup.OnDrawItem(nIDCtl, lpDrawItemStruct, iCurrentDPI);
+	md_Main.OnDrawItem(nIDCtl, lpDrawItemStruct, iCurrentDPI);
 
 	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
 }
@@ -1658,8 +1654,8 @@ void CAPPsStarterDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 void CAPPsStarterDlg::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
 	//must put class member menu at last
-	md_Popup.OnMeasureItem(nIDCtl, lpMeasureItemStruct);
-	md_Main.OnMeasureItem(nIDCtl, lpMeasureItemStruct);
+	md_Popup.OnMeasureItem(nIDCtl, lpMeasureItemStruct, iCurrentDPI);
+	md_Main.OnMeasureItem(nIDCtl, lpMeasureItemStruct, iCurrentDPI);
 	CDialog::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 }
 
@@ -1831,8 +1827,9 @@ void CAPPsStarterDlg::OnBnClickedButtonPath()
 		OnEnKillfocusEditTitle();
 		if (strDesc2 == "")
 			m_stMainTitle.SetWindowText(dlg.GetFileTitle());
-		m_cbIcon.SetCurSelIcon(_T("appsicon"));
-
+		//m_cbIcon.SetCurSelIcon(_T("appsicon"));
+		int i = m_cb2.FindStringExact(0, _T("appsicon"));
+		m_cb2.SetCurSel(i);
 		m_tree.SetFocus();
 
 		Invalidate();
@@ -1966,10 +1963,10 @@ void CAPPsStarterDlg::OnSizing(UINT nSide, LPRECT pRect)
 
 LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 {
-	CRect rc;
+	CRect rc, rcWin;
 	int iOldDPI = iCurrentDPI;
-	iCurrentDPI = GetWindowDPI(m_hWnd);
-
+	//iCurrentDPI = GetWindowDPI(m_hWnd);
+	iCurrentDPI = LOWORD(wParam);
 
 
 	GetWindowRect(&rc);
@@ -1977,6 +1974,8 @@ LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
 	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
 	SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+	SetImageList();
 
 	CWnd* pwndChild = GetWindow(GW_CHILD);
 	while (pwndChild) {
@@ -2065,9 +2064,15 @@ LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 	m_cbIcon.SetItemHeight(-1, dpiScaledHeight);
 	m_cbIcon.SetItemHeight(0, dpiScaledHeight);
 	m_cbIcon.SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);*/
-
+	/*m_cbIcon.GetClientRect(&rc);
+	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	m_cbIcon.SetItemHeight(-1, dpiScaledHeight);
+	m_cbIcon.SetItemHeight(0, dpiScaledHeight);
+	m_cbIcon.Invalidate();*/
 	DynimicLayoutCalculate();
-
+	GetWindowRect(&rcWin);
+	InvalidateRect(&rcWin);
 	return 0;
 }
 
@@ -2089,7 +2094,8 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 	CRect rcEditName;
 	CRect rcEditTitle;
 	CRect rcEditPath;
-	CRect rcComboIcon;
+	//CRect rcComboIcon;
+	CRect rcCombo2;
 	CRect rcButtonImport;
 	CRect rcButtonMenu;
 	CRect rcButtonOK;
@@ -2098,7 +2104,7 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 
 	GetClientRect(rcWindow);
 	m_ckOnTop.GetClientRect(rcCheckOnTop);
-	m_stOnTop.GetClientRect(rcStaticOnTop);
+	//m_stOnTop.GetClientRect(rcStaticOnTop);
 	m_stMainTitle.GetClientRect(rcStaticMainTitle);
 	m_tree.GetClientRect(rcTree);
 	m_stName.GetClientRect(rcStaticName);
@@ -2108,7 +2114,8 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 	m_edName.GetWindowRect(rcEditName);
 	m_edTitle.GetWindowRect(rcEditTitle);
 	m_edPath.GetWindowRect(rcEditPath);
-	m_cbIcon.GetWindowRect(rcComboIcon);
+	//m_cbIcon.GetWindowRect(rcComboIcon);
+	m_cb2.GetWindowRect(rcCombo2);
 	m_btImport.GetClientRect(rcButtonImport);
 	m_btMenu.GetClientRect(rcButtonMenu);
 	m_btOK.GetClientRect(rcButtonOK);
@@ -2126,13 +2133,13 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 	m_ckOnTop.MoveWindow(rcCheckOnTop.left, rcCheckOnTop.top, rcCheckOnTop.Width(), rcCheckOnTop.Height());
 
 
-	h = rcStaticOnTop.Height();
+	/*h = rcStaticOnTop.Height();
 	w = rcStaticOnTop.Width();
 	rcStaticOnTop.left = iOffset;
 	rcStaticOnTop.right = rcCheckOnTop.left - iOffset;
 	rcStaticOnTop.top = rcCheckOnTop.top;
 	rcStaticOnTop.bottom = rcCheckOnTop.bottom;
-	m_stOnTop.MoveWindow(rcStaticOnTop.left, rcStaticOnTop.top, rcStaticOnTop.Width(), rcStaticOnTop.Height());
+	m_stOnTop.MoveWindow(rcStaticOnTop.left, rcStaticOnTop.top, rcStaticOnTop.Width(), rcStaticOnTop.Height());*/
 
 	h = rcStaticMainTitle.Height();
 	w = rcStaticMainTitle.Width();
@@ -2214,21 +2221,31 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 	rcStaticIcon.bottom = rcStaticIcon.top + h;
 	m_stIcon.MoveWindow(rcStaticIcon.left, rcStaticIcon.top, rcStaticIcon.Width(), rcStaticPath.Height());
 
-	h = rcComboIcon.Height();
+	/*h = rcComboIcon.Height();
 	w = rcComboIcon.Width();
 	rcComboIcon.left = rcEditPath.left;
 	rcComboIcon.right = rcComboIcon.left + w;
 	rcComboIcon.top = rcStaticIcon.top;
-	rcComboIcon.bottom = rcComboIcon.top + h;
-	m_cbIcon.MoveWindow(rcComboIcon.left, rcComboIcon.top, rcComboIcon.Width(), rcComboIcon.Height());
+	rcComboIcon.bottom = rcComboIcon.top + h;*/
+	//m_cbIcon.MoveWindow(rcComboIcon.left, rcComboIcon.top, rcComboIcon.Width(), rcComboIcon.Height());
+
+	h = rcCombo2.Height();
+	w = rcCombo2.Width();
+	rcCombo2.left = rcEditPath.left;
+	rcCombo2.right = rcCombo2.left + w;
+	rcCombo2.top = rcStaticIcon.top;
+	rcCombo2.bottom = rcCombo2.top + h;
+	m_cb2.MoveWindow(rcCombo2.left, rcCombo2.top, rcCombo2.Width(), rcCombo2.Height());
 
 	h = rcButtonMenu.Height();
 	w = rcButtonMenu.Width();
-	rcButtonMenu.right = rcComboIcon.right;
-	rcButtonMenu.left = rcComboIcon.left;
-	rcButtonMenu.top = rcComboIcon.bottom + iOffset + iOffset;
+	rcButtonMenu.right = rcCombo2.right;
+	rcButtonMenu.left = rcCombo2.left;
+	rcButtonMenu.top = rcCombo2.bottom + iOffset + iOffset;
 	rcButtonMenu.bottom = rcButtonMenu.top + h;
 	m_btMenu.MoveWindow(rcButtonMenu.left, rcButtonMenu.top, rcButtonMenu.Width(), rcButtonMenu.Height());
+
+	
 
 	h = rcButtonCancel.Height();
 	w = rcButtonCancel.Width();
@@ -2263,7 +2280,7 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 		LOGFONT lf;
 		memset(&lf, 0, sizeof(LOGFONT));
 		pFont2->GetLogFont(&lf);
-		lf.lfHeight = -MulDiv(10, iCurrentDPI, 72);
+		lf.lfHeight = -MulDiv(11, iCurrentDPI, 72);
 		m_font2.CreateFontIndirect(&lf);
 	}
 
@@ -2280,12 +2297,13 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 	m_stMainTitle.SetFont(&m_font1);
 
 	m_tree.SetFont(&m_font3);
-	m_stOnTop.SetFont(&m_font3);
+	m_ckOnTop.SetFont(&m_font3);
 	m_stName.SetFont(&m_font3);
 	m_stTitle.SetFont(&m_font3);
 	m_stPath.SetFont(&m_font3);
 	m_stIcon.SetFont(&m_font3);
-	m_cbIcon.SetFont(&m_font3);
+	//m_cbIcon.SetFont(&m_font3);
+	m_cb2.SetFont(&m_font3);
 	m_edName.SetFont(&m_font3);
 	m_edTitle.SetFont(&m_font3);
 	m_edPath.SetFont(&m_font3);
@@ -2296,4 +2314,166 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 	m_btMenu.SetFont(&m_font2);
 
 	Invalidate();
+}
+
+void CAPPsStarterDlg::OnCbnSelchangeCombo2()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	int i = m_cb2.GetCurSel();
+	HTREEITEM hti = m_tree.GetSelectedItem();
+
+	node = (node_data*)m_tree.GetItemData(hti);
+	switch (i) {
+	case 0:
+		node->icon = _T("folder");
+		break;
+	case 1:
+		node->icon = _T("1c");
+		break;
+	case 2:
+		node->icon = _T("medoc");
+		break;
+	case 3:
+		node->icon = _T("rdp");
+		break;
+	case 4:
+		node->icon = _T("app");
+		break;
+	case 5:
+		node->icon = _T("mail");
+		break;
+	case 6:
+		node->icon = _T("web");
+		break;
+	case 7:
+		node->icon = _T("share");
+		break;
+	case 8:
+		node->icon = _T("vcam");
+		break;
+	case 9:
+		node->icon = _T("cmd");
+		break;
+	case 10:
+		node->icon = _T("script");
+		break;
+	case 11:
+		node->icon = _T("pshell");
+		break;
+	case 12:
+		node->icon = _T("appsicon");
+		break;
+	default:
+		break;
+	}
+	m_tree.SetFocus();
+	m_tree.SetItemData(hti, (DWORD_PTR)node);
+	m_tree.SetItemImage(hti, i, i);
+}
+
+void CAPPsStarterDlg::SetImageList()
+{
+	//m_imageList.Create(16, 16, ILC_COLOR, 2, 2);
+	int iDpi = MulDiv(16, iCurrentDPI, 96);
+
+	int iSel = m_cb2.GetCurSel();
+	//m_cb2.SetCurSel(-1);
+	//int iCount = m_cb2.GetCount();
+	m_cb2.ResetContent();
+	
+	HICON icon[13];
+	icon[0] = AfxGetApp()->LoadIcon(IDI_FOLDER);
+	icon[1] = AfxGetApp()->LoadIcon(IDI_1C);
+	icon[2] = AfxGetApp()->LoadIcon(IDI_MEDOC);
+	icon[3] = AfxGetApp()->LoadIcon(IDI_RDP);
+	icon[4] = AfxGetApp()->LoadIcon(IDI_APP);
+	icon[5] = AfxGetApp()->LoadIcon(IDI_MAIL);
+	icon[6] = AfxGetApp()->LoadIcon(IDI_WEB);
+	icon[7] = AfxGetApp()->LoadIcon(IDI_SHARE);
+	icon[8] = AfxGetApp()->LoadIcon(IDI_VCAM);
+	icon[9] = AfxGetApp()->LoadIcon(IDI_CMD);
+	icon[10] = AfxGetApp()->LoadIcon(IDI_SCRIPT);
+	icon[11] = AfxGetApp()->LoadIcon(IDI_PSHELL);
+	icon[12] = AfxGetApp()->LoadIcon(IDI_APP);
+
+	m_tree.m_imageList.Create(iDpi, iDpi, ILC_MASK | ILC_COLOR32, 0, 0);
+	m_imageList.Create(iDpi, iDpi, ILC_COLOR32 | ILC_MASK, 0, 0);
+	
+
+	for (int i = 0; i < 13; i++)
+	{
+		m_tree.m_imageList.Add(icon[i]);
+		m_imageList.Add(icon[i]);
+
+		COMBOBOXEXITEM     cbi = { 0 };
+		int                nItem;
+		CString str;
+		cbi.mask = CBEIF_IMAGE | CBEIF_SELECTEDIMAGE | CBEIF_TEXT;
+
+		switch (i)
+		{
+		case 0:
+			str = _T("folder");
+			break;
+		case 1:
+			str = _T("1c");
+			break;
+		case 2:
+			str = _T("medoc");
+			break;
+		case 3:
+			str = _T("rdp");
+			break;
+		case 4:
+			str = _T("app");
+			break;
+		case 5:
+			str = _T("mail");
+			break;
+		case 6:
+			str = _T("web");
+			break;
+		case 7:
+			str = _T("share");
+			break;
+		case 8:
+			str = _T("vcam");
+			break;
+		case 9:
+			str = _T("cmd");
+			break;
+		case 10:
+			str = _T("script");
+			break;
+		case 11:
+			str = _T("pshell");
+			break;
+		case 12:
+			str = _T("appsicon");
+			break;
+		default:
+			str = _T("");
+			break;
+		}
+
+		cbi.iItem = -1;
+		cbi.pszText = str.GetBuffer(str.GetLength());
+		cbi.iImage = i;
+		cbi.iSelectedImage = i;
+
+		nItem = m_cb2.InsertItem(&cbi);
+		ASSERT(nItem == 0);
+	}
+
+	m_tree.SetImageList(&m_tree.m_imageList, TVSIL_NORMAL);
+	m_tree.m_imageList.SetBkColor(0xffffff);
+
+	m_cb2.SetImageList(&m_imageList);
+	m_cb2.SetCurSel(iSel);
+	//CString strCount;
+	//strCount.Format(_T("%d  -  %d"), m_cb2.GetCount(), m_imageList.GetImageCount());
+	//MessageBox(strCount);
+	//m_cb2.RedrawWindow();
+
+	//delete icon[13];
 }

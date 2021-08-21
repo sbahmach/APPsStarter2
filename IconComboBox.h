@@ -45,6 +45,37 @@ public:
 
   _IconComboData *iconData;
 protected:
+
+	int iCurrentDPI = 96;
+	typedef HRESULT(WINAPI* PGetDpiForMonitor)(HMONITOR hmonitor, int dpiType, UINT* dpiX, UINT* dpiY);
+
+	WORD GetWindowDPI(HWND hWnd)
+	{
+		HMODULE hShcore = LoadLibraryW(L"shcore");
+		if (hShcore)
+		{
+			PGetDpiForMonitor pGetDpiForMonitor =
+				reinterpret_cast<PGetDpiForMonitor>(GetProcAddress(hShcore, "GetDpiForMonitor"));
+			if (pGetDpiForMonitor)
+			{
+				HMONITOR hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTOPRIMARY);
+				UINT uiDpiX;
+				UINT uiDpiY;
+				HRESULT hr = pGetDpiForMonitor(hMonitor, 0, &uiDpiX, &uiDpiY);
+				if (SUCCEEDED(hr))
+				{
+					return static_cast<WORD>(uiDpiX);
+				}
+			}
+		}
+		HDC hScreenDC = ::GetDC(nullptr);
+		int iDpiX = GetDeviceCaps(hScreenDC, LOGPIXELSX);
+		::ReleaseDC(0, hScreenDC);
+
+		return static_cast<WORD>(iDpiX);
+	}
+
+
 	//{{AFX_VIRTUAL(CSmallIconComboBox)
 	virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);

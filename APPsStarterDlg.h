@@ -105,7 +105,7 @@ protected:
 	CString GetShellPropStringFromPath(LPCWSTR pPath, PROPERTYKEY const& key);
 	//BOOL GetCurrentFileVersion(LPTSTR tszFileVer);
 	//CToolTipCtrlExt m_ctrl_tooltip_ext;
-	//CImageList m_imageList;
+	CImageList m_imageList;
 	HICON m_hIcon;
 	HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	//CTreeCtrlXML m_tree;
@@ -156,7 +156,7 @@ protected:
 		return static_cast<WORD>(iDpiX);
 	}
 
-	CStatic m_stOnTop;
+	//CStatic m_stOnTop;
 	CStatic m_stMainTitle;
 	CStatic m_stName;
 	CStatic m_stTitle;
@@ -170,11 +170,12 @@ protected:
 	CEdit m_edName;
 	CEdit m_edTitle;
 	CEdit m_edPath;
-	CSmallIconComboBox m_cbIcon;
+	//CSmallIconComboBox m_cbIcon;
+	CComboBoxEx m_cb2;
 	CTreeCtrlXML m_tree;
 	CRect rcWindowDef;
 	void DynimicLayoutCalculate();
-
+	void SetImageList();
 	
 
 
@@ -190,7 +191,7 @@ public:
 	afx_msg void OnEnKillfocusEditName();
 	afx_msg void OnEnKillfocusEditTitle();
 	afx_msg void OnEnKillfocusEditPath();
-	afx_msg void OnCbnSelchangeComboIcon();
+	//afx_msg void OnCbnSelchangeComboIcon();
 	afx_msg void OnTvnEndlabeleditTree1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnTvnBeginlabeleditTree1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnEnSetfocusEditName();
@@ -202,5 +203,6 @@ public:
 	LRESULT OnDpiChanged(WPARAM wParam, LPARAM lParam);
 	//LRESULT OnDpiChanged(WPARAM wParam, LPARAM lParam);
 	
+	afx_msg void OnCbnSelchangeCombo2();
 };
 

@@ -4,7 +4,7 @@
 #define CMenuModifier_h_hsgdacvgshtrytry6yrt644446gfhgh
 
 #include <afxtempl.h>
-
+#include <afxwin.h>
 // padding around image (L=left,T=top, ...)
 #define IMG_PADL	6
 #define IMG_PADR	7
@@ -34,8 +34,8 @@ public:
 public:	//must be used
 	BOOL SetOwnerDraw(CMenu*pMenu,BOOL bMainMenu,CToolBar*pBar=0,int iImageStyle=CMenuModifier::FLAT,
 						COLORREF*pClrMenuBar=0,COLORREF*pClrVertBar=0,COLORREF*pClrSelected=0);
-	BOOL OnMeasureItem(int nIDCtl,MEASUREITEMSTRUCT*pMIS);
-	BOOL OnDrawItem(int nIDCtl,DRAWITEMSTRUCT*pDIS);
+	BOOL OnMeasureItem(int nIDCtl,MEASUREITEMSTRUCT*pMIS, int dpi);
+	BOOL OnDrawItem(int nIDCtl,DRAWITEMSTRUCT*pDIS, int dpi);
 
 public:	//optional function
 	void SetChechedItemStyle(BOOL bUseObmBitmap)
@@ -853,7 +853,7 @@ void CMenuModifier::P_SetOwnerDrawLoop(CMenu*pMenu,BOOL bTop,CToolBar*pBar)
 }
 
 inline
-BOOL CMenuModifier::OnMeasureItem(int nIDCtl,MEASUREITEMSTRUCT*pMIS)
+BOOL CMenuModifier::OnMeasureItem(int nIDCtl,MEASUREITEMSTRUCT*pMIS, int dpi)
 {
 	//LPMENUITEM lpItem = (LPMENUITEM)lpMIS->itemData;
 	if(nIDCtl!=0)	return	0;
@@ -862,9 +862,14 @@ BOOL CMenuModifier::OnMeasureItem(int nIDCtl,MEASUREITEMSTRUCT*pMIS)
 	const MenuUser*pUser=(MenuUser*)pMIS->itemData;
 	if(ary_Item.HasTheItem(pUser)==0)	return	0;
 
+	int dpiScaledWidth, dpiScaledHeight;
+	//dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	//dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+
+
 	if(pUser->bSeparator)
 	{
-		pMIS->itemHeight	=6;
+		pMIS->itemHeight	= MulDiv(6, dpi, 96);
 	}
 	else
 	if(pUser->csText.GetLength())
@@ -872,25 +877,41 @@ BOOL CMenuModifier::OnMeasureItem(int nIDCtl,MEASUREITEMSTRUCT*pMIS)
 		HDC hDC=::GetDC(0);
 		CDC*pDC=CDC::FromHandle(hDC);
 		CFont*pFt=CFont::FromHandle((HFONT)::GetStockObject(DEFAULT_GUI_FONT));
-		CFont*pFtOld=pDC->SelectObject(pFt);
+		// First get the dialog font
+		//LOGFONT lf;
+		//pFt->GetLogFont(&lf);
 
-		
-		
-		
+		// change the parameters
+		//lf.lfHeight = 20;
+		// .....
 
-		
-			
-		
-		
-		
-		
-		
-		
+		// create your own font
+		//CFont font;
+		//font.CreateFontIndirect(&lf);
+
+		// select your font
+		//CFont* pOldFont = pDC->SelectObject(&font);
+
+		// use your font (pDC-&gt;TextOut(), ...)
+
+		//// remember to reselect the old font
+		//pDC - &gt; SelectObject(pOldFont);
+		//CFont* pFont3 = ::GetFont();
+		//	LOGFONT lf;
+		//	memset(&lf, 0, sizeof(LOGFONT));
+		//	pFt->GetLogFont(&lf);
+		//	lf.lfHeight = -MulDiv(15, dpi, 72);
+		//	CFont m_font3;
+		//	m_font3.CreateFontIndirect(&lf);
+		//
+		CFont* pFtOld = pDC->SelectObject(pFt);
+
 		/*CSize siTxt=pDC->GetTextExtent(pUser->csText);*/
 			const CString strText(pUser->csText);
 			CRect r;
-
-			pDC->DrawText(strText, &r, DT_SINGLELINE | DT_CALCRECT);
+			r.right = r.left + MulDiv(r.Width(), dpi, 72);
+			r.bottom = r.top + MulDiv(r.Height(), dpi, 72);
+			pDC->DrawText(strText, &r, DT_SINGLELINE | DT_CALCRECT | DT_VCENTER);
 			CSize size(r.Size());
 
 		pDC->SelectObject(pFtOld);
@@ -902,18 +923,18 @@ BOOL CMenuModifier::OnMeasureItem(int nIDCtl,MEASUREITEMSTRUCT*pMIS)
 		if(pUser->bTop)	pMIS->itemWidth+=4;
 		else			pMIS->itemWidth+=(si_Head.cx+TXT_DIS);*/
 
-		static int m_CYMENU = ::GetSystemMetrics(SM_CYMENU);
+		static int m_CYMENU = MulDiv(::GetSystemMetrics(SM_CYMENU), dpi, 72);
 
 		pMIS->itemWidth = size.cx + m_CYMENU * 2;
 		if (strText.Find('\t') > 0) {
 			pMIS->itemWidth += m_CYMENU * 2 + m_CYMENU;
 
 		}
-		pMIS->itemHeight = size.cy + 12;
+		pMIS->itemHeight = size.cy + MulDiv(12, dpi, 72);
 	}
 	else
 	{
-		pMIS->itemWidth=20;
+		pMIS->itemWidth= MulDiv(20, dpi, 72);
 	}
 	return 1;
 }
@@ -935,7 +956,7 @@ void CMenuModifier::P_FillBkgnd(CDC*pDC,CRect rcItem,COLORREF clrBk)
 //********************************************* draw
 
 inline
-BOOL CMenuModifier::OnDrawItem(int nIDCtl,DRAWITEMSTRUCT*pDIS)
+BOOL CMenuModifier::OnDrawItem(int nIDCtl,DRAWITEMSTRUCT*pDIS, int dpi)
 {
 	if(nIDCtl!=0)	return 0;
 	if(pDIS->CtlType!=ODT_MENU)	return 0;
@@ -945,6 +966,28 @@ BOOL CMenuModifier::OnDrawItem(int nIDCtl,DRAWITEMSTRUCT*pDIS)
 
 
 	CDC*pDC		=CDC::FromHandle(pDIS->hDC);
+	CFont* pFt = CFont::FromHandle((HFONT)::GetStockObject(DEFAULT_GUI_FONT));
+	// First get the dialog font
+	LOGFONT lf;
+	pFt->GetLogFont(&lf);
+
+	// change the parameters
+	lf.lfHeight = -MulDiv(lf.lfHeight, dpi, 72);
+	lf.lfWeight = FW_LIGHT;
+	// .....
+
+	// create your own font
+	CFont font;
+	font.CreateFontIndirect(&lf);
+
+	// select your font
+	CFont* pOldFont = pDC->SelectObject(&font);
+
+	// use your font (pDC-&gt;TextOut(), ...)
+
+	// remember to reselect the old font
+	
+
 	RECT&rcItem=pDIS->rcItem;
 
 	int iBkMode=pDC->SetBkMode(TRANSPARENT);
@@ -955,7 +998,7 @@ BOOL CMenuModifier::OnDrawItem(int nIDCtl,DRAWITEMSTRUCT*pDIS)
 	else					P_DrawSubMenu(pDC,rcItem,pDIS);
 
 	pDC->SetBkMode(iBkMode);
-
+	pDC->SelectObject(pOldFont);
 	return 1;
 }
 
