@@ -1178,6 +1178,16 @@ void CAPPsStarterDlg::ReadReg()
 	WINDOWPLACEMENT* lwp;
 	UINT nl;
 
+	int iAlwaysOnTop = AfxGetApp()->GetProfileInt(strSection, _T("AlwaysOnTop"), 0);
+
+	if (iAlwaysOnTop) {
+		m_ckOnTop.SetCheck(1);
+	}
+	else {
+		m_ckOnTop.SetCheck(0);
+	}
+	OnBnClickedCheck1();
+
 	if (AfxGetApp()->GetProfileBinary(strSection, _T("WP"), (LPBYTE*)&lwp, &nl))
 	{
 		CRect r = lwp->rcNormalPosition;
@@ -1229,6 +1239,10 @@ void CAPPsStarterDlg::WriteReg()
 {
 
 	CString strSection = NULL;
+
+	int iAlwaysOnTop = m_ckOnTop.GetCheck();
+	AfxGetApp()->WriteProfileInt(strSection, _T("AlwaysOnTop"), iAlwaysOnTop);
+
 	AfxGetApp()->WriteProfileInt(strSection, _T("DPI"), iCurrentDPI);
 
 	WINDOWPLACEMENT wp;
