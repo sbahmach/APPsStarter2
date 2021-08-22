@@ -243,7 +243,6 @@ update_revision.cmd</Command>
     <ClInclude Include="CMenuModifier.h" />
     <ClInclude Include="ColorButton.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="IconComboBox.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -257,7 +256,6 @@ update_revision.cmd</Command>
   <ItemGroup>
     <ClCompile Include="AutoMessageBox.cpp" />
     <ClCompile Include="ColorButton.cpp" />
-    <ClCompile Include="IconComboBox.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -216,6 +216,7 @@ bool CTreeCtrlXML::LoadDef()
 bool CTreeCtrlXML::LoadFromXML(const CString& a_strFile)
 {
 	DeleteAllItems();
+	iconEXE.clear();
 	//EmptyClipboard();
 	node = NULL;
 
@@ -340,7 +341,7 @@ void CTreeCtrlXML::LoadItem(tinyxml2::XMLNode* a_pNode, HTREEITEM a_hTreeParent)
 		//vers.Open(nnode->path);
 
 		SHFILEINFOW shFileInfoW = {};
-		UINT uFlags = SHGFI_ICON | SHGFI_SMALLICON;
+		UINT uFlags =  SHGFI_ICON | SHGFI_SMALLICON;
 		CString str = nnode->path;
 		SHGetFileInfoW((CT2CW)str, FILE_ATTRIBUTE_NORMAL, &shFileInfoW, sizeof(SHFILEINFOW), uFlags);
 		HICON hIcon = shFileInfoW.hIcon;
@@ -348,6 +349,7 @@ void CTreeCtrlXML::LoadItem(tinyxml2::XMLNode* a_pNode, HTREEITEM a_hTreeParent)
 			m_imageList.Add(hIcon);
 			int iItems = m_imageList.GetImageCount() - 1;
 			SetItemImage(hItem, iItems, iItems);
+			iconEXE.push_back(hIcon);
 		}
 		else {
 			SetItemImage(hItem, 4, 4);

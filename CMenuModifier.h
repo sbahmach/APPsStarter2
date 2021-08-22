@@ -862,11 +862,6 @@ BOOL CMenuModifier::OnMeasureItem(int nIDCtl,MEASUREITEMSTRUCT*pMIS, int dpi)
 	const MenuUser*pUser=(MenuUser*)pMIS->itemData;
 	if(ary_Item.HasTheItem(pUser)==0)	return	0;
 
-	int dpiScaledWidth, dpiScaledHeight;
-	//dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
-	//dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
-
-
 	if(pUser->bSeparator)
 	{
 		pMIS->itemHeight	= MulDiv(6, dpi, 96);

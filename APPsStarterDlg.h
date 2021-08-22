@@ -36,7 +36,8 @@ public:
 	CBrush Brush_Main;
 	//CRect rc_window;
 	enum { IDD = IDD_APPsStarter_DIALOG};
-
+	std::vector<HICON> iconBase;
+	CImageList baseImageList;
 	//CString CreateID();
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -128,6 +129,7 @@ protected:
 	
 	CFont m_font1, m_font2, m_font3;
 	int iCurrentDPI = 96;
+	int iOldDPI = 96;
 	typedef HRESULT(WINAPI* PGetDpiForMonitor)(HMONITOR hmonitor, int dpiType, UINT* dpiX, UINT* dpiY);
 
 	WORD GetWindowDPI(HWND hWnd)
@@ -157,6 +159,7 @@ protected:
 	}
 
 	//CStatic m_stOnTop;
+	CStatic m_stInfo;
 	CStatic m_stMainTitle;
 	CStatic m_stName;
 	CStatic m_stTitle;

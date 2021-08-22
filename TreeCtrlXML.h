@@ -2,7 +2,7 @@
 #pragma once
 
 #include "afxcmn.h"
-//#include <vector>
+#include <vector>
 #include "tinyxml2.h"
 //#include "ToolTipCtrlExt.h"
 using namespace tinyxml2;
@@ -26,6 +26,8 @@ public:
 	COLORREF		GetItemColor(HTREEITEM);
 public:
 	CImageList m_imageList;
+	std::vector<HICON> iconEXE;
+	//HICON iconEXE;
 	bool LoadFromXML( const CString& a_strFile );
 	bool LoadDef();
 
