@@ -72,7 +72,7 @@ protected:
 	node_data* node = 0;
 
 	HTREEITEM FindItem(CString name, HTREEITEM hti);
-
+	void ShowControls(bool bShow);
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
@@ -116,8 +116,8 @@ protected:
 	//CEdit m_editName, m_editTitle, m_editPath;
 //	CMFCButton m_btPath;
 	//CSmallIconComboBox m_cbIcon;
-	CMenuModifier md_Popup;
-	CMenuModifier md_Main;
+	CMenu md_Popup;
+	CMenu md_Main;
 	CToolBar    m_wndToolBar;
 
 	void ReadReg();
@@ -207,5 +207,6 @@ public:
 	//LRESULT OnDpiChanged(WPARAM wParam, LPARAM lParam);
 	
 	afx_msg void OnCbnSelchangeCombo2();
+	afx_msg void OnBnClickedButton1();
 };
 

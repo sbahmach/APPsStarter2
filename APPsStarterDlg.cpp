@@ -127,9 +127,7 @@ void CAPPsStarterDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_TITLE, m_edTitle);
 	DDX_Control(pDX, IDC_EDIT_PATH, m_edPath);
 	DDX_Control(pDX, IDC_COMBO_ICONS, m_cb2);
-	//DDX_Control(pDX, IDC_COMBO_ICON, m_cbIcon);
 	DDX_Control(pDX, IDC_STATIC_MAINTITLE, m_stMainTitle);
-	//DDX_Control(pDX, IDC_STATIC_ONTOP, m_stOnTop);
 	DDX_Control(pDX, IDC_STATIC_NAME, m_stName);
 	DDX_Control(pDX, IDC_STATIC_TITLE, m_stTitle);
 	DDX_Control(pDX, IDC_STATIC_PATH, m_stPath);
@@ -176,9 +174,30 @@ BEGIN_MESSAGE_MAP(CAPPsStarterDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_IMPORT, &CAPPsStarterDlg::OnBnClickedButtonPath)
     ON_BN_CLICKED(IDC_BUTTON_MENU, &CAPPsStarterDlg::OnBnClickedButtonMenu)
 	ON_CBN_SELCHANGE(IDC_COMBO_ICONS, &CAPPsStarterDlg::OnCbnSelchangeCombo2)
+	ON_BN_CLICKED(IDC_BUTTON1, &CAPPsStarterDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
+void CAPPsStarterDlg::ShowControls(bool bShow)
+{
+	UINT iShow = bShow ? SW_SHOW : SW_HIDE;
+	m_btOK.ShowWindow(iShow);
+	m_btCancel.ShowWindow(iShow);
+	m_btMenu.ShowWindow(iShow);
+	m_btImport.ShowWindow(iShow);
+	m_ckOnTop.ShowWindow(iShow);
+	m_edName.ShowWindow(iShow);
+	m_edTitle.ShowWindow(iShow);
+	m_edPath.ShowWindow(iShow);
+	m_cb2.ShowWindow(iShow);
+	m_stMainTitle.ShowWindow(iShow);
+	m_stName.ShowWindow(iShow);
+	m_stTitle.ShowWindow(iShow);
+	m_stPath.ShowWindow(iShow);
+	m_stIcon.ShowWindow(iShow);
+	m_stInfo.ShowWindow(iShow);
 
+	m_tree.ShowWindow(iShow);
+}
 // CAPPsStarterDlg message handlers
 BOOL CAPPsStarterDlg::OnInitDialog()
 {
@@ -215,7 +234,7 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP
 		| CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
 	m_wndToolBar.LoadToolBar(BAR_MAIN);
-
+	
 	
 	GetWindowRect(rcWindowDef);
 
@@ -223,7 +242,7 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	iCurrentDPI = GetWindowDPI(m_hWnd);
 	//iCurrentDPI = LOWORD(wParam);
 	CString strInfo = _T("");
-	strInfo.Format(_T("oldDPI: %d, curDPI: %d, W: %d, H: %d"), iOldDPI, iCurrentDPI, rcWindowDef.Width(), rcWindowDef.Height());
+	strInfo.Format(_T("oldDPI: %d, curDPI: %d, W: %d, H: %d, iconSize: %d"), iOldDPI, iCurrentDPI, rcWindowDef.Width(), rcWindowDef.Height(), m_tree.iconEXE.size());
 	if (m_stInfo) m_stInfo.SetWindowText(strInfo);
 	//ShowWindow(SW_HIDE);
 	/*CString strRC;
@@ -261,7 +280,7 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	iconBase.push_back(AfxGetApp()->LoadIcon(IDI_CMD));
 	iconBase.push_back(AfxGetApp()->LoadIcon(IDI_SCRIPT));
 	iconBase.push_back(AfxGetApp()->LoadIcon(IDI_PSHELL));
-	iconBase.push_back(AfxGetApp()->LoadIcon(IDI_APP));
+	//iconBase.push_back(AfxGetApp()->LoadIcon(IDI_APP));
 
 	SetImageList();
 
@@ -318,9 +337,10 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	DynimicLayoutCalculate();
 
 	OnOpen();
-	CRect rcWin;
-	GetWindowRect(&rcWin);
-	InvalidateRect(&rcWin);
+	
+	ShowControls(true);
+	Invalidate();
+	UpdateWindow();
 	/*CRect rc;
 	CWnd* wnd = GetDlgItem(IDC_BUTTON_START);
 	wnd->GetWindowRect(&rc);
@@ -693,7 +713,12 @@ void CAPPsStarterDlg::OnDeleteItem()
 			htiNextSel = m_tree.GetParentItem(htiDel);
 		}
 	}
-
+	//int iImg, iImgS;
+	//m_tree.GetItemImage(htiDel, iImg, iImgS);
+	//if (iImg > 12) {
+	//	int idx = iImg - 13;
+	//	//m_tree.iconEXE.erase(std::next(m_tree.iconEXE.begin()) + idx);
+	//}
 	m_tree.DeleteItem(htiDel);
 	m_tree.SelectItem(htiNextSel);
 }
@@ -879,16 +904,20 @@ void CAPPsStarterDlg::OnImportApp()
 			CString str = csFileName;
 			SHGetFileInfoW((CT2CW)str, FILE_ATTRIBUTE_NORMAL, &shFileInfoW, sizeof(SHFILEINFOW), uFlags);
 			hIcon = shFileInfoW.hIcon;
-
 			HTREEITEM hItem = m_tree.GetSelectedItem();
-			int nImage, nSelectedImage;
+			if (hIcon != NULL) {
+				
+				int nImage, nSelectedImage;
 
-			m_tree.GetItemImage(hItem, nImage, nSelectedImage);
+				m_tree.GetItemImage(hItem, nImage, nSelectedImage);
 
-			m_tree.m_imageList.Add(hIcon);
-			int iItems = m_tree.m_imageList.GetImageCount() - 1;
-			m_tree.SetItemImage(hItem, iItems, iItems);
-
+				m_tree.m_imageList.Add(hIcon);
+				m_tree.iconEXE.push_back(hIcon);
+				int iItems = m_tree.m_imageList.GetImageCount() - 1;
+				m_tree.SetItemImage(hItem, iItems, iItems);
+			} else{
+				m_tree.SetItemImage(hItem, 4, 4);
+			}
 			node->icon = "appsicon";
 
 			m_tree.SetItemData(hItem, (DWORD_PTR)node);
@@ -1087,7 +1116,7 @@ void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)
 			//COLORREF clrVertBar = RGB(200, 227, 244);
 			COLORREF clrVertBar = RGB(201, 225, 255);
 
-			md_Popup.SetOwnerDraw(pMu, 0, &m_wndToolBar, 0, &clrMenuBar, &clrVertBar);
+			//md_Popup.SetOwnerDraw(pMu, 0, &m_wndToolBar, 0, &clrMenuBar, &clrVertBar);
 
 			UINT nID = pMu->TrackPopupMenu(TPM_RETURNCMD, ptScreen.x, ptScreen.y, this);
 			
@@ -1689,8 +1718,8 @@ void CAPPsStarterDlg::OnEnSetfocusEditName()
 void CAPPsStarterDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	//must put class member menu at last
-	md_Popup.OnDrawItem(nIDCtl, lpDrawItemStruct, iCurrentDPI);
-	md_Main.OnDrawItem(nIDCtl, lpDrawItemStruct, iCurrentDPI);
+	//md_Popup.OnDrawItem(nIDCtl, lpDrawItemStruct, iCurrentDPI);
+	//md_Main.OnDrawItem(nIDCtl, lpDrawItemStruct, iCurrentDPI);
 
 	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
 }
@@ -1698,8 +1727,8 @@ void CAPPsStarterDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 void CAPPsStarterDlg::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
 	//must put class member menu at last
-	md_Popup.OnMeasureItem(nIDCtl, lpMeasureItemStruct, iCurrentDPI);
-	md_Main.OnMeasureItem(nIDCtl, lpMeasureItemStruct, iCurrentDPI);
+	//md_Popup.OnMeasureItem(nIDCtl, lpMeasureItemStruct, iCurrentDPI);
+	//md_Main.OnMeasureItem(nIDCtl, lpMeasureItemStruct, iCurrentDPI);
 	CDialog::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 }
 
@@ -1843,16 +1872,21 @@ void CAPPsStarterDlg::OnBnClickedButtonPath()
 		CString str = dlg.GetPathName();
 		SHGetFileInfoW((CT2CW)str, FILE_ATTRIBUTE_NORMAL, &shFileInfoW, sizeof(SHFILEINFOW), uFlags);
 		hIcon = shFileInfoW.hIcon;
-
 		HTREEITEM hItem = m_tree.GetSelectedItem();
-		int nImage, nSelectedImage;
+		if (hIcon != NULL) {
 
-		m_tree.GetItemImage(hItem, nImage, nSelectedImage);
-		
-		m_tree.m_imageList.Add(hIcon);
-		int iItems = m_tree.m_imageList.GetImageCount() - 1;
-		m_tree.SetItemImage(hItem, iItems, iItems);
+			int nImage, nSelectedImage;
 
+			m_tree.GetItemImage(hItem, nImage, nSelectedImage);
+
+			m_tree.m_imageList.Add(hIcon);
+			m_tree.iconEXE.push_back(hIcon);
+			int iItems = m_tree.m_imageList.GetImageCount() - 1;
+			m_tree.SetItemImage(hItem, iItems, iItems);
+		}
+		else {
+			m_tree.SetItemImage(hItem, 4, 4);
+		}
 		node->icon = _T("appsicon");
 		
 		m_tree.SetItemData(hItem, (DWORD_PTR)node);
@@ -1904,14 +1938,19 @@ void CAPPsStarterDlg::OnBnClickedButtonMenu()
 
 	CMenu* pMu = mu.GetSubMenu(0);
 	if (pMu == 0)	return;
+	/*CBitmap hBmpChecked;
+	CBitmap hBmpUnchecked;
 
-	
+	hBmpUnchecked.LoadBitmap(IDB_BITMAP3);
+	hBmpChecked.LoadBitmap(IDB_BITMAP5);
+	pMu->SetMenuItemBitmaps(ID_MENU_IMPORT, MF_BYCOMMAND, &hBmpUnchecked, &hBmpChecked);*/
+
 	COLORREF clrMenuBar = COLOR_MYDLG;
 	//COLORREF clrVertBar = RGB(47, 145, 207);
 	//COLORREF clrVertBar = RGB(200, 227, 244);
 	COLORREF clrVertBar = RGB(201, 225, 255);
 
-	md_Main.SetOwnerDraw(pMu, 0, &m_wndToolBar, 0, &clrMenuBar, &clrVertBar);
+	//md_Main.SetOwnerDraw(pMu, 0, &m_wndToolBar, 0, &clrMenuBar, &clrVertBar);
 
 	CRect r;
 	m_btMenu.GetClientRect(&r);
@@ -2007,6 +2046,8 @@ void CAPPsStarterDlg::OnSizing(UINT nSide, LPRECT pRect)
 
 LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 {
+	if (!IsWindowVisible()) return 0;
+	ShowControls(false);
 	CRect rc, rcWin;
 	iOldDPI = iCurrentDPI;
 	iCurrentDPI = GetWindowDPI(m_hWnd);
@@ -2017,14 +2058,36 @@ LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 
 	GetWindowRect(&rc);
 
+	//WINDOWPLACEMENT wp;
+	//GetWindowPlacement(&wp);
+	///*int w = wp.rcNormalPosition.right - wp.rcNormalPosition.left;
+	//int h = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top;*/
+
+	int w = rc.Width();
+	int h = rc.Height();
+	//rc = wp.rcNormalPosition;
+	//if (::MonitorFromRect(rc, MONITOR_DEFAULTTONULL) != nullptr) {
+	//	w = max(wp.rcNormalPosition.right - wp.rcNormalPosition.left, INITIALWIDTH_96DPI);
+	//	h = max(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top, INITIALHEIGHT_96DPI);
+	//	//int iOldDPI = AfxGetApp()->GetProfileInt(strSection, _T("DPI"), 0);
+	//	w = MulDiv(w, iCurrentDPI, iOldDPI);
+	//	h = MulDiv(h, iCurrentDPI, iOldDPI);
+	//	wp.rcNormalPosition.right = wp.rcNormalPosition.left + w;
+	//	wp.rcNormalPosition.bottom = wp.rcNormalPosition.top + h;
+	//	SetWindowPlacement(&wp);
+	//}
+
 
 	int dpiScaledWidth, dpiScaledHeight;
-	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
-	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	dpiScaledWidth = MulDiv(w, iCurrentDPI, iOldDPI);
+	dpiScaledHeight = MulDiv(h, iCurrentDPI, iOldDPI);
+	//wp.rcNormalPosition.right = wp.rcNormalPosition.left + w;
+	//wp.rcNormalPosition.bottom = wp.rcNormalPosition.top + h;
+	//SetWindowPlacement(&wp);
 	SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
 
 	CString strInfo = _T("");
-	strInfo.Format(_T("oldDPI: %d, curDPI: %d, W: %d, H: %d"), iOldDPI, iCurrentDPI, dpiScaledWidth, dpiScaledHeight);
+	strInfo.Format(_T("oldDPI: %d, curDPI: %d, W: %d, H: %d, iconSize: %d"), iOldDPI, iCurrentDPI, w, h, m_tree.iconEXE.size());
 	if (m_stInfo) m_stInfo.SetWindowText(strInfo);
 	//m_stInfo.Invalidate();
 
@@ -2034,10 +2097,10 @@ LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 	while (pwndChild) {
 		pwndChild->GetWindowRect(&rc);
 		//pwndChild->EnableWindow(FALSE);
-		dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
-		dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+		w = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+		h = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
 		
-		pwndChild->SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+		pwndChild->SetWindowPos(nullptr, rc.left, rc.top, w, h, SWP_NOZORDER | SWP_NOACTIVATE);
 		//if (pwndChild->GetDlgCtrlID() == IDC_COMBO_ICON) {
 		//	m_cbIcon.SetItemHeight(-1, dpiScaledHeight);
 		//	//m_cbIcon.SetItemHeight(0, dpiScaledHeight);
@@ -2124,8 +2187,9 @@ LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 	m_cbIcon.SetItemHeight(0, dpiScaledHeight);
 	m_cbIcon.Invalidate();*/
 	DynimicLayoutCalculate();
-	GetWindowRect(&rcWin);
-	InvalidateRect(&rcWin);
+	ShowControls(true);
+	//GetWindowRect(&rcWin);
+	Invalidate();
 	return 0;
 }
 
@@ -2344,21 +2408,12 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 		m_font2.CreateFontIndirect(&lf2);
 	//}
 
-	//CFont* pFont3 = GetFont();
-	//if (NULL != pFont3)
-	//{
-		LOGFONT lf3;
-		memset(&lf3, 0, sizeof(LOGFONT));
-	//	pFont3->GetLogFont(&lf3);
-		lf3.lfWeight = FW_EXTRALIGHT;
-		_tcscpy(lf3.lfFaceName, _T("MS Shell Dlg 2"));
-		/*CString strFontName;
-		m_stInfo.GetWindowText(strFontName);
-
-		m_stInfo.SetWindowTextW(strFontName + lf3.lfFaceName);*/
-		lf3.lfHeight = -MulDiv(10, iCurrentDPI, 72);
-		m_font3.CreateFontIndirect(&lf3);
-	//}
+	LOGFONT lf3;
+	memset(&lf3, 0, sizeof(LOGFONT));
+	lf3.lfWeight = FW_EXTRALIGHT;
+	_tcscpy(lf3.lfFaceName, _T("MS Shell Dlg 2"));
+	lf3.lfHeight = -MulDiv(10, iCurrentDPI, 72);
+	m_font3.CreateFontIndirect(&lf3);
 
 	m_stMainTitle.SetFont(&m_font1);
 
@@ -2378,6 +2433,11 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 	m_btOK.SetFont(&m_font2);
 	m_btCancel.SetFont(&m_font2);
 	m_btMenu.SetFont(&m_font2);
+
+	GetWindowRect(&rcWindow);
+	CString strInfo = _T("");
+	strInfo.Format(_T("oldDPI: %d, curDPI: %d, W: %d, H: %d, iconSize: %d"), iOldDPI, iCurrentDPI, rcWindow.Width(), rcWindow.Height(), m_tree.iconEXE.size());
+	if (m_stInfo) m_stInfo.SetWindowText(strInfo);
 
 	Invalidate();
 }
@@ -2443,87 +2503,34 @@ void CAPPsStarterDlg::SetImageList()
 	int iDpi = MulDiv(16, iCurrentDPI, 96);
 
 	int iSel = m_cb2.GetCurSel();
-	//m_cb2.SetCurSel(-1);
-	//int iCount = m_cb2.GetCount();
 	m_cb2.ResetContent();
-	
-	//CImageList baseImageList;
-	
-
-	baseImageList.Create(iDpi, iDpi, ILC_COLOR32 | ILC_MASK, 0, 0);
 
 	m_tree.m_imageList.Create(iDpi, iDpi, ILC_MASK | ILC_COLOR32, 0, 0);
 	m_imageList.Create(iDpi, iDpi, ILC_COLOR32 | ILC_MASK, 0, 0);
 
-	for (int i = 0; i < iconBase.size(); i++)
+	for (size_t i = 0; i < iconBase.size(); i++)
 	{
 		m_tree.m_imageList.Add(iconBase[i]);
 		m_imageList.Add(iconBase[i]);
 	}
 
-	for (int i = 0; i < m_tree.iconEXE.size(); i++)
+	for (size_t i = 0; i < m_tree.iconEXE.size(); i++)
 	{
 		m_tree.m_imageList.Add(m_tree.iconEXE[i]);
 	}
-	/*baseImageList.Add(AfxGetApp()->LoadIcon(IDI_FOLDER));
-	baseImageList.Add(AfxGetApp()->LoadIcon(IDI_1C));
-	baseImageList.Add(AfxGetApp()->LoadIcon(IDI_MEDOC));
-	baseImageList.Add(AfxGetApp()->LoadIcon(IDI_RDP));
-	baseImageList.Add(AfxGetApp()->LoadIcon(IDI_APP));
-	baseImageList.Add(AfxGetApp()->LoadIcon(IDI_MAIL));
-	baseImageList.Add(AfxGetApp()->LoadIcon(IDI_WEB));
-	baseImageList.Add(AfxGetApp()->LoadIcon(IDI_SHARE));
-	baseImageList.Add(AfxGetApp()->LoadIcon(IDI_VCAM));
-	baseImageList.Add(AfxGetApp()->LoadIcon(IDI_CMD));
-	baseImageList.Add(AfxGetApp()->LoadIcon(IDI_SCRIPT));
-	baseImageList.Add(AfxGetApp()->LoadIcon(IDI_PSHELL));
-	baseImageList.Add(AfxGetApp()->LoadIcon(IDI_APP));*/
-
-	/*HICON icon[13];
-	icon[0] = AfxGetApp()->LoadIcon(IDI_FOLDER);
-	icon[1] = AfxGetApp()->LoadIcon(IDI_1C);
-	icon[2] = AfxGetApp()->LoadIcon(IDI_MEDOC);
-	icon[3] = AfxGetApp()->LoadIcon(IDI_RDP);
-	icon[4] = AfxGetApp()->LoadIcon(IDI_APP);
-	icon[5] = AfxGetApp()->LoadIcon(IDI_MAIL);
-	icon[6] = AfxGetApp()->LoadIcon(IDI_WEB);
-	icon[7] = AfxGetApp()->LoadIcon(IDI_SHARE);
-	icon[8] = AfxGetApp()->LoadIcon(IDI_VCAM);
-	icon[9] = AfxGetApp()->LoadIcon(IDI_CMD);
-	icon[10] = AfxGetApp()->LoadIcon(IDI_SCRIPT);
-	icon[11] = AfxGetApp()->LoadIcon(IDI_PSHELL);
-	icon[12] = AfxGetApp()->LoadIcon(IDI_APP);*/
 	
-	/*if (m_tree.m_imageList.GetImageCount() == 0) {
-		m_tree.m_imageList.Create(iDpi, iDpi, ILC_MASK | ILC_COLOR32, 0, 0);
-		for (int i = 0; i < baseImageList.GetImageCount(); i++)
-		{
-			m_tree.m_imageList.Add(baseImageList.ExtractIcon(i));
-		}
-	}*/
-	/*else {
-		std::vector<HICON> iconV;
-		for (int i = 0; i < m_tree.m_imageList.GetImageCount(); i++)
-		{
-			iconV.push_back(m_tree.m_imageList.ExtractIcon(i));
-		}
-		m_tree.m_imageList.DeleteImageList();
-		m_tree.m_imageList.Create(iDpi, iDpi, ILC_MASK | ILC_COLOR32, 0, 0);
-		for (int i = 0; i < iconV.size(); i++)
-		{
-			m_tree.m_imageList.Add(iconV[i]);
-		}
-	}*/
 	m_tree.SetImageList(&m_tree.m_imageList, TVSIL_NORMAL);
 	m_tree.m_imageList.SetBkColor(0xffffff);
 
 
 
 	//m_imageList.Create(iDpi, iDpi, ILC_COLOR32 | ILC_MASK, 0, 0);
-	for (int i = 0; i < 13; i++)
+
+	if (iconBase.size() > 0) m_imageList.Add(iconBase[4]);
+	for (int i = 0; i < m_imageList.GetImageCount()+1; i++)
 	{
 		
-		m_imageList.Add(baseImageList.ExtractIcon(i));
+		//m_imageList.Add(baseImageList.ExtractIcon(i));
 
 		COMBOBOXEXITEM     cbi = { 0 };
 		int                nItem;
@@ -2571,9 +2578,6 @@ void CAPPsStarterDlg::SetImageList()
 		case 12:
 			str = _T("appsicon");
 			break;
-		default:
-			str = _T("");
-			break;
 		}
 
 		cbi.iItem = -1;
@@ -2594,4 +2598,10 @@ void CAPPsStarterDlg::SetImageList()
 	//m_cb2.RedrawWindow();
 
 	//delete icon[13];
+}
+
+void CAPPsStarterDlg::OnBnClickedButton1()
+{
+	// TODO: Add your control notification handler code here
+	SetImageList();
 }

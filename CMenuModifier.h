@@ -961,16 +961,21 @@ BOOL CMenuModifier::OnDrawItem(int nIDCtl,DRAWITEMSTRUCT*pDIS, int dpi)
 
 
 	CDC*pDC		=CDC::FromHandle(pDIS->hDC);
-	CFont* pFt = CFont::FromHandle((HFONT)::GetStockObject(DEFAULT_GUI_FONT));
+	//CFont* pFt = CFont::FromHandle((HFONT)::GetStockObject(DEFAULT_GUI_FONT));
 	// First get the dialog font
-	LOGFONT lf;
-	pFt->GetLogFont(&lf);
+	//LOGFONT lf;
+	//pFt->GetLogFont(&lf);
 
 	// change the parameters
-	lf.lfHeight = -MulDiv(lf.lfHeight, dpi, 72);
-	lf.lfWeight = FW_LIGHT;
+	//lf.lfHeight = -MulDiv(lf.lfHeight, dpi, 72);
+	//lf.lfWeight = FW_LIGHT;
 	// .....
-
+	LOGFONT lf;
+	memset(&lf, 0, sizeof(LOGFONT));
+	lf.lfWeight = FW_EXTRALIGHT;
+	_tcscpy(lf.lfFaceName, _T("MS Shell Dlg 2"));
+	lf.lfHeight = -MulDiv(8, dpi, 72);
+	//m_font3.CreateFontIndirect(&lf3);
 	// create your own font
 	CFont font;
 	font.CreateFontIndirect(&lf);
