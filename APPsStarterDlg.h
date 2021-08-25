@@ -70,7 +70,7 @@ protected:
 	//void startOut(); // запуск отдельного потока
 
 	node_data* node = 0;
-
+	bool dpistart = false;
 	HTREEITEM FindItem(CString name, HTREEITEM hti);
 	void ShowControls(bool bShow);
 	virtual void OnOK();
@@ -128,6 +128,7 @@ protected:
 	//afx_msg void OnPaint();
 	
 	CFont m_font1, m_font2, m_font3;
+	LOGFONT lf, lf2, lf3;
 	int iCurrentDPI = 96;
 	int iOldDPI = 96;
 	typedef HRESULT(WINAPI* PGetDpiForMonitor)(HMONITOR hmonitor, int dpiType, UINT* dpiX, UINT* dpiY);
@@ -173,6 +174,7 @@ protected:
 	CEdit m_edName;
 	CEdit m_edTitle;
 	CEdit m_edPath;
+	//CMFCMenuButton m_btnMenu;
 	//CSmallIconComboBox m_cbIcon;
 	CComboBoxEx m_cb2;
 	CTreeCtrlXML m_tree;
@@ -208,5 +210,7 @@ public:
 	
 	afx_msg void OnCbnSelchangeCombo2();
 	afx_msg void OnBnClickedButton1();
+	//afx_msg void OnBnClickedMfcmenubutton1();
+	//afx_msg void OnBnDropDownMfcmenubutton1(NMHDR* pNMHDR, LRESULT* pResult);
 };
 

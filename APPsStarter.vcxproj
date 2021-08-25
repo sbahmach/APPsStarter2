@@ -118,7 +118,7 @@
 update_revision.cmd</Command>
     </PreBuildEvent>
     <Manifest>
-      <AdditionalManifestFiles>appname.exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+      <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -151,7 +151,7 @@ update_revision.cmd</Command>
 update_revision.cmd</Command>
     </PreBuildEvent>
     <Manifest>
-      <AdditionalManifestFiles>appname.exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+      <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -196,7 +196,7 @@ update_revision.cmd</Command>
       </Command>
     </PostBuildEvent>
     <Manifest>
-      <AdditionalManifestFiles>appname.exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+      <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -235,7 +235,7 @@ update_revision.cmd</Command>
 update_revision.cmd</Command>
     </PreBuildEvent>
     <Manifest>
-      <AdditionalManifestFiles>appname.exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+      <AdditionalManifestFiles>%(AdditionalManifestFiles)</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
