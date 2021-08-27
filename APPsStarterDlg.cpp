@@ -157,9 +157,10 @@ BEGIN_MESSAGE_MAP(CAPPsStarterDlg, CDialog)
 	ON_WM_MEASUREITEM()
 	ON_WM_PAINT()
 	ON_WM_SIZE()
-	ON_WM_SIZING()
-	//ON_WM_MOVE()
-	//ON_WM_MOVING()
+	//ON_WM_SIZING()
+	ON_WM_MOVE()
+	ON_WM_MOVING()
+	ON_MESSAGE(WM_EXITSIZEMOVE, OnExitSizeMove)
 	ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
 	//ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
 	ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
@@ -261,20 +262,6 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 
 	HTREEITEM hItem = m_tree.GetSelectedItem();
 
-	/*m_cbIcon.InsertIcon(0, IDI_FOLDER, _T("folder"));
-	m_cbIcon.InsertIcon(1, IDI_1C, _T("1c"));
-	m_cbIcon.InsertIcon(2, IDI_MEDOC, _T("medoc"));
-	m_cbIcon.InsertIcon(3, IDI_RDP, _T("rdp"));
-	m_cbIcon.InsertIcon(4, IDI_APP, _T("app"));
-	m_cbIcon.InsertIcon(5, IDI_MAIL, _T("mail"));
-	m_cbIcon.InsertIcon(6, IDI_WEB, _T("web"));
-	m_cbIcon.InsertIcon(7, IDI_SHARE, _T("share"));
-	m_cbIcon.InsertIcon(8, IDI_VCAM, _T("vcam"));
-	m_cbIcon.InsertIcon(9, IDI_CMD, _T("cmd"));
-	m_cbIcon.InsertIcon(10, IDI_SCRIPT, _T("script"));
-	m_cbIcon.InsertIcon(11, IDI_PSHELL, _T("pshell"));
-	m_cbIcon.InsertIcon(12, IDI_APP, _T("appsicon"));*/
-
 	iconBase.push_back(AfxGetApp()->LoadIcon(IDI_FOLDER));
 	iconBase.push_back(AfxGetApp()->LoadIcon(IDI_1C));
 	iconBase.push_back(AfxGetApp()->LoadIcon(IDI_MEDOC));
@@ -335,10 +322,6 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 
 	m_tree.SetFocus();
 	m_tree.SelectItem(hItem);
-
-	
-
-	//m_stTitle.SetFont(&m_font_Title);
 
 	COLORREF col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace, col_BtnFace_IsHover, col_BtnFace_Selected
@@ -2076,8 +2059,18 @@ void CAPPsStarterDlg::OnBnClickedButtonMenu()
 
 void CAPPsStarterDlg::OnSize(UINT nType, int cx, int cy)
 {
-	__super::OnSize(nType, cx, cy);
-	DynimicLayoutCalculate();
+	//__super::OnSize(nType, cx, cy);
+	///*if (iOldDPI == iCurrentDPI) {
+	//	DynimicLayoutCalculate();
+	//}
+	//else {
+
+	//}*/
+	//DynimicLayoutCalculate();
+	//bSize = true;
+	////bMove = false;
+	//bEndMoveSize = false;
+	
 }
 
 void CAPPsStarterDlg::OnSizing(UINT nSide, LPRECT pRect)
@@ -2095,87 +2088,36 @@ void CAPPsStarterDlg::OnSizing(UINT nSide, LPRECT pRect)
 	}
 
 	DynimicLayoutCalculate();
+	bSize = true;
+	//bMove = false;
+	bEndMoveSize = false;
 }
 
 LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 {
-	//bool dpistart = true;
-	//if (iOldDPI == iCurrentDPI) return;
-	//if (iOldDPI = iCurrentDPI) return 0;
 	iOldDPI = iCurrentDPI;
-	//WINDOWPLACEMENT wp;
-	//GetWindowPlacement(&wp);
-	//if (wp.showCmd == SW_SHOWMINIMIZED) {
-	//if (!IsWindowVisible()) return 0;
-	ShowControls(false);
-	
-	
 	//iCurrentDPI = GetWindowDPI(m_hWnd);
 	iCurrentDPI = LOWORD(wParam);
-	/*CString strInfo = _T("");
-	strInfo.Format(_T("oldDPI: %d, curDPI: %d"), iOldDPI, iCurrentDPI);
-	if (m_stInfo) m_stInfo.SetWindowText(strInfo);*/
 
-	//AdjustWindowRectEx()
-	
-	// Redraw the entire window on every DPI change.
-	//RECT rcWindow;
-	//GetClientRect(&rcWindow);
-	//InvalidateRect(&rcWindow, FALSE);
-	//WINDOWPLACEMENT wp;
-	//GetWindowPlacement(&wp);
-	/*if (wp.showCmd == SW_SHOWMINIMIZED) {
-		rc = wp.rcNormalPosition;
-	}*/
-	///*int w = wp.rcNormalPosition.right - wp.rcNormalPosition.left;
-	//int h = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top;*/
-	//GetWindowRect(&rc);
-	//int w = rc.Width();
-	//int h = rc.Height();
-	//rc = wp.rcNormalPosition;
-	//if (::MonitorFromRect(rc, MONITOR_DEFAULTTONULL) != nullptr) {
-	//	w = max(wp.rcNormalPosition.right - wp.rcNormalPosition.left, INITIALWIDTH_96DPI);
-	//	h = max(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top, INITIALHEIGHT_96DPI);
-	//	//int iOldDPI = AfxGetApp()->GetProfileInt(strSection, _T("DPI"), 0);
-	//	w = MulDiv(w, iCurrentDPI, iOldDPI);
-	//	h = MulDiv(h, iCurrentDPI, iOldDPI);
-	//	wp.rcNormalPosition.right = wp.rcNormalPosition.left + w;
-	//	wp.rcNormalPosition.bottom = wp.rcNormalPosition.top + h;
-	//	SetWindowPlacement(&wp);
-	//}
-
-	//CRect rc;
-	
-	//dpiScaledWidth = MulDiv(w, iCurrentDPI, iOldDPI);
-	//dpiScaledHeight = MulDiv(h, iCurrentDPI, iOldDPI);
-	//wp.rcNormalPosition.right = wp.rcNormalPosition.left + w;
-	//wp.rcNormalPosition.bottom = wp.rcNormalPosition.top + h;
-	//SetWindowPlacement(&wp);
-	//SetWindowPos(nullptr, rc.left, rc.top, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
-	//rc.right = rc.left + dpiScaledWidth;
-	//rc.bottom = rc.top + dpiScaledHeight;
-	//MoveWindow(rc);
-
-	
-
+	ShowControls(false);
 	SetImageList();
 	CRect rc;
-	int dpiScaledWidth, dpiScaledHeight, w, h;
+	int /*dpiScaledWidth, dpiScaledHeight, */w, h;
 	CWnd* pwndChild = GetWindow(GW_CHILD);
 	while (pwndChild) {
 		pwndChild->GetWindowRect(&rc);
 		//pwndChild->EnableWindow(FALSE);
 		w = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
 		h = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
-		
+
 		pwndChild->SetWindowPos(nullptr, rc.left, rc.top, w, h, SWP_NOZORDER | SWP_NOACTIVATE);
 		pwndChild = pwndChild->GetNextWindow();
 	};
-	
+
 
 	lf.lfHeight = -MulDiv(24, iCurrentDPI, 72);
 	m_font1.CreateFontIndirect(&lf);
-	
+
 	lf2.lfHeight = -MulDiv(12, iCurrentDPI, 72);
 	m_font2.CreateFontIndirect(&lf2);
 
@@ -2184,12 +2126,6 @@ LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 
 	m_stMainTitle.SetFont(&m_font1);
 
-	// Update the control fonts.
-	//SendMessageW(m_hBack, WM_SETFONT, reinterpret_cast<WPARAM>(m_hGuiFont.get()), MAKELPARAM(TRUE, 0));
-	//SendMessageW(m_hNext, WM_SETFONT, reinterpret_cast<WPARAM>(m_hGuiFont.get()), MAKELPARAM(TRUE, 0));
-	//(m_hCancel, WM_SETFONT, reinterpret_cast<WPARAM>(m_hGuiFont.get()), MAKELPARAM(TRUE, 0));
-
-	//m_tree.SendMessageW(WM_SETFONT, reinterpret_cast<WPARAM>&m_, MAKELPARAM(TRUE, 0));
 
 	m_tree.SetFont(&m_font3);
 	m_ckOnTop.SetFont(&m_font3);
@@ -2209,31 +2145,64 @@ LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 	m_btMenu.SetFont(&m_font2);
 
 	GetWindowRect(&rc);
-	w = rc.Width();
-	h = rc.Height();
+
+	int w1 = rc.Width();
+	int h1 = rc.Height();
+	RECT rcW;
+	int w2 = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	int h2 = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+
+
+	POINT p;
+	p = rc.TopLeft();
+	//p.y = rc.top;
+	POINT p2;
+	p2 = rc.BottomRight();
+	//p2.y = rc.bottom;
+	HMONITOR hMon = MonitorFromPoint(p, MONITOR_DEFAULTTONULL);
+	HMONITOR hMon2 = MonitorFromPoint(p2, MONITOR_DEFAULTTONULL);
+	
+	
+
+	/*if (bSize) {
+		rcW = rc;
+	} else */if (hMon != hMon2) {
+		rcW.left = rc.left - ((w2 - w1) / 2);
+		rcW.right = rc.left + w2 - ((w2 - w1) / 2);
+		rcW.top = rc.top;// -((h2 - h1) / 2);
+		rcW.bottom = rc.top + h2;// -((h2 - h1) / 2);
+	
+	} else{
+		rcW.left = rc.left;
+		rcW.right = rc.left + w2;
+		rcW.top = rc.top;// -((h2 - h1) / 2);
+		rcW.bottom = rc.top + h2;// -((h2 - h1) / 2);
+	}
 	// Use the suggested new window size.
 	RECT* const prcNewWindow = reinterpret_cast<RECT*>(lParam);
 	int iWindowX = prcNewWindow->left;
 	int iWindowY = prcNewWindow->top;
-	dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
-	dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
-
+	//dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	//dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	//MoveWindow(&rcW);
 	//int iOffsetX = dpiScaledWidth - (prcNewWindow->right - prcNewWindow->left);
 	//int iOffsetY = (prcNewWindow->bottom - prcNewWindow->top) - dpiScaledHeight;
 	//int iWindowWidth = MulDiv(prcNewWindow->right - prcNewWindow->left, iCurrentDPI, 96);
 	//int iWindowHeight = MulDiv(prcNewWindow->bottom - prcNewWindow->top, iCurrentDPI, iOldDPI);
-	SetWindowPos(nullptr, iWindowX/* - (iOffsetX)*/, iWindowY, dpiScaledWidth, dpiScaledHeight, SWP_NOZORDER | SWP_NOACTIVATE);
-	/*CString strInfo = _T("");
-	strInfo.Format(_T("oldDPI: %d, curDPI: %d, W: %d, H: %d, W2: %d, H2: %d"), iOldDPI, iCurrentDPI, w, h, iWindowWidth, iWindowHeight);
+	//
+		SetWindowPos(nullptr, rcW.left, rcW.top, rcW.right - rcW.left, rcW.bottom - rcW.top, SWP_NOZORDER | SWP_NOACTIVATE);
+	CString strInfo = _T("");
+	strInfo.Format(_T("oldDPI: %d, curDPI: %d, W: %d, H: %d, W2: %d, H2: %d"), iOldDPI, iCurrentDPI, w, h,
+		prcNewWindow->right - prcNewWindow->left, prcNewWindow->bottom - prcNewWindow->top);
 	if (m_stInfo) m_stInfo.SetWindowText(strInfo);
-	m_stInfo.Invalidate();*/
+	m_stInfo.Invalidate();
 
 	DynimicLayoutCalculate();
 	ShowControls(true);
 	//GetWindowRect(&rcWin);
 	Invalidate();
 	//MessageBox(_T("dpi changing!"));
-	dpistart = false;
+	//dpistart = false;
 	return 0;
 }
 
@@ -2264,7 +2233,7 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 	CRect rcWindow;
 
 	GetClientRect(rcWindow);
-	m_ckOnTop.GetClientRect(rcCheckOnTop);
+	m_ckOnTop.GetWindowRect(rcCheckOnTop);
 	m_stInfo.GetClientRect(rcStaticInfo);
 	m_stMainTitle.GetClientRect(rcStaticMainTitle);
 	m_tree.GetClientRect(rcTree);
@@ -2593,11 +2562,35 @@ void CAPPsStarterDlg::SetImageList()
 	//delete icon[13];
 }
 
-void CAPPsStarterDlg::OnBnClickedButton1()
+//void CAPPsStarterDlg::OnBnClickedButton1()
+//{
+//	// TODO: Add your control notification handler code here
+//	SetImageList();
+//}
+//
+
+
+void CAPPsStarterDlg::OnMove(int x, int y)
 {
-	// TODO: Add your control notification handler code here
-	SetImageList();
+	//__super::OnMove(x, y);
+	bMove = true;
+	//bSize = false;
+	bEndMoveSize = false;
 }
 
+void CAPPsStarterDlg::OnMoving(UINT fwSide, LPRECT pRect)
+{
+	//__super::OnMoving(fwSide, pRect);
+	//bStartMoving = true;
+	bMove = true;
+	//bSize = false;
+	bEndMoveSize = false;
+}
 
-
+LRESULT CAPPsStarterDlg::OnExitSizeMove(WPARAM wParam, LPARAM lParam)
+{
+	bMove = false;
+	bSize = false;
+	bEndMoveSize = true;
+	return TRUE;
+}

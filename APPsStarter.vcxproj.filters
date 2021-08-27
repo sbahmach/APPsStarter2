@@ -54,6 +54,9 @@
     <ClInclude Include="ver_revision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HighDPI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="APPsStarter.cpp">

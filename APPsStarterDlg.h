@@ -130,6 +130,7 @@ protected:
 	CFont m_font1, m_font2, m_font3;
 	LOGFONT lf, lf2, lf3;
 	int iCurrentDPI = 96;
+	void ScaleFontsAndGraphics();
 	int iOldDPI = 96;
 	typedef HRESULT(WINAPI* PGetDpiForMonitor)(HMONITOR hmonitor, int dpiType, UINT* dpiX, UINT* dpiY);
 
@@ -185,7 +186,9 @@ protected:
 
 
 public:
-	
+	bool bMove = false;
+	bool bSize = false;
+	bool bEndMoveSize = true;
 	//void TTokenizer(const CString& strFields, LPCWSTR strDelimiters, std::vector<CString>& arFields);
 	void OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint ptMousePos);
@@ -205,11 +208,14 @@ public:
     afx_msg void OnBnClickedButtonMenu();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnSizing(UINT nSide, LPRECT pRect);
+	afx_msg void OnMove(int x, int y);
+	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
+	afx_msg LRESULT OnExitSizeMove(WPARAM wParam, LPARAM lParam);
 	LRESULT OnDpiChanged(WPARAM wParam, LPARAM lParam);
 	//LRESULT OnDpiChanged(WPARAM wParam, LPARAM lParam);
 	
 	afx_msg void OnCbnSelchangeCombo2();
-	afx_msg void OnBnClickedButton1();
+	//afx_msg void OnBnClickedButton1();
 	//afx_msg void OnBnClickedMfcmenubutton1();
 	//afx_msg void OnBnDropDownMfcmenubutton1(NMHDR* pNMHDR, LRESULT* pResult);
 };
