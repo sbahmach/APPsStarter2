@@ -184,7 +184,7 @@ BOOL CTreeCtrlXML::PreTranslateMessage(MSG* pMsg)
 		GetParent()->SendMessage(WM_DROPFILES, pMsg->wParam, pMsg->lParam);
 		return TRUE; // eat it
 	}
-
+	
 	return FALSE; // allow default processing
 	//return CDialog::PreTranslateMessage(pMsg);
 }
@@ -874,18 +874,18 @@ void CTreeCtrlXML::OnTvnBegindragTreeDrag(NMHDR* pNMHDR, LRESULT* pResult)
 	m_hitemDrag = HitTest(CursorPosition);// pNMTreeView->itemNew.hItem;
 	m_hitemDrop = NULL;
 	SelectItem(m_hitemDrag);
-	//m_pDragImage = CreateDragImage(m_hitemDrag);  // get the image list for dragging
+	m_pDragImage = CreateDragImage(m_hitemDrag);  // get the image list for dragging
 	// CreateDragImage() returns NULL if no image list
 	// associated with the tree view control
 	//if (!m_pDragImage)
 	//	return;
 
 	m_bLDragging = TRUE;
-	//m_pDragImage->BeginDrag(0, CPoint(-15,-15));
+	m_pDragImage->BeginDrag(0, CPoint(-15,-15));
 	
 	POINT pt = pNMTreeView->ptDrag;
 	ClientToScreen(&pt);
-	//m_pDragImage->DragEnter(NULL, pt);
+	m_pDragImage->DragEnter(NULL, pt);
 	SetCapture();
 }
 
@@ -902,15 +902,26 @@ void CTreeCtrlXML::OnMouseMove(UINT nFlags, CPoint point)
 
 	if (m_bLDragging)
 	{
-		SetCursor(LoadCursor(NULL, IDC_ARROW));
+		//
 		ModifyStyle(TVS_TRACKSELECT, 0);
 		POINT pt = point;
 		ClientToScreen(&pt);
 
-		//CImageList::DragMove(pt);
-		if ((hitem = HitTest(point, &flags)) != NULL && (TVHT_ONITEM & flags))
+		CImageList::DragMove(pt);
+		hitem = HitTest(point, &flags);
+		//CImageList::DragShowNolock(FALSE);
+		/*if (hitem != NULL && (TVHT_ONITEMBUTTON & flags))
 		{
+			GetItemRect(hitem, rcHit, false);
+		}*/
+		if (hitem != NULL && (TVHT_ONITEM & flags))
+		{
+			//CRect rc;
+			GetItemRect(hitem, rcHit, false);
+			
+			//strHit.Format(_T("%d"), rc.Width());
 			//CImageList::DragShowNolock(FALSE);
+			CImageList::DragShowNolock(TRUE);
 			//SelectDropTarget(hitem);
 			if (htiDrop != hitem) {
 				
@@ -926,14 +937,31 @@ void CTreeCtrlXML::OnMouseMove(UINT nFlags, CPoint point)
 					hti = GetParentItem(hti);
 
 				}
+				
 				SetInsertMark(hitem, TRUE);
 				if (m_hitemDrag == m_hitemDrop || bIsChildren) {
 					
 					SetInsertMarkColor(RGB(255, 0, 0));
+					SetCursor(LoadCursor(NULL, IDC_NO));
 				}
 				else {
+					SetCursor(LoadCursor(NULL, IDC_ARROW));
+					node = (node_data*)GetItemData(hitem);
 
-					SetInsertMarkColor(RGB(47, 145, 207));
+					CRect rc;
+					GetItemRect(hitem, &rc, false);
+					rc.DeflateRect(0, 3);
+
+
+					if (node->type == "container") {
+						SelectDropTarget(hitem);
+						SetInsertMark(NULL, 1);
+					}
+					else {
+						SetInsertMarkColor(RGB(47, 145, 207));
+						SelectDropTarget(NULL);
+					}
+					//SetCursor(LoadCursor(NULL, IDC_HAND));
 					//timer = true;
 					SetTimer(m_nHoverTimerID, 2000, NULL);
 					m_HoverPoint = point;
@@ -963,11 +991,11 @@ void CTreeCtrlXML::OnLButtonUp(UINT nFlags, CPoint point)
 	if (m_bLDragging)
 	{
 		m_bLDragging = FALSE;
-		//SetCursor(LoadCursor(NULL, IDC_HAND));
+		SetCursor(LoadCursor(NULL, IDC_HAND));
 		ModifyStyle(0, TVS_TRACKSELECT);
 		//SetCursor(LoadCursor(NULL, IDC_ARROW));
-		//CImageList::DragLeave(this);
-		//CImageList::EndDrag();
+		CImageList::DragLeave(this);
+		CImageList::EndDrag();
 		ReleaseCapture();
 
 		//delete m_pDragImage;
@@ -994,7 +1022,10 @@ void CTreeCtrlXML::OnLButtonUp(UINT nFlags, CPoint point)
 		htiDrop = m_hitemDrop;
 		htiAfter = m_hitemDrop;
 		htiParent = GetParentItem(m_hitemDrop);
-		if (ItemHasChildren(m_hitemDrop)) {
+
+		node = (node_data*)GetItemData(m_hitemDrop);
+		
+		if (ItemHasChildren(m_hitemDrop) || node->type == "container") {
 			htiParent = m_hitemDrop;
 			htiAfter = TVI_FIRST;
 		}

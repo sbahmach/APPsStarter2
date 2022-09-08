@@ -6,6 +6,7 @@
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
 #define IDD_APPsStarter_DIALOG          102
+#define IDD_DIALOG_IMPORT               103
 #define IDR_MAINFRAME                   128
 #define IDI_1C                          130
 #define IDI_APP                         131
@@ -62,6 +63,10 @@
 #define IDC_COMBO_ICONS                 1040
 #define IDC_STATIC_INFO                 1041
 #define IDC_CHECK1                      1043
+#define IDC_BUTTON_IMPORT2              1044
+#define IDC_EDIT_PATH2                  1045
+#define IDC_STATIC_PATH2                1046
+#define IDC_CHECK_RECURSIVE             1047
 #define ID_EDIT_FILE                    32783
 #define ID_EDIT_EDIT                    32784
 #define ID_EDIT_32785                   32785
@@ -100,6 +105,7 @@
 #define ID_EDIT_32850                   32850
 #define ID_MENU_IMPORT_APP              32851
 #define ID_BUTTON32852                  32852
+#define ID_MENU_IMPORT_RECURSIVE        32853
 #define ID_BUTTON32819                  33001
 #define ID_BUTTON32820                  33002
 #define ID_BUTTON32821                  33003
@@ -118,9 +124,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        194
+#define _APS_NEXT_RESOURCE_VALUE        196
 #define _APS_NEXT_COMMAND_VALUE         32854
-#define _APS_NEXT_CONTROL_VALUE         1044
+#define _APS_NEXT_CONTROL_VALUE         1048
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

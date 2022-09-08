@@ -5,7 +5,7 @@
 #include "resource.h"
 #include "APPsStarter.h"
 #include "APPsStarterDlg.h"
-//#include "DialogPass.h"
+#include "DialogImport.h"
 #include "stdbool.h"
 #include "sys/stat.h"
 #include <io.h>
@@ -27,8 +27,8 @@
 #define APPWM_ICONNOTIFY (WM_APP + 1)
 #define INITIALX_96DPI 0 
 #define INITIALY_96DPI 0 
-#define INITIALWIDTH_96DPI 800
-#define INITIALHEIGHT_96DPI 500
+#define INITIALWIDTH_96DPI 700
+#define INITIALHEIGHT_96DPI 400
 // CAboutDlg dialog used for App About
 
 class CAboutDlg : public CDialog
@@ -147,6 +147,9 @@ BEGIN_MESSAGE_MAP(CAPPsStarterDlg, CDialog)
 	ON_WM_QUERYDRAGICON()
 	ON_MESSAGE(WM_DROPFILES, OnDropFiles)
 	ON_WM_LBUTTONDOWN()
+	ON_WM_NCLBUTTONDOWN()
+	ON_WM_NCLBUTTONUP()
+	ON_WM_LBUTTONUP()
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE, OnTvnSelchangedTree1)
 	ON_NOTIFY(NM_DBLCLK, IDC_TREE, OnNMDblclkTree1)
 	ON_BN_CLICKED(IDOK, OnStart)
@@ -155,13 +158,16 @@ BEGIN_MESSAGE_MAP(CAPPsStarterDlg, CDialog)
 	ON_WM_CTLCOLOR()
 	ON_WM_DRAWITEM()
 	ON_WM_MEASUREITEM()
-	ON_WM_PAINT()
+	//ON_WM_PAINT()
 	ON_WM_SIZE()
 	//ON_WM_SIZING()
-	ON_WM_MOVE()
+	//ON_WM_MOVE()
+	ON_WM_MOUSEMOVE()
 	ON_WM_MOVING()
-	ON_MESSAGE(WM_EXITSIZEMOVE, OnExitSizeMove)
+	ON_WM_EXITSIZEMOVE()
+	ON_WM_ENTERSIZEMOVE()
 	ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
+	ON_MESSAGE(WM_DISPLAYCHANGE, OnDisplayChange)
 	//ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
 	ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
 	ON_BN_CLICKED(IDC_CHECK_ONTOP, &CAPPsStarterDlg::OnBnClickedCheck1)
@@ -179,6 +185,7 @@ BEGIN_MESSAGE_MAP(CAPPsStarterDlg, CDialog)
 	//ON_BN_CLICKED(IDC_BUTTON1, &CAPPsStarterDlg::OnBnClickedButton1)
 	//ON_BN_CLICKED(IDC_MFCMENUBUTTON1, &CAPPsStarterDlg::OnBnClickedMfcmenubutton1)
 	//ON_NOTIFY(BCN_DROPDOWN, IDC_MFCMENUBUTTON1, &CAPPsStarterDlg::OnBnDropDownMfcmenubutton1)
+	ON_BN_CLICKED(IDC_BUTTON1, &CAPPsStarterDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 void CAPPsStarterDlg::ShowControls(bool bShow)
@@ -198,7 +205,7 @@ void CAPPsStarterDlg::ShowControls(bool bShow)
 	m_stTitle.ShowWindow(iShow);
 	m_stPath.ShowWindow(iShow);
 	m_stIcon.ShowWindow(iShow);
-	m_stInfo.ShowWindow(iShow);
+	m_stInfo.ShowWindow(SW_HIDE);
 
 	m_tree.ShowWindow(iShow);
 }
@@ -239,14 +246,23 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 		| CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
 	m_wndToolBar.LoadToolBar(BAR_MAIN);
 	
+	// Create the line above the buttons.
+	m_hLine = CreateWindowExW(0, WC_STATICW, L"", WS_CHILD | WS_VISIBLE | SS_SUNKEN, 0, 0, 0, 0, m_hWnd, nullptr, nullptr, nullptr);
 	
+//#define INITIALWIDTH_96DPI 700
+//#define INITIALHEIGHT_96DPI 400
+	/*SetWindowPos(nullptr, 0, 0, INITIALWIDTH_96DPI, INITIALHEIGHT_96DPI, SWP_NOZORDER | SWP_NOACTIVATE);
+	rcWindowDef.left = 0;
+	rcWindowDef.right = rcWindowDef.left + INITIALWIDTH_96DPI;
+	rcWindowDef.top = 0;
+	rcWindowDef.bottom = rcWindowDef.top + INITIALHEIGHT_96DPI;*/
 	GetWindowRect(rcWindowDef);
 
 	//iOldDPI = iCurrentDPI;
 	iCurrentDPI = GetWindowDPI(m_hWnd);
 	//iCurrentDPI = LOWORD(wParam);
 	CString strInfo = _T("");
-	strInfo.Format(_T("oldDPI: %d, curDPI: %d, W: %d, H: %d, iconSize: %d"), iOldDPI, iCurrentDPI, rcWindowDef.Width(), rcWindowDef.Height(), m_tree.iconEXE.size());
+	strInfo.Format(_T("oldDPI: %d, curDPI: %d, W: %d, H: %d"), iOldDPI, iCurrentDPI, rcWindowDef.Width(), rcWindowDef.Height());
 	if (m_stInfo) {
 		m_stInfo.SetWindowText(strInfo);
 		m_stInfo.Invalidate();
@@ -286,7 +302,7 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 	//LOGFONT lf2;
 	memset(&lf2, 0, sizeof(LOGFONT));
 	//pFont2->GetLogFont(&lf);
-	lf2.lfWeight = FW_MEDIUM;
+	lf2.lfWeight = FW_EXTRALIGHT;
 	_tcscpy(lf2.lfFaceName, _T("MS Shell Dlg 2"));
 	lf2.lfHeight = -MulDiv(12, iCurrentDPI, 72);
 	m_font2.CreateFontIndirect(&lf2);
@@ -294,7 +310,7 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 
 	//LOGFONT lf3;
 	memset(&lf3, 0, sizeof(LOGFONT));
-	lf3.lfWeight = FW_EXTRALIGHT;
+	lf3.lfWeight = FW_THIN;
 	_tcscpy(lf3.lfFaceName, _T("MS Shell Dlg 2"));
 	lf3.lfHeight = -MulDiv(10, iCurrentDPI, 72);
 	m_font3.CreateFontIndirect(&lf3);
@@ -350,9 +366,9 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
 
 	//m_btMenu.SetWindowText(_T("МЕНЮ"));
-	m_btMenu.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
+	m_btMenu.SetColor(col_BtnText_Disabled, RGB(0, 127, 14), RGB(0, 61, 6), col_BtnText_Selected
 		, col_BtnFace_Disabled, col_BtnFace_IsHover, col_BtnFace_IsHover, col_BtnFace_Selected
-		, col_BtnFrame_Disabled, col_BtnFrame, col_BtnFrame_IsHover, col_BtnFrame_Selected);
+		, col_BtnFrame_Disabled, col_BtnFrame, RGB(0, 61, 6), col_BtnFrame_Selected);
 
 	//m_btPath.SetWindowText(_T("..."));
 	m_btImport.SetColor(col_BtnText_Disabled, col_BtnText, col_BtnText_IsHover, col_BtnText_Selected
@@ -457,9 +473,10 @@ void CAPPsStarterDlg::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 {
 	__super::OnGetMinMaxInfo(lpMMI);
 
-
-	lpMMI->ptMinTrackSize.x = MulDiv(INITIALWIDTH_96DPI, iCurrentDPI, 96);
-	lpMMI->ptMinTrackSize.y = MulDiv(INITIALHEIGHT_96DPI, iCurrentDPI, 96);
+	//#define INITIALWIDTH_96DPI 700
+//#define INITIALHEIGHT_96DPI 400
+	lpMMI->ptMinTrackSize.x = MulDiv(/*rcWindowDef.Width()*/700, iCurrentDPI, 96);
+	lpMMI->ptMinTrackSize.y = MulDiv(/*rcWindowDef.Height()*/400, iCurrentDPI, 96);
 }
 
 void CAPPsStarterDlg::OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
@@ -579,7 +596,7 @@ void CAPPsStarterDlg::OnLoad()
 	CString sFilePath;
 	TCHAR szDirectory[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, szDirectory);
-	dlg.m_ofn.lpstrInitialDir = szDirectory;
+	//dlg.m_ofn.lpstrInitialDir = szDirectory;
 	if (dlg.DoModal() == IDOK)
 	{
 		sFilePath = dlg.GetPathName();
@@ -879,22 +896,24 @@ void CAPPsStarterDlg::OnInsertFolder()
 void CAPPsStarterDlg::OnImportApp()
 {
 	m_tree.SetRedraw(FALSE);
-	CString csRootPath(_T("С:\\Windows\\System32\\"));
+	CString csRootPath =_T("С:\\Windows\\System32");
 	CString csFileDlgTitle = _T("Выберите файлы для импорта");
 	//csFileDlgTitle.LoadString("File Open");
 
 
 	//"All files (*.*)|*.*|"
 	const TCHAR szFilter[] = _T("EXE Files (*.exe;*.bat;*cmd;*vbs;*rdp;*mmc)|*.exe;*.bat;*cmd;*vbs;*rdp;*mmc|All Files (*.*)|*.*||");
-	CFileDialog dlg(TRUE, _T("EXE Files (*.exe;*.bat;*cmd;*vbs;*rdp;*mmc)"), NULL, OFN_DONTADDTORECENT | OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
-	dlg.m_ofn.lpstrTitle = csFileDlgTitle;
-	dlg.m_ofn.lpstrInitialDir = csRootPath;
+	CFileDialog dlg(TRUE, _T("EXE Files (*.exe;*.bat;*cmd;*vbs;*rdp;*mmc)"), NULL, OFN_DONTADDTORECENT | OFN_NODEREFERENCELINKS | OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_EXPLORER, szFilter, this);
+	dlg.m_ofn.lpstrTitle = csFileDlgTitle.GetBuffer(_MAX_PATH);
+	dlg.m_ofn.lpstrInitialDir = csRootPath.GetBuffer(_MAX_PATH);
+	csFileDlgTitle.ReleaseBuffer();
+	csRootPath.ReleaseBuffer();
 	if (dlg.DoModal() == IDOK)
 	{
-		POSITION pos(dlg.GetStartPosition());
+		POSITION pos = dlg.GetStartPosition();
 		while (pos)
 		{
-			CString csFileName(dlg.GetNextPathName(pos));
+			CString csFileName = dlg.GetNextPathName(pos);
 			CString csFileTitle = PathFindFileName(csFileName);
 			PathRemoveExtension(csFileTitle.GetBuffer());
 			csFileTitle.ReleaseBuffer();
@@ -964,9 +983,9 @@ void CAPPsStarterDlg::OnImportApp()
 
 
 
-			m_edPath.SetWindowText(csFileName);
+			m_edPath.SetWindowText(csFileName.GetBuffer());
 			OnEnKillfocusEditPath();
-			m_edName.SetWindowText(csFileTitle);
+			m_edName.SetWindowText(csFileTitle.GetBuffer());
 			OnEnKillfocusEditName();
 			m_edTitle.SetWindowText(strDesc2);
 			OnEnKillfocusEditTitle();
@@ -977,7 +996,8 @@ void CAPPsStarterDlg::OnImportApp()
 			m_cb2.SetCurSel(i);
 			
 			m_tree.SetFocus();
-
+			csFileName.ReleaseBuffer();
+			csFileName = "";
 		}
 	}
 
@@ -986,6 +1006,146 @@ void CAPPsStarterDlg::OnImportApp()
 	m_tree.SetRedraw(TRUE);
 	m_tree.Invalidate();
 }
+
+void CAPPsStarterDlg::Recurse(LPCTSTR pstr, bool recursive)
+{
+	CFileFind finder;
+
+	// build a string with wildcards
+	CString strWildcard(pstr);
+	strWildcard += _T("\\*.*");
+
+	// start working for files
+	BOOL bWorking = finder.FindFile(strWildcard);
+	
+	while (bWorking)
+	{
+		CString strF = finder.GetFilePath();
+		CString strE = finder.GetFilePath();
+		//AfxMessageBox(strT);
+		bWorking = finder.FindNextFile();
+
+		if (strE.Right(3) == _T("lnk") || strF.Right(3) == _T("exe"))
+		{
+			//AfxMessageBox(strT);
+
+			HTREEITEM hti, htiChild, htiParent;
+			hti = m_tree.GetSelectedItem();
+			htiParent = m_tree.GetParentItem(hti);
+
+			node = (node_data*)m_tree.GetItemData(hti);
+
+			if (node->type == _T("container")) {
+				htiParent = m_tree.GetSelectedItem();
+				hti = TVI_FIRST;
+			}
+
+			htiChild = m_tree.InsertItem(_T("New App"), htiParent, hti);
+			m_tree.SetItemImage(htiChild, 4, 4);
+			node_data* nnode = new node_data();
+			//CString str = m_tree.CreateID();
+			nnode->name = _T("New App");
+			nnode->path = _T("path");
+			nnode->title = _T("");
+			nnode->icon = _T("app");
+			nnode->expand = _T("");
+			nnode->type = _T("application");
+			//nnode->id = str;// m_tree.CreateID();
+			//nnode->parent = node->id;
+			m_tree.SetItemData(htiChild, (DWORD_PTR)nnode);
+			nnode = 0;
+			m_tree.EnsureVisible(htiChild);
+			m_tree.EditLabel(htiChild);
+			m_tree.Select(htiChild, TVGN_CARET);
+
+
+			//CString strP = dlg.GetPathName();
+			//CFileVersionInfo vers;
+			//vers.Open(strP);
+
+			SHFILEINFOW shFileInfoW = {};
+			UINT uFlags = SHGFI_ICON | SHGFI_SMALLICON;
+			CString str = strF;
+			SHGetFileInfoW((CT2CW)str, FILE_ATTRIBUTE_NORMAL, &shFileInfoW, sizeof(SHFILEINFOW), uFlags);
+			hIcon = shFileInfoW.hIcon;
+			HTREEITEM hItem = m_tree.GetSelectedItem();
+			if (hIcon != NULL) {
+
+				int nImage, nSelectedImage;
+
+				m_tree.GetItemImage(hItem, nImage, nSelectedImage);
+
+				m_tree.m_imageList.Add(hIcon);
+				m_tree.iconEXE.push_back(hIcon);
+				int iItems = m_tree.m_imageList.GetImageCount() - 1;
+				m_tree.SetItemImage(hItem, iItems, iItems);
+			}
+			else {
+				m_tree.SetItemImage(hItem, 4, 4);
+			}
+			node->icon = "appsicon";
+
+			m_tree.SetItemData(hItem, (DWORD_PTR)node);
+
+
+			LPCWSTR path = (CT2W)strF;
+			CString strDesc2 = GetShellPropStringFromPath(path, PKEY_FileDescription);
+
+
+
+			m_edPath.SetWindowText(strF.GetBuffer());
+			OnEnKillfocusEditPath();
+			CString csFileTitle = PathFindFileName(strF);
+			PathRemoveExtension(csFileTitle.GetBuffer());
+			m_edName.SetWindowText(csFileTitle.GetBuffer());
+			OnEnKillfocusEditName();
+			m_edTitle.SetWindowText(strDesc2);
+			OnEnKillfocusEditTitle();
+			if (strDesc2 == "")
+				m_stMainTitle.SetWindowText(csFileTitle);
+			//m_cbIcon.SetCurSelIcon(_T("appsicon"));
+			int i = m_cb2.FindStringExact(0, _T("appsicon"));
+			m_cb2.SetCurSel(i);
+
+			//
+			
+		}
+		// skip . and .. files; otherwise, we'd
+		// recur infinitely!
+
+		if (finder.IsDots())
+			continue;
+
+		// if it's a directory, recursively search it
+
+		if (recursive && finder.IsDirectory())
+		{
+			CString str = finder.GetFilePath();
+			Recurse(str, recursive);
+		}
+	}
+
+	finder.Close();
+	m_tree.SetFocus();
+}
+
+void CAPPsStarterDlg::OnImportRecursive()
+{
+	
+	//CString str = _T("D:\\apps");
+	CString str;
+	bool rec = false;
+	CDialogImport dlg;
+	if (IDOK == dlg.DoModal()) {
+		str = dlg.m_path;
+		rec = dlg.m_Recursive;
+		
+		if (str != _T(""))
+			Recurse(str, rec);
+	} 
+	
+}
+
 
 void CAPPsStarterDlg::OnSortAZ()
 {
@@ -1196,6 +1356,9 @@ void CAPPsStarterDlg::OnContextMenu(CWnd* pWnd, CPoint ptMousePos)
 			case ID_MENU_IMPORT_APP:
 				OnImportApp();
 				break;
+			case ID_MENU_IMPORT_RECURSIVE:
+				OnImportRecursive();
+				break;
 			case ID_MENU_SORT_AZ:
 				OnSortAZ();
 				break;
@@ -1257,8 +1420,8 @@ void CAPPsStarterDlg::ReadReg()
 	{
 		CRect r = lwp->rcNormalPosition;
 		if (::MonitorFromRect(r, MONITOR_DEFAULTTONULL) != nullptr) {
-			int w = max(lwp->rcNormalPosition.right - lwp->rcNormalPosition.left, INITIALWIDTH_96DPI);
-			int h = max(lwp->rcNormalPosition.bottom - lwp->rcNormalPosition.top, INITIALHEIGHT_96DPI);
+			int w = max(lwp->rcNormalPosition.right - lwp->rcNormalPosition.left, 700/*rcWindowDef.Width()*/);
+			int h = max(lwp->rcNormalPosition.bottom - lwp->rcNormalPosition.top, 400/*rcWindowDef.Height()*/);
 			//int iOldDPI = AfxGetApp()->GetProfileInt(strSection, _T("DPI"), 0);
 			w = MulDiv(w, iCurrentDPI, 96);
 			h = MulDiv(h, iCurrentDPI, 96);
@@ -1312,8 +1475,8 @@ void CAPPsStarterDlg::WriteReg()
 
 	WINDOWPLACEMENT wp;
 	GetWindowPlacement(&wp);
-	int w = wp.rcNormalPosition.right - wp.rcNormalPosition.left;
-	int h = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top;
+	int w = max(wp.rcNormalPosition.right - wp.rcNormalPosition.left, 700/*rcWindowDef.Width()*/);
+	int h = max(wp.rcNormalPosition.bottom - wp.rcNormalPosition.top, 400/*rcWindowDef.Height()*/);
 	w = MulDiv(w, 96, iCurrentDPI);
 	h = MulDiv(h, 96, iCurrentDPI);
 	wp.rcNormalPosition.right = wp.rcNormalPosition.left + w;
@@ -1341,6 +1504,16 @@ void CAPPsStarterDlg::WriteReg()
 
 BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 {
+	if (pMsg->message == WM_MOUSEMOVE && (pMsg->wParam & MK_LBUTTON))
+	{
+		/*GetCursorPos(&ptCursor);
+		ScreenToClient(&ptCursor);*/
+		bDragWindow = true;
+	}
+	else {
+		bDragWindow = false;
+	}
+
 	if (m_tree.GetEditControl() && (pMsg->wParam == VK_RETURN  || pMsg->wParam == VK_ESCAPE	)) //edit tree control item and Enter or Eacape
 	{
 		
@@ -1417,7 +1590,27 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 		return TRUE;
 	}
 
-	if (GetAsyncKeyState(VK_SHIFT) & 0x8000 && (pMsg->wParam == 0x4F)) { //shft+O
+	if (GetAsyncKeyState(VK_CONTROL) < 0 && (pMsg->wParam == 0x57))//Ctrl + W
+	{
+		CWnd* pWnd = GetFocus();
+		UINT i = pWnd->GetDlgCtrlID();
+		if (i == IDC_TREE) {
+			OnImportApp();
+		}
+		return TRUE;
+	}
+
+	if (GetAsyncKeyState(VK_CONTROL) < 0 && (pMsg->wParam == 0x51))//Ctrl +Q
+	{
+		CWnd* pWnd = GetFocus();
+		UINT i = pWnd->GetDlgCtrlID();
+		if (i == IDC_TREE) {
+			OnImportRecursive();
+		}
+		return TRUE;
+	}
+
+	if (GetAsyncKeyState(VK_SHIFT) & 0x8000 && GetAsyncKeyState(VK_CONTROL) & 0x8000 && (pMsg->wParam == 0x4F)) { //ctrl+shft+O
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
 		if (i == IDC_TREE) {
@@ -1426,7 +1619,7 @@ BOOL CAPPsStarterDlg::PreTranslateMessage(MSG* pMsg)
 		return TRUE;
 	}
 
-	if (GetAsyncKeyState(VK_SHIFT) & 0x8000 && (pMsg->wParam == 0x4E)) { //shft+N
+	if (GetAsyncKeyState(VK_SHIFT) & 0x8000 && GetAsyncKeyState(VK_CONTROL) & 0x8000 && (pMsg->wParam == 0x4E)) { //ctrl+shft+N
 		CWnd* pWnd = GetFocus();
 		UINT i = pWnd->GetDlgCtrlID();
 		if (i == IDC_TREE) {
@@ -1554,11 +1747,36 @@ LRESULT CAPPsStarterDlg::OnDropFiles(WPARAM wParam, LPARAM lParam)
 
 void CAPPsStarterDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	// This is to moving the Dialog by clicking any where on the dialog
+
+	//SetCapture();
+	bLeftButtomIsDown = true;
 	PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));
 }
 
+void CAPPsStarterDlg::OnLButtonUp(UINT nFlags, CPoint point)
+{
 
+	//ReleaseCapture();
+	bLeftButtomIsDown = false;
+	//PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));
+	CDialog::OnLButtonUp(nFlags, point);
+}
+
+void CAPPsStarterDlg::OnNcLButtonDown(UINT nHitTest, CPoint point)
+{
+	
+	//SetCapture();
+	bLeftButtomIsDown = true;
+	CDialog::OnNcLButtonDown(nHitTest, point);
+	
+}
+void CAPPsStarterDlg::OnNcLButtonUp(UINT nHitTest, CPoint point)
+
+{
+	//ReleaseCapture();
+	bLeftButtomIsDown = false;
+	CDialog::OnNcLButtonUp(nHitTest, point);
+}
 void CAPPsStarterDlg::OnEnKillfocusEditName()
 {
 	// TODO: добавьте свой код обработчика уведомлений
@@ -2057,48 +2275,15 @@ void CAPPsStarterDlg::OnBnClickedButtonMenu()
 //	AfxBeginThread(startThreadOut, _param); // запускаем отдельный поток
 //}
 
-void CAPPsStarterDlg::OnSize(UINT nType, int cx, int cy)
-{
-	//__super::OnSize(nType, cx, cy);
-	///*if (iOldDPI == iCurrentDPI) {
-	//	DynimicLayoutCalculate();
-	//}
-	//else {
 
-	//}*/
-	//DynimicLayoutCalculate();
-	//bSize = true;
-	////bMove = false;
-	//bEndMoveSize = false;
-	
-}
-
-void CAPPsStarterDlg::OnSizing(UINT nSide, LPRECT pRect)
-{
-	__super::OnSizing(nSide, pRect);
-
-	CRect rc;
-	GetWindowRect(&rc);
-
-	int x = MulDiv(INITIALWIDTH_96DPI, iCurrentDPI, 96);
-	int y = MulDiv(INITIALHEIGHT_96DPI, iCurrentDPI, 96);
-
-	if (rc.Width() <= x || rc.Height() <= y) {
-		return;
-	}
-
-	DynimicLayoutCalculate();
-	bSize = true;
-	//bMove = false;
-	bEndMoveSize = false;
-}
 
 LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 {
+	
 	iOldDPI = iCurrentDPI;
 	//iCurrentDPI = GetWindowDPI(m_hWnd);
 	iCurrentDPI = LOWORD(wParam);
-
+	
 	ShowControls(false);
 	SetImageList();
 	CRect rc;
@@ -2106,7 +2291,6 @@ LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 	CWnd* pwndChild = GetWindow(GW_CHILD);
 	while (pwndChild) {
 		pwndChild->GetWindowRect(&rc);
-		//pwndChild->EnableWindow(FALSE);
 		w = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
 		h = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
 
@@ -2145,43 +2329,176 @@ LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 	m_btMenu.SetFont(&m_font2);
 
 	GetWindowRect(&rc);
+	//RECT* const prcNewWindow = reinterpret_cast<RECT*>(lParam);
 
-	int w1 = rc.Width();
-	int h1 = rc.Height();
-	RECT rcW;
-	int w2 = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
-	int h2 = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+	
+
+	CRect rcMon;
+	HMONITOR hMon = MonitorFromRect(rc, MONITOR_DEFAULTTONULL);
+	/*HMONITOR hMonLT = MonitorFromPoint(CPoint(rc.left, rc.top), MONITOR_DEFAULTTONULL);
+	HMONITOR hMonRT = MonitorFromPoint(CPoint(rc.right, rc.top), MONITOR_DEFAULTTONULL);
+	HMONITOR hMonLB = MonitorFromPoint(CPoint(rc.left, rc.bottom), MONITOR_DEFAULTTONULL);
+	HMONITOR hMonRB = MonitorFromPoint(CPoint(rc.right, rc.bottom), MONITOR_DEFAULTTONULL);*/
+	MONITORINFOEX info;
+	info.cbSize = sizeof(info);
+	if (GetMonitorInfo(hMon, &info))
+		rcMon = info.rcMonitor;
+	int side = -1;
+
+	if (rLast.left - rOld.left > 0) {
+		side = toRight;
+	}
+	if (rLast.left - rOld.left < 0) side = toLeft;
+	/*if ((hMon == hMonLT || hMon == hMonLB) && (hMon != hMonRT && hMon !=hMonRB))
+		side = 0;
+	else if ((hMon == hMonRT || hMon == hMonRB) && (hMon != hMonLT && hMon != hMonLB))
+		side = 1;
+	else if ((hMon == hMonLT || hMon == hMonRT) && (hMon != hMonLB && hMon != hMonRB))
+		side = 2;
+	else if ((hMon == hMonLB || hMon == hMonRB) && (hMon != hMonLT && hMon != hMonRT))
+		side = 3;*/
+
+	//if (rcMon.PtInRect(CPoint(rc.left, rc.top)) && rcMon.PtInRect(CPoint(rc.left, rc.bottom))) {
+	//	side = 0; // to left
+	//}
+	//else if (rcMon.PtInRect(CPoint(rc.right, rc.top)) && rcMon.PtInRect(CPoint(rc.right, rc.bottom))) {
+	//	side = 1; // to right
+	//}
+	//else if (rcMon.PtInRect(CPoint(rc.left, rc.top)) && rcMon.PtInRect(CPoint(rc.right, rc.top))) {
+	//	side = 3; // to top
+	//}
+	//else if (rcMon.PtInRect(CPoint(rc.left, rc.bottom)) && rcMon.PtInRect(CPoint(rc.right, rc.bottom))) {
+	//	side = 4; // to bottom
+	//}
+	
+	//int _w = rc.Width();
+	//int _h = rc.Height();
+
+	int W = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
+	int H = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
+
+	//double k = (double)iCurrentDPI / iOldDPI;
+	CPoint pt;
+	GetCursorPos(&pt);
+	int left = pt.x - rc.left;
+	int top = pt.y - rc.top;
+
+	//double _d = ((left / (double)_w) * 100);
+	//int D = MulDiv(_d, iCurrentDPI, iOldDPI);
+
+	
+	int leftnew = MulDiv(left, iCurrentDPI, iOldDPI);
+	int topnew = MulDiv(top, iCurrentDPI, iOldDPI);
+	//int offset = left > leftnew ? +7 : -7;
+	int newLeftWindow = pt.x - leftnew;// +offset;
+	//if (left >= (rc.Width() / 2)) newLeftWindow = rc.left;
+	int newTopWindow = pt.y - topnew;
+
+	CRect rcNewWin;
+	rcNewWin.left = newLeftWindow;
+	rcNewWin.top = newTopWindow;
+	rcNewWin.right = newLeftWindow + W;
+	rcNewWin.bottom = newTopWindow + H;
+
+	if (side == 0) { // to left
+		if (rcNewWin.Width() / 2 >= rcMon.right - rcNewWin.left)
+			newLeftWindow -= ((rcNewWin.Width() / 2) - (rcMon.right - rcNewWin.left)) + 7;
+	} else if (side == 1) { // to right
+		if (rcNewWin.Width() / 2 >= rcNewWin.right - rcMon.left)
+			newLeftWindow += ((rcNewWin.Width() / 2) - (rcNewWin.right - rcMon.left)) + 7;
+	}
+	//
+	/*if (!bLeftButtomIsDown) {
+		newLeftWindow = rc.left;
+		newTopWindow = rc.top;
+	}*/
+	/*RECT* const prcNewWindow = reinterpret_cast<RECT*>(lParam);
+	newLeftWindow = prcNewWindow->left;
+	newTopWindow = prcNewWindow->top;
+	*/
+	CRect rcClient;
+	GetClientRect(&rcClient);
+	CString s1 = _T("");
+	if (side == toLeft) s1 = _T(" <<");
+	if (side == toRight) s1 = _T(" >>");
+	if (bLeftButtomIsDown) s1 = s1 + _T(" M");
+	CString strInfo = _T("");
+	strInfo.Format(_T("%d, %d, %d, %d, %d, %d"), iOldDPI, iCurrentDPI, 
+		newLeftWindow, newTopWindow, rcClient.Width(), rcClient.Height());
+	strInfo = strInfo + s1;
+	if (m_stInfo) {
+		m_stInfo.SetWindowText(strInfo);
+		m_stInfo.Invalidate();
+	}
+	//bIsMoving = false;
+	//if (!bSizeMove)
+	SetWindowPos(nullptr, newLeftWindow, newTopWindow, W, H, SWP_NOZORDER | SWP_NOACTIVATE);
 
 
-	POINT p;
-	p = rc.TopLeft();
-	//p.y = rc.top;
-	POINT p2;
-	p2 = rc.BottomRight();
-	//p2.y = rc.bottom;
-	HMONITOR hMon = MonitorFromPoint(p, MONITOR_DEFAULTTONULL);
-	HMONITOR hMon2 = MonitorFromPoint(p2, MONITOR_DEFAULTTONULL);
 	
 	
+
+
+
+	/*CRect rD;
+	GetDesktopWindow()->GetWindowRect(rD);
+	CString strD;
+	strD.Format(_T("W=%d, H=%d"), rD.Width(), rD.Height());
+	MessageBox(strD);*/
+	//POINT p;
+	//p = rc.TopLeft();
+	////p.y = rc.top;
+	//POINT p2;
+	//p2 = rc.BottomRight();
+	////p2.y = rc.bottom;
+	//CString strDispl = _T("");
+
+	
+	//DISPLAY_DEVICEW dd = { sizeof(dd) };
+	//DWORD dev = 0; // device index
+	//while (EnumDisplayDevicesW(0, dev, &dd, 0)) {
+	//	DISPLAY_DEVICEW ddMon = { sizeof(ddMon) };
+	//	DWORD devMon = 0;
+	//	while (EnumDisplayDevicesW(dd.DeviceName, devMon, &ddMon, 0)) {
+	//		if (ddMon.StateFlags & DISPLAY_DEVICE_ACTIVE && !(ddMon.StateFlags & DISPLAY_DEVICE_MIRRORING_DRIVER)) {
+	//			const CString DeviceID = ddMon.DeviceID;
+	//			const CString DeviceName = ddMon.DeviceName;
+	//			strDispl = strDispl + DeviceName + _T("\n");
+	//			//strDispl = strDispl + DeviceID.Left(15).Right(7) + _T("\n");
+	//		}
+	//		devMon++;
+	//	}
+	//	dev++;
+	//}
+	//MessageBox(strDispl);
+	/*{
+		std::cout << "Monitor x: " << std::abs(info.rcMonitor.left - info.rcMonitor.right)
+			<< " y: " << std::abs(info.rcMonitor.top - info.rcMonitor.bottom)
+			<< std::endl;
+	}*/
+	//HMONITOR hMon2 = MonitorFromPoint(p2, MONITOR_DEFAULTTONULL);
+	//
+	//
 
 	/*if (bSize) {
 		rcW = rc;
-	} else */if (hMon != hMon2) {
-		rcW.left = rc.left - ((w2 - w1) / 2);
-		rcW.right = rc.left + w2 - ((w2 - w1) / 2);
-		rcW.top = rc.top;// -((h2 - h1) / 2);
-		rcW.bottom = rc.top + h2;// -((h2 - h1) / 2);
-	
-	} else{
-		rcW.left = rc.left;
-		rcW.right = rc.left + w2;
-		rcW.top = rc.top;// -((h2 - h1) / 2);
-		rcW.bottom = rc.top + h2;// -((h2 - h1) / 2);
-	}
+	} else */
+	//if (hMon != hMon2) {
+	//	rcW.left = rc.left - ((w2 - w1) / 2);
+	//	rcW.right = rc.left + w2 - ((w2 - w1) / 2);
+	//	rcW.top = rc.top;// -((h2 - h1) / 2);
+	//	rcW.bottom = rc.top + h2;// -((h2 - h1) / 2);
+	//
+	//} else{
+	//	rcW.left = rc.left;
+	//	rcW.right = rc.left + w2;
+	//	rcW.top = rc.top;// -((h2 - h1) / 2);
+	//	rcW.bottom = rc.top + h2;// -((h2 - h1) / 2);
+	//}
 	// Use the suggested new window size.
-	RECT* const prcNewWindow = reinterpret_cast<RECT*>(lParam);
-	int iWindowX = prcNewWindow->left;
-	int iWindowY = prcNewWindow->top;
+	
+	//int iWindowX = prcNewWindow->left;
+	//int iWindowY = prcNewWindow->top;
 	//dpiScaledWidth = MulDiv(rc.Width(), iCurrentDPI, iOldDPI);
 	//dpiScaledHeight = MulDiv(rc.Height(), iCurrentDPI, iOldDPI);
 	//MoveWindow(&rcW);
@@ -2190,24 +2507,59 @@ LRESULT CAPPsStarterDlg::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 	//int iWindowWidth = MulDiv(prcNewWindow->right - prcNewWindow->left, iCurrentDPI, 96);
 	//int iWindowHeight = MulDiv(prcNewWindow->bottom - prcNewWindow->top, iCurrentDPI, iOldDPI);
 	//
-		SetWindowPos(nullptr, rcW.left, rcW.top, rcW.right - rcW.left, rcW.bottom - rcW.top, SWP_NOZORDER | SWP_NOACTIVATE);
-	CString strInfo = _T("");
-	strInfo.Format(_T("oldDPI: %d, curDPI: %d, W: %d, H: %d, W2: %d, H2: %d"), iOldDPI, iCurrentDPI, w, h,
-		prcNewWindow->right - prcNewWindow->left, prcNewWindow->bottom - prcNewWindow->top);
-	if (m_stInfo) m_stInfo.SetWindowText(strInfo);
-	m_stInfo.Invalidate();
-
+	//int iWindowX = rcW.left; //prcNewWindow->left;
+	//int iWindowY = rcW.top; //prcNewWindow->top;
+	//int iWindowWidth = rcW.right - rcW.left;
+	//int iWindowHeight = rcW.bottom - rcW.top;
+	
+	//RECT* const prcNewWindow = reinterpret_cast<RECT*>(lParam);
+	//int iWindowX = prcNewWindow->left;
+	//int iWindowY = prcNewWindow->top;
+	//int iWindowWidth = prcNewWindow->right - prcNewWindow->left;
+	//int iWindowHeight = prcNewWindow->bottom - prcNewWindow->top;
+	//SetWindowPos(nullptr, iWindowX, iWindowY, iWindowWidth, iWindowHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+	//GetWindowRect(&rc);
+	//
+	//CString strInfo = _T("");
+	//strInfo.Format(_T("L1=%d, T1=%d, W1=%d, H1=%d, Px=%d, Py=%d"),
+	//	rc.left,
+	//	rc.top,
+	//	rc.Width(),
+	//	rc.Height(),
+	//	pt.x,
+	//	pt.y);
+	//	//prcNewWindow->left,
+	//	//prcNewWindow->top,
+	//	//prcNewWindow->right - prcNewWindow->left, 
+	//	//prcNewWindow->bottom - prcNewWindow->top);
+	//if (m_stInfo) m_stInfo.SetWindowText(strInfo);
+	//m_stInfo.Invalidate();
+	//TRACE(strInfo);
 	DynimicLayoutCalculate();
 	ShowControls(true);
 	//GetWindowRect(&rcWin);
-	Invalidate();
+	//Invalidate();
 	//MessageBox(_T("dpi changing!"));
 	//dpistart = false;
+	rOld = rLast;
 	return 0;
 }
 
 void CAPPsStarterDlg::DynimicLayoutCalculate()
 {
+	// Redraw the entire window on every DPI change.
+	//RECT rcWindow;
+	CRect rcWindow;
+	GetClientRect(&rcWindow);
+	InvalidateRect(&rcWindow, FALSE);
+	
+	//CString strInfo = _T("");
+	//strInfo.Format(_T("oldDPI: %d, curDPI: %d, W: %d, H: %d, hit: %d"), iOldDPI, iCurrentDPI, rcWindow.Width(), rcWindow.Height(), m_tree.rcHit.Width());
+	//if (m_stInfo) {
+	//	m_stInfo.SetWindowText(strInfo);
+	//	//m_stInfo.Invalidate();
+	//}
+
 	int iOffset;
 	int iOffsetInner;
 	iOffset = MulDiv(20, iCurrentDPI, 96);
@@ -2230,10 +2582,10 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 	CRect rcButtonMenu;
 	CRect rcButtonOK;
 	CRect rcButtonCancel;
-	CRect rcWindow;
+	//CRect rcWindow;
 
-	GetClientRect(rcWindow);
-	m_ckOnTop.GetWindowRect(rcCheckOnTop);
+	//GetClientRect(rcWindow);
+	m_ckOnTop.GetClientRect(rcCheckOnTop);
 	m_stInfo.GetClientRect(rcStaticInfo);
 	m_stMainTitle.GetClientRect(rcStaticMainTitle);
 	m_tree.GetClientRect(rcTree);
@@ -2286,6 +2638,15 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 	rcTree.top = rcStaticMainTitle.bottom;
 	rcTree.bottom = rcWindow.bottom - iOffset;
 	m_tree.MoveWindow(rcTree.left, rcTree.top, rcTree.Width(), rcTree.Height());
+
+
+	// Move the line above the buttons.
+	int iLineHeight = rcTree.Height();
+	int iLineWidth = 2;
+	int iLineX =  rcTree.right + 2;
+	int iLineY = rcTree.top;
+	::MoveWindow(m_hLine, iLineX, iLineY, iLineWidth, iLineHeight, 0);
+	
 
 	h = rcStaticName.Height();
 	w = rcStaticName.Width();
@@ -2367,16 +2728,6 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 	rcCombo2.bottom = rcCombo2.top + h;
 	m_cb2.MoveWindow(rcCombo2.left, rcCombo2.top, rcCombo2.Width(), rcCombo2.Height());
 
-	h = rcButtonMenu.Height();
-	w = rcButtonMenu.Width();
-	rcButtonMenu.right = rcCombo2.right;
-	rcButtonMenu.left = rcCombo2.left;
-	rcButtonMenu.top = rcCombo2.bottom + iOffset + iOffset;
-	rcButtonMenu.bottom = rcButtonMenu.top + h;
-	m_btMenu.MoveWindow(rcButtonMenu.left, rcButtonMenu.top, rcButtonMenu.Width(), rcButtonMenu.Height());
-
-	
-
 	h = rcButtonCancel.Height();
 	w = rcButtonCancel.Width();
 	rcButtonCancel.right = rcWindow.right - iOffset;
@@ -2389,18 +2740,24 @@ void CAPPsStarterDlg::DynimicLayoutCalculate()
 	w = rcButtonOK.Width();
 	rcButtonOK.right = rcWindow.right - iOffset;
 	rcButtonOK.left = rcButtonOK.right - w;
-	rcButtonOK.top = rcButtonCancel.top - iOffset - h;
-	rcButtonOK.bottom = rcButtonOK.top + h;
+	rcButtonOK.bottom = rcButtonCancel.top - iOffsetInner;
+	rcButtonOK.top = rcButtonOK.bottom - h;
 	m_btOK.MoveWindow(rcButtonOK.left, rcButtonOK.top, rcButtonOK.Width(), rcButtonOK.Height());
-
-	
+	//m_btOK.Invalidate();
+	h = rcButtonMenu.Height();
+	w = rcButtonMenu.Width();
+	rcButtonMenu.right = rcWindow.right - iOffset; //rcCombo2.right;
+	rcButtonMenu.left = rcButtonMenu.right - w;// rcCombo2.left;
+	rcButtonMenu.top = rcButtonOK.top - iOffsetInner - h;
+	rcButtonMenu.bottom = rcButtonMenu.top + h;
+	m_btMenu.MoveWindow(rcButtonMenu.left, rcButtonMenu.top, rcButtonMenu.Width(), rcButtonMenu.Height());
 	
 	//GetWindowRect(&rcWindow);
 	/*CString strInfo = _T("");
 	strInfo.Format(_T("oldDPI: %d, curDPI: %d, W: %d, H: %d, iconSize: %d"), iOldDPI, iCurrentDPI, rcWindow.Width(), rcWindow.Height(), m_tree.iconEXE.size());
 	if (m_stInfo) m_stInfo.SetWindowText(strInfo);*/
-
 	//Invalidate();
+	
 }
 
 void CAPPsStarterDlg::OnCbnSelchangeCombo2()
@@ -2568,29 +2925,173 @@ void CAPPsStarterDlg::SetImageList()
 //	SetImageList();
 //}
 //
+void CAPPsStarterDlg::OnSize(UINT nType, int cx, int cy)
+{
+	
+	///*if (iOldDPI == iCurrentDPI) {
+	//	DynimicLayoutCalculate();
+	//}
+	//else {
+	//HDWP hDwp = BeginDeferWindowPos(7);
+	//}*/
+	//CRect rc;
+	//GetWindowRect(&rc);
+	//////MoveWindow(rc, 0);
+	//int x = MulDiv(rcWindowDef.Width(), iCurrentDPI, 96);
+	//int y = MulDiv(rcWindowDef.Height(), iCurrentDPI, 96);
 
+	//if (rc.Width() <= x || rc.Height() <= y) {
+	//	return;
+	//}
+
+	DynimicLayoutCalculate();
+	//bSize = true;
+	////bMove = false;
+	//bEndMoveSize = false;
+	__super::OnSize(nType, cx, cy);
+}
+
+void CAPPsStarterDlg::OnSizing(UINT nSide, LPRECT pRect)
+{
+	
+	/*CRect rc;
+	GetWindowRect(&rc);
+
+	int x = MulDiv(rcWindowDef.Width(), iCurrentDPI, 96);
+	int y = MulDiv(rcWindowDef.Height(), iCurrentDPI, 96);
+
+
+	if (rc.Width() <= x || rc.Height() <= y) {
+		return;
+	}*/
+	iCurrentDPI = GetWindowDPI(m_hWnd);
+	//GetWindowRect(&rc);
+	CPoint pt;
+	GetCursorPos(&pt);
+	CString strInfo = _T("");
+	strInfo.Format(_T("DPI: %d, L1=%d, T1=%d, W1=%d, H1=%d, Px=%d, Py=%d"),
+		iCurrentDPI,
+		pRect->left,
+		pRect->top,
+		pRect->right - pRect->left,
+		pRect->bottom - pRect->top,
+		pt.x - pRect->left,
+		pt.y - pRect->top);
+	if (m_stInfo) m_stInfo.SetWindowText(strInfo);
+	//m_stInfo.Invalidate();
+
+	//DynimicLayoutCalculate();
+	//Invalidate();
+	//bSize = true;
+	//bMove = false;
+	//bEndMoveSize = false;
+	__super::OnSizing(nSide, pRect);
+
+}
 
 void CAPPsStarterDlg::OnMove(int x, int y)
 {
 	//__super::OnMove(x, y);
-	bMove = true;
-	//bSize = false;
-	bEndMoveSize = false;
+	//bMove = true;
+	////bSize = false;
+	//bEndMoveSize = false;
+
+	//iOldDPI = iCurrentDPI;
+	//iCurrentDPI = GetWindowDPI(m_hWnd);
+
+	//if (iOldDPI != iCurrentDPI) {
+	//	DynimicLayoutCalculate();
+	//	SetImageList();
+	//}
+	//iCurrentDPI = LOWORD(wParam);
+	//MessageBox(_T("move!"));
 }
 
 void CAPPsStarterDlg::OnMoving(UINT fwSide, LPRECT pRect)
 {
-	//__super::OnMoving(fwSide, pRect);
-	//bStartMoving = true;
-	bMove = true;
+	__super::OnMoving(fwSide, pRect);
+	bIsMoving = true;
+	rOld = rLast;
+	rLast.left = pRect->left;
+	rLast.top = pRect->top;
+	rLast.right = pRect->right;
+	rLast.bottom = pRect->bottom;
+	//iCurrentDPI = GetWindowDPI(m_hWnd);
+	////GetWindowRect(&rc);
+	//CPoint pt;
+	//GetCursorPos(&pt);
+	//CString strInfo = _T("");
+	//strInfo.Format(_T("DPI: %d, L1=%d, T1=%d, W1=%d, H1=%d, Px=%d, Py=%d"),
+	//	iCurrentDPI,
+	//	pRect->left,
+	//	pRect->top,
+	//	pRect->right - pRect->left,
+	//	pRect->bottom - pRect->top,
+	//	pt.x - pRect->left,
+	//	pt.y - pRect->top);
+	//if (m_stInfo) m_stInfo.SetWindowText(strInfo);
+	//m_stInfo.Invalidate();
+	//bMove = true;
 	//bSize = false;
-	bEndMoveSize = false;
+	//bEndMoveSize = false;
 }
 
-LRESULT CAPPsStarterDlg::OnExitSizeMove(WPARAM wParam, LPARAM lParam)
+void CAPPsStarterDlg::OnEnterSizeMove()
 {
-	bMove = false;
-	bSize = false;
-	bEndMoveSize = true;
-	return TRUE;
+	bSizeMove = true;
+}
+
+void CAPPsStarterDlg::OnExitSizeMove()
+{
+	bSizeMove = false;
+}
+
+LRESULT CAPPsStarterDlg::OnDisplayChange(WPARAM wParam, LPARAM lParam)
+{
+	//MessageBox(_T("display change!"));
+	return 0;
+}
+
+void CAPPsStarterDlg::OnMouseMove(UINT nFlags, CPoint point)
+{
+	bDragWindow = false;
+	switch (nFlags)
+	{
+	case MK_LBUTTON:
+		bDragWindow = true;
+		//MessageBox(_T("hghjghggh"));
+		break;
+	}
+	//if ((nFlags & MK_LBUTTON) == MK_LBUTTON)//<--edit
+	//{
+	//	
+	//}
+	__super::OnMouseMove(nFlags, point);
+}
+
+void CAPPsStarterDlg::OnBnClickedButton1()
+{
+	
+	CString strFileName = node->path;
+	FILE* fStream;
+	errno_t errCode = _tfopen_s(&fStream, strFileName, _T("r, ccs=UNICODE"));
+	if (0 != errCode)
+	{
+		return;
+	}
+	CStdioFile File(fStream);
+	CString strLine;
+	while (File.ReadString(strLine))
+	{
+		int flag = strLine.Find(L"remoteapplicationcmdline:s:");
+
+		if (flag != -1)
+		{
+			CString str;
+			str = strLine.Right(strLine.GetLength() - 27);
+			str.Replace(_T(" "), _T("\n"));
+			MessageBox(str);
+		}
+	}
+	
 }

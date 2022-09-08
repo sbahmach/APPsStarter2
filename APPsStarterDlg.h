@@ -89,6 +89,7 @@ protected:
 	afx_msg void OnItemEdit();
 	afx_msg void OnInsertFolder();
 	afx_msg void OnImportApp();
+	afx_msg void OnImportRecursive();
 	afx_msg void OnOpenWith();
 	afx_msg void OnEdit();
 	afx_msg void OnSave();
@@ -97,6 +98,7 @@ protected:
 	afx_msg void OnDeleteItem();
 	afx_msg void OnMoveUp();
 	afx_msg void OnMoveDown();
+	void Recurse(LPCTSTR pstr, bool recursive = false);
 	void OnSortAZ();
 	void OnSortZA();
 	void SortTree(HTREEITEM htiParent, bool sortType = true);
@@ -175,6 +177,7 @@ protected:
 	CEdit m_edName;
 	CEdit m_edTitle;
 	CEdit m_edPath;
+	HWND m_hLine;
 	//CMFCMenuButton m_btnMenu;
 	//CSmallIconComboBox m_cbIcon;
 	CComboBoxEx m_cb2;
@@ -183,17 +186,36 @@ protected:
 	void DynimicLayoutCalculate();
 	void SetImageList();
 	
-
+	bool bIsMoving = false;
+	enum {
+		toLeft = 0,
+		toRight,
+		toTop,
+		toButton,
+		toTopLeft,
+		toTopRight,
+		tpBottomLeft,
+		toBottomRight
+	};
 
 public:
+	//CPoint ptCursor;
+	RECT rOld;
+	RECT rLast;
+	bool bDragWindow = false;
 	bool bMove = false;
 	bool bSize = false;
 	bool bEndMoveSize = true;
+	bool bLeftButtomIsDown = false;
+	bool bSizeMove = false;
 	//void TTokenizer(const CString& strFields, LPCWSTR strDelimiters, std::vector<CString>& arFields);
 	void OnTvnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint ptMousePos);
 	afx_msg void OnNMDblclkTree1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point);
+	afx_msg void OnNcLButtonUp(UINT nHitTest, CPoint point);
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnBnClickedCheck1();
 	afx_msg void OnEnKillfocusEditName();
@@ -210,13 +232,17 @@ public:
 	afx_msg void OnSizing(UINT nSide, LPRECT pRect);
 	afx_msg void OnMove(int x, int y);
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
-	afx_msg LRESULT OnExitSizeMove(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnExitSizeMove();
+	afx_msg void OnEnterSizeMove();
 	LRESULT OnDpiChanged(WPARAM wParam, LPARAM lParam);
+	LRESULT OnDisplayChange(WPARAM wParam, LPARAM lParam);
 	//LRESULT OnDpiChanged(WPARAM wParam, LPARAM lParam);
 	
 	afx_msg void OnCbnSelchangeCombo2();
 	//afx_msg void OnBnClickedButton1();
 	//afx_msg void OnBnClickedMfcmenubutton1();
 	//afx_msg void OnBnDropDownMfcmenubutton1(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBnClickedButton1();
 };
 

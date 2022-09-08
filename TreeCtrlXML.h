@@ -51,7 +51,7 @@ public:
 
 public:
 	HTREEITEM htiDrop = NULL;
-	
+	CRect rcHit;
 	//CString CreateID();
 	
 	//bool timer = false;
