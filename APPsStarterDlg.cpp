@@ -186,6 +186,7 @@ BEGIN_MESSAGE_MAP(CAPPsStarterDlg, CDialog)
 	//ON_BN_CLICKED(IDC_MFCMENUBUTTON1, &CAPPsStarterDlg::OnBnClickedMfcmenubutton1)
 	//ON_NOTIFY(BCN_DROPDOWN, IDC_MFCMENUBUTTON1, &CAPPsStarterDlg::OnBnDropDownMfcmenubutton1)
 	ON_BN_CLICKED(IDC_BUTTON1, &CAPPsStarterDlg::OnBnClickedButton1)
+	ON_EN_CHANGE(IDC_EDIT_TITLE, &CAPPsStarterDlg::OnEnChangeEditTitle)
 END_MESSAGE_MAP()
 
 void CAPPsStarterDlg::ShowControls(bool bShow)
@@ -381,6 +382,9 @@ BOOL CAPPsStarterDlg::OnInitDialog()
 		, col_BtnFrame_Disabled, col_BtnFrame, RGB(255, 102, 0), col_BtnFrame_Selected);
 
 	m_tree.ModifyStyle(0, TVS_EDITLABELS);
+	m_tree.SetBkColor(RGB(240, 240, 240));
+	hItem = m_tree.GetRootItem();
+	m_tree.SetItemColor(hItem, RGB(255, 0, 255));
 	DragAcceptFiles(true);
 
 	//m_cb1.SetCurSel(0);
@@ -435,7 +439,7 @@ HBRUSH CAPPsStarterDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		break;
 	}
 
-	return Brush_Main;// CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+	return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 }
 
 void CAPPsStarterDlg::OnPaint()
@@ -3094,4 +3098,15 @@ void CAPPsStarterDlg::OnBnClickedButton1()
 		}
 	}
 	
+}
+
+
+void CAPPsStarterDlg::OnEnChangeEditTitle()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
 }

@@ -244,5 +244,6 @@ public:
 	//afx_msg void OnBnClickedMfcmenubutton1();
 	//afx_msg void OnBnDropDownMfcmenubutton1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedButton1();
+	afx_msg void OnEnChangeEditTitle();
 };
 
